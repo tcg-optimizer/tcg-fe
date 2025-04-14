@@ -24,6 +24,7 @@ type TCardInfo = {
   image: string;
   cacheId: string;
   cacheExpiredAt: string;
+  quantity: number;
 } & TCardShopInfo;
 
 type TCardRarityPrices = {

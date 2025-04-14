@@ -12,9 +12,17 @@ export default function ResultLayout({
       <Header />
 
       <div className="flex min-h-screen relative">
-        <History />
+        <div className="hidden xl:block mx-auto ">
+          <History />
+        </div>
         <div className="max-w-[1024px] mx-auto grow p-4">{children}</div>
-        <Cart />
+        <div className="hidden xl:block mx-auto">
+          <Cart />
+        </div>
+        <div className="sticky h-[calc(100vh-64px-2rem)] top-20 space-y-4 block xl:hidden mr-4">
+          <Cart />
+          <History />
+        </div>
       </div>
     </main>
   );

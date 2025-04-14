@@ -10,7 +10,7 @@ import SidebarContent from './SidebarContent';
 
 export default function Cart() {
   return (
-    <Card className="sticky top-20 h-[calc(50vh-32px-1rem)] w-64 mx-auto overflow-hidden">
+    <Card className="xl:sticky top-20 h-[calc(50vh-32px-1.5rem)] w-64 overflow-hidden">
       <CardHeader>
         <CardTitle>장바구니</CardTitle>
       </CardHeader>
@@ -33,6 +33,7 @@ export default function Cart() {
             language: '한글판',
             available: true,
             lastUpdated: '2025-01-01',
+            quantity: 1,
           }}
         />
       </CardContent>

@@ -7,7 +7,8 @@ interface SidebarContentProps {
 }
 
 export default function SidebarContent({ cardInfo }: SidebarContentProps) {
-  const { cardName, cardCode, price, condition, rarity, language } = cardInfo;
+  const { cardName, cardCode, price, condition, rarity, language, quantity } =
+    cardInfo;
 
   return (
     <div className="flex flex-col gap-2">
@@ -23,7 +24,9 @@ export default function SidebarContent({ cardInfo }: SidebarContentProps) {
         <div className="flex flex-col">
           <p className="text-md font-bold">{cardName}</p>
           <p className="text-sm text-gray-500">{cardCode}</p>
-          <p className="text-sm text-gray-500">{price}원</p>
+          <p className="text-sm text-gray-500">
+            {price}원 * <b>{quantity}</b>장
+          </p>
           <div className="flex gap-2 flex-wrap">
             <Badge variant="outline">{condition}</Badge>
             <Badge variant="outline">{rarity}</Badge>

@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 
 export default function History() {
   return (
-    <Card className="sticky top-20 h-[calc(50vh-32px-1rem)] w-64 mx-auto overflow-auto">
+    <Card className="xl:sticky top-20 h-[calc(50vh-32px-1.5rem)] w-64 overflow-auto">
       <CardHeader>
         <CardTitle>검색 기록</CardTitle>
       </CardHeader>
@@ -27,6 +27,7 @@ export default function History() {
             language: '한글판',
             available: true,
             lastUpdated: '2025-01-01',
+            quantity: 1,
           }}
         />
         <Separator className="my-4" />
@@ -47,6 +48,7 @@ export default function History() {
             language: '한글판',
             available: true,
             lastUpdated: '2025-01-01',
+            quantity: 1,
           }}
         />
         <Separator className="my-4" />
@@ -67,6 +69,7 @@ export default function History() {
             language: '한글판',
             available: true,
             lastUpdated: '2025-01-01',
+            quantity: 1,
           }}
         />
         <Separator className="my-4" />
@@ -87,6 +90,7 @@ export default function History() {
             language: '한글판',
             available: true,
             lastUpdated: '2025-01-01',
+            quantity: 1,
           }}
         />
         <Separator className="my-4" />
@@ -107,6 +111,7 @@ export default function History() {
             language: '한글판',
             available: true,
             lastUpdated: '2025-01-01',
+            quantity: 1,
           }}
         />
         <Separator className="my-4" />
@@ -127,6 +132,7 @@ export default function History() {
             language: '한글판',
             available: true,
             lastUpdated: '2025-01-01',
+            quantity: 1,
           }}
         />
         <Separator className="my-4" />
