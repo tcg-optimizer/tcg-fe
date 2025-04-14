@@ -9,99 +9,15 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { cardLanguages, cardRarities } from '@/data/card';
+
 export default function CardInfo() {
   const cardName = '푸른 눈의 백룡';
   const minCardPrice = 10000;
   const maxCardPrice = 100000;
 
-  const cardLanguages = [
-    {
-      value: 'korean',
-      label: '한글',
-    },
-    {
-      value: 'english',
-      label: '영어',
-    },
-    {
-      value: 'japanese',
-      label: '일본어',
-    },
-  ];
-
-  const cardRarities = [
-    {
-      value: 'quarter',
-      label: '쿼터 센츄리 시크릿 레어',
-    },
-    {
-      value: 'extra',
-      label: '엑스트라 시크릿 레어',
-    },
-    {
-      value: '20th',
-      label: '20th 시크릿 레어',
-    },
-    {
-      value: 'holo',
-      label: '홀로그래픽 레어',
-    },
-    {
-      value: 'prism',
-      label: '프리즈마틱 시크릿 레어',
-    },
-    {
-      value: 'gold-secret',
-      label: '골드 시크릿 레어',
-    },
-    {
-      value: 'millennium',
-      label: '밀레니엄 레어',
-    },
-    {
-      value: 'secret',
-      label: '시크릿 레어',
-    },
-    {
-      value: 'ultra',
-      label: '울트라 레어',
-    },
-    {
-      value: 'super',
-      label: '슈퍼 레어',
-    },
-    {
-      value: 'collectors',
-      label: '컬렉터즈 레어',
-    },
-    {
-      value: 'ultimate',
-      label: '얼티미트 레어',
-    },
-    {
-      value: 'parallel',
-      label: '패러렐 레어',
-    },
-    {
-      value: 'premium',
-      label: '프리미엄 골드 레어',
-    },
-    {
-      value: 'gold',
-      label: '골드 레어',
-    },
-    {
-      value: 'rare',
-      label: '레어',
-    },
-    {
-      value: 'normal',
-      label: '노멀',
-    },
-  ];
-
   return (
-    <div className="w-full h-ful p-4 flex flex-col">
+    <div className="w-full h-full p-4 flex flex-col bg-gray-50 rounded-lg">
       <div className="grow">
         <h1 className="text-3xl font-bold">{cardName}</h1>
         <p className="text-gray-500 mt-4">총 200건을 찾았습니다.</p>
