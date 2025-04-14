@@ -1,18 +1,11 @@
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { SearchIcon } from "lucide-react";
+import { Checkbox } from '@/components/ui/checkbox';
+import SearchInput from '@/components/SearchInput';
 
 export default function Search() {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center gap-4">
-        <div className="flex items-center gap-2">
-          <Input className="min-w-[400px]" placeholder="카드 이름을 입력해주세요" />
-          <Button>
-            <SearchIcon className="w-4 h-4" />
-          </Button>
-        </div>
+        <SearchInput />
         <div className="w-full flex justify-end items-center-safe space-x-2">
           <Checkbox id="check-used" />
           <label
