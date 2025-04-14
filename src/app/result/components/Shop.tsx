@@ -1,8 +1,8 @@
 import { Badge } from '@/components/ui/badge';
-import { CardShopInfo } from '@/types/card';
+import { TCardShopInfo } from '@/types/card';
 
 interface ShopProps {
-  shopInfo: CardShopInfo;
+  shopInfo: TCardShopInfo;
 }
 
 export default function Shop({ shopInfo }: ShopProps) {

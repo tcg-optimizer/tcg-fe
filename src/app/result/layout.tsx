@@ -8,13 +8,14 @@ export default function ResultLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="w-full">
+    <main className="w-full min-h-screen">
       <Header />
 
-      <History />
-      <Cart />
-
-      <div className="max-w-[1024px] mx-auto">{children}</div>
+      <div className="flex min-h-screen relative">
+        <History />
+        <div className="max-w-[1024px] mx-auto grow p-4">{children}</div>
+        <Cart />
+      </div>
     </main>
   );
 }

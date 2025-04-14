@@ -1,14 +1,17 @@
 import MarketPrice from './components/MarketPrice';
-import Card from './components/Card';
 import CardInfo from './components/CardInfo';
 import { cardShopInfos } from '@/data/mock/card';
 import { Separator } from '@/components/ui/separator';
+import CardFace from './components/CardFace';
 
 export default function ResultPage() {
+  const imageSrc = '/images/tomori_card.png';
+  const imageAlt = 'card';
+
   return (
     <div>
       <div className="w-full flex h-[400px] gap-4">
-        <Card />
+        <CardFace src={imageSrc} alt={imageAlt} />
         <CardInfo />
       </div>
 

@@ -16,10 +16,7 @@ export default function SearchInput({
 
   return (
     <div className="w-full flex justify-center items-center gap-2">
-      <Input
-        className={cn(className, 'w-full max-w-[400px]')}
-        placeholder={placeholder}
-      />
+      <Input className={cn(className, 'w-[400px]')} placeholder={placeholder} />
       <Button>
         <SearchIcon className="w-4 h-4" />
       </Button>

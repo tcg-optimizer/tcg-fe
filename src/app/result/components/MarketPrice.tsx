@@ -1,8 +1,8 @@
-import { CardShopInfo } from '@/types/card';
+import { TCardShopInfo } from '@/types/card';
 import Shop from './Shop';
 
 interface MarketPriceProps {
-  shopInfos: CardShopInfo[];
+  shopInfos: TCardShopInfo[];
 }
 
 export default function MarketPrice({ shopInfos }: MarketPriceProps) {

@@ -1,7 +1,136 @@
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import SidebarContent from './SidebarContent';
+import { Separator } from '@/components/ui/separator';
+
 export default function History() {
   return (
-    <div className="fixed top-20 left-0 w-[200px]">
-      <div className="w-full h-16 bg-white">History</div>
-    </div>
+    <Card className="sticky top-20 h-[calc(50vh-32px-1rem)] w-64 mx-auto overflow-auto">
+      <CardHeader>
+        <CardTitle>검색 기록</CardTitle>
+      </CardHeader>
+
+      <CardContent className="overflow-auto">
+        <SidebarContent
+          cardInfo={{
+            cardId: 1,
+            cardName: '우우우우 돌돌돌',
+            cardCode: 'TMR-0102',
+            price: 12000,
+            image: '/images/tomori_card.png',
+            cacheId: '1',
+            cacheExpiredAt: '2025-01-01',
+            id: 1,
+            site: 'TCGShop',
+            url: 'https://tcgshop.com/product/123',
+            condition: '신품',
+            rarity: '울트라 레어',
+            language: '한글판',
+            available: true,
+            lastUpdated: '2025-01-01',
+          }}
+        />
+        <Separator className="my-4" />
+        <SidebarContent
+          cardInfo={{
+            cardId: 1,
+            cardName: '우우우우 돌돌돌',
+            cardCode: 'TMR-0102',
+            price: 12000,
+            image: '/images/tomori_card.png',
+            cacheId: '1',
+            cacheExpiredAt: '2025-01-01',
+            id: 1,
+            site: 'TCGShop',
+            url: 'https://tcgshop.com/product/123',
+            condition: '신품',
+            rarity: '울트라 레어',
+            language: '한글판',
+            available: true,
+            lastUpdated: '2025-01-01',
+          }}
+        />
+        <Separator className="my-4" />
+        <SidebarContent
+          cardInfo={{
+            cardId: 1,
+            cardName: '우우우우 돌돌돌',
+            cardCode: 'TMR-0102',
+            price: 12000,
+            image: '/images/tomori_card.png',
+            cacheId: '1',
+            cacheExpiredAt: '2025-01-01',
+            id: 1,
+            site: 'TCGShop',
+            url: 'https://tcgshop.com/product/123',
+            condition: '신품',
+            rarity: '울트라 레어',
+            language: '한글판',
+            available: true,
+            lastUpdated: '2025-01-01',
+          }}
+        />
+        <Separator className="my-4" />
+        <SidebarContent
+          cardInfo={{
+            cardId: 1,
+            cardName: '우우우우 돌돌돌',
+            cardCode: 'TMR-0102',
+            price: 12000,
+            image: '/images/tomori_card.png',
+            cacheId: '1',
+            cacheExpiredAt: '2025-01-01',
+            id: 1,
+            site: 'TCGShop',
+            url: 'https://tcgshop.com/product/123',
+            condition: '신품',
+            rarity: '울트라 레어',
+            language: '한글판',
+            available: true,
+            lastUpdated: '2025-01-01',
+          }}
+        />
+        <Separator className="my-4" />
+        <SidebarContent
+          cardInfo={{
+            cardId: 1,
+            cardName: '우우우우 돌돌돌',
+            cardCode: 'TMR-0102',
+            price: 12000,
+            image: '/images/tomori_card.png',
+            cacheId: '1',
+            cacheExpiredAt: '2025-01-01',
+            id: 1,
+            site: 'TCGShop',
+            url: 'https://tcgshop.com/product/123',
+            condition: '신품',
+            rarity: '울트라 레어',
+            language: '한글판',
+            available: true,
+            lastUpdated: '2025-01-01',
+          }}
+        />
+        <Separator className="my-4" />
+        <SidebarContent
+          cardInfo={{
+            cardId: 1,
+            cardName: '우우우우 돌돌돌',
+            cardCode: 'TMR-0102',
+            price: 12000,
+            image: '/images/tomori_card.png',
+            cacheId: '1',
+            cacheExpiredAt: '2025-01-01',
+            id: 1,
+            site: 'TCGShop',
+            url: 'https://tcgshop.com/product/123',
+            condition: '신품',
+            rarity: '울트라 레어',
+            language: '한글판',
+            available: true,
+            lastUpdated: '2025-01-01',
+          }}
+        />
+        <Separator className="my-4" />
+      </CardContent>
+    </Card>
   );
 }
