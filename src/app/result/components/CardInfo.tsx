@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { cardLanguages, cardRarities } from '@/data/card';
 
 export default function CardInfo() {
-  const cardName = '푸른 눈의 백룡';
+  const cardName = '우우우우 돌돌돌';
   const minCardPrice = 10000;
   const maxCardPrice = 100000;
 
