@@ -25,7 +25,7 @@ export default function SidebarContent({ cardInfo }: SidebarContentProps) {
           <p className="text-md font-bold">{cardName}</p>
           <p className="text-sm text-gray-500">{cardCode}</p>
           <p className="text-sm text-gray-500">
-            {price}원 * <b>{quantity}</b>장
+            {price}원 * <b>{quantity}장</b>
           </p>
           <div className="flex gap-2 flex-wrap">
             <Badge variant="outline">{condition}</Badge>

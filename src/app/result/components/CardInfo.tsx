@@ -11,8 +11,11 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { cardLanguages, cardRarities } from '@/data/card';
 
-export default function CardInfo() {
-  const cardName = '우우우우 돌돌돌';
+interface CardInfoProps {
+  cardName: string;
+}
+
+export default function CardInfo({ cardName }: CardInfoProps) {
   const minCardPrice = 10000;
   const maxCardPrice = 100000;
 
