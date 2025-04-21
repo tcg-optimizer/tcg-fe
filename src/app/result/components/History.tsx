@@ -1,7 +1,6 @@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import SidebarContent from './SidebarContent';
 import { Separator } from '@/components/ui/separator';
-
 export default function History() {
   return (
     <Card className="xl:sticky top-20 h-[calc(50vh-32px-1.5rem)] w-64 overflow-auto">
@@ -9,7 +8,7 @@ export default function History() {
         <CardTitle>검색 기록</CardTitle>
       </CardHeader>
 
-      <CardContent className="overflow-auto">
+      <CardContent className="overflow-auto flex flex-col">
         <SidebarContent
           cardInfo={{
             cardId: 1,
@@ -28,9 +27,10 @@ export default function History() {
             available: true,
             lastUpdated: '2025-01-01',
             quantity: 1,
+            used: false,
           }}
         />
-        <Separator className="my-4" />
+        <Separator className="mb-4" />
         <SidebarContent
           cardInfo={{
             cardId: 1,
@@ -49,9 +49,11 @@ export default function History() {
             available: true,
             lastUpdated: '2025-01-01',
             quantity: 1,
+            used: false,
           }}
         />
-        <Separator className="my-4" />
+        <Separator className="mb-4" />
+
         <SidebarContent
           cardInfo={{
             cardId: 1,
@@ -70,9 +72,11 @@ export default function History() {
             available: true,
             lastUpdated: '2025-01-01',
             quantity: 1,
+            used: false,
           }}
         />
-        <Separator className="my-4" />
+        <Separator className="mb-4" />
+
         <SidebarContent
           cardInfo={{
             cardId: 1,
@@ -91,9 +95,11 @@ export default function History() {
             available: true,
             lastUpdated: '2025-01-01',
             quantity: 1,
+            used: false,
           }}
         />
-        <Separator className="my-4" />
+        <Separator className="mb-4" />
+
         <SidebarContent
           cardInfo={{
             cardId: 1,
@@ -112,9 +118,11 @@ export default function History() {
             available: true,
             lastUpdated: '2025-01-01',
             quantity: 1,
+            used: false,
           }}
         />
-        <Separator className="my-4" />
+        <Separator className="mb-4" />
+
         <SidebarContent
           cardInfo={{
             cardId: 1,
@@ -133,9 +141,9 @@ export default function History() {
             available: true,
             lastUpdated: '2025-01-01',
             quantity: 1,
+            used: false,
           }}
         />
-        <Separator className="my-4" />
       </CardContent>
     </Card>
   );
