@@ -8,10 +8,19 @@ import {
   SelectItem,
 } from './ui/select';
 import { cardLanguages, cardRarities } from '@/data/card';
+import { cn } from '@/lib/utils';
 
-export default function CardOptionSelector() {
+interface CardOptionSelectorProps {
+  children?: React.ReactNode;
+  className?: string;
+}
+
+export default function CardOptionSelector({
+  children,
+  className,
+}: CardOptionSelectorProps) {
   return (
-    <div className="w-full flex justify-between gap-4">
+    <div className={cn('w-full flex justify-between gap-4', className)}>
       <div className="w-full">
         <Select defaultValue={cardLanguages[0].value}>
           <Label htmlFor="card" className="text-sm text-gray-500">
@@ -52,6 +61,7 @@ export default function CardOptionSelector() {
         </Label>
         <Input id="card" type="number" defaultValue={1} min={1} max={3} />
       </div>
+      {children && <div className="mt-auto">{children}</div>}
     </div>
   );
 }
