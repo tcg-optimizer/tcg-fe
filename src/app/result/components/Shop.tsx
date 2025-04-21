@@ -1,4 +1,3 @@
-import { Badge } from '@/components/ui/badge';
 import { TCardShopInfo } from '@/types/card';
 
 interface ShopProps {
@@ -6,23 +5,64 @@ interface ShopProps {
 }
 
 export default function Shop({ shopInfo }: ShopProps) {
-  const { site, url, condition, rarity, language, cardCode, price } = shopInfo;
+  const {
+    site,
+    price,
+    rarity,
+    language,
+    url,
+    condition,
+    cardCode,
+    lastUpdated,
+    available,
+  } = shopInfo;
+
+  const formattedPrice = new Intl.NumberFormat('ko-KR').format(price);
+  const formattedDate = new Date(lastUpdated).toLocaleDateString('ko-KR');
 
   return (
     <a
       href={url}
       target="_blank"
-      className="w-full rounded-lg border border-gray-200 p-2 px-4 space-y-2"
+      rel="noopener noreferrer"
+      className="block p-4 border rounded-md shadow-sm transition-all hover:shadow-md"
     >
-      <div className="w-full flex justify-between">
-        <span>{site}</span>
-        <b>{price.toLocaleString()}원</b>
+      <div className="flex justify-between items-start">
+        <h3 className="text-xl font-bold">{site}</h3>
+        <div className="text-xl font-bold text-primary">{formattedPrice}원</div>
       </div>
-      <p className="text-sm text-gray-500">{cardCode}</p>
-      <div className="mt-2 flex gap-2">
-        <Badge>{condition}</Badge>
-        <Badge>{rarity}</Badge>
-        <Badge>{language}</Badge>
+
+      <div className="mt-4 text-sm text-muted-foreground">
+        <div className="grid grid-cols-2 gap-2">
+          <div>
+            <p className="font-medium">언어</p>
+            <p>{language}</p>
+          </div>
+          <div>
+            <p className="font-medium">레어도</p>
+            <p>{rarity}</p>
+          </div>
+          <div>
+            <p className="font-medium">상태</p>
+            <p>{condition}</p>
+          </div>
+          <div>
+            <p className="font-medium">카드 코드</p>
+            <p>{cardCode}</p>
+          </div>
+        </div>
+        <div className="mt-2">
+          <p className="font-medium">마지막 업데이트</p>
+          <p>{formattedDate}</p>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        {available ? (
+          <span className="text-green-600 font-medium">구매 가능</span>
+        ) : (
+          <span className="text-red-600 font-medium">품절</span>
+        )}
       </div>
     </a>
   );
