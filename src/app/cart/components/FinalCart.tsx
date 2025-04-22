@@ -6,20 +6,10 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { CardPurchaseRequest, calculateOptimalPurchase } from '@/lib/api';
+import { useCartStore, CartItem } from '@/store/cartStore';
 import Image from 'next/image';
 import { useState } from 'react';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
-
-interface CartItem {
-  id: string;
-  name: string;
-  code: string;
-  image: string;
-  rarity: TCardRarityLabel;
-  language: TCardLanguageLabel;
-  quantity: number;
-  cacheId: string;
-}
 
 interface CartItemProps {
   item: CartItem;
@@ -71,29 +61,8 @@ function CartItemComponent({
 }
 
 export default function FinalCart() {
-  // 실제 앱에서는 상태 관리 라이브러리나 컨텍스트를 사용해 관리하는 것이 좋습니다.
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: '1',
-      name: '블랙 매지션',
-      code: 'LDK2-KRS01',
-      image: '/images/tomori_card.png',
-      rarity: '울트라 레어' as TCardRarityLabel,
-      language: '한글판' as TCardLanguageLabel,
-      quantity: 1,
-      cacheId: '550e8400-e29b-41d4-a716-446655440000', // 실제 cacheId는 API에서 받아와야 함
-    },
-    {
-      id: '2',
-      name: '블루아이즈 화이트 드래곤',
-      code: 'SDK-KRS01',
-      image: '/images/tomori_card.png',
-      rarity: '시크릿 레어' as TCardRarityLabel,
-      language: '일본판' as TCardLanguageLabel,
-      quantity: 1,
-      cacheId: '71e0d400-c75b-41d4-a986-446655440123', // 실제 cacheId는 API에서 받아와야 함
-    },
-  ]);
+  // Zustand 스토어에서 장바구니 상태 가져오기
+  const { items, updateQuantity, updateOptions } = useCartStore();
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [shippingRegion, setShippingRegion] = useState<
@@ -102,12 +71,11 @@ export default function FinalCart() {
   const [isCalculating, setIsCalculating] = useState(false);
   const [calculationError, setCalculationError] = useState<string | null>(null);
 
-  const allSelected =
-    cartItems.length > 0 && selectedItems.length === cartItems.length;
+  const allSelected = items.length > 0 && selectedItems.length === items.length;
 
   const handleSelectAll = (checked: boolean) => {
     if (checked) {
-      setSelectedItems(cartItems.map((item) => item.id));
+      setSelectedItems(items.map((item) => item.id));
     } else {
       setSelectedItems([]);
     }
@@ -127,11 +95,9 @@ export default function FinalCart() {
     language: TCardLanguageLabel,
     quantity: number,
   ) => {
-    setCartItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, rarity, language, quantity } : item,
-      ),
-    );
+    // 옵션과 수량 업데이트
+    updateOptions(id, rarity, language);
+    updateQuantity(id, quantity);
   };
 
   const handleCalculateOptimalPurchase = async () => {
@@ -144,7 +110,7 @@ export default function FinalCart() {
       setIsCalculating(true);
       setCalculationError(null);
 
-      const selectedCards = cartItems
+      const selectedCards = items
         .filter((item) => selectedItems.includes(item.id))
         .map((item) => ({
           name: item.name,
@@ -175,6 +141,16 @@ export default function FinalCart() {
     }
   };
 
+  // 장바구니가 비어있는 경우
+  if (items.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <h1 className="text-2xl font-bold mb-4">장바구니</h1>
+        <p className="text-gray-500">장바구니가 비어있습니다.</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <h1 className="text-2xl font-bold">장바구니</h1>
@@ -186,11 +162,11 @@ export default function FinalCart() {
             onCheckedChange={handleSelectAll}
           />
           <Label htmlFor="select-all" className="font-medium">
-            전체 선택 ({selectedItems.length}/{cartItems.length})
+            전체 선택 ({selectedItems.length}/{items.length})
           </Label>
         </div>
 
-        {cartItems.map((item, index) => (
+        {items.map((item, index) => (
           <div key={item.id}>
             <CartItemComponent
               item={item}
@@ -198,7 +174,7 @@ export default function FinalCart() {
               onSelectChange={handleSelectItem}
               onOptionsChange={handleOptionsChange}
             />
-            {index < cartItems.length - 1 && <Separator className="my-4" />}
+            {index < items.length - 1 && <Separator className="my-4" />}
           </div>
         ))}
 

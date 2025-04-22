@@ -4,15 +4,21 @@ import { Checkbox } from '@/components/ui/checkbox';
 import SearchInput from '@/components/SearchInput';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSearchHistoryStore } from '@/store/searchHistoryStore';
+import SearchHistory from './components/SearchHistory';
 
 export default function Search() {
   const [searchTerm, setSearchTerm] = useState('');
   const [includeUsed, setIncludeUsed] = useState(false);
   const router = useRouter();
+  const addToHistory = useSearchHistoryStore((state) => state.addToHistory);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchTerm.trim()) {
+      // 검색어를 기록에 추가
+      addToHistory(searchTerm);
+
       router.push(
         `/result?cardName=${encodeURIComponent(
           searchTerm,
@@ -46,6 +52,9 @@ export default function Search() {
             검색
           </button>
         </form>
+
+        {/* 검색 기록 표시 */}
+        <SearchHistory />
       </div>
     </div>
   );

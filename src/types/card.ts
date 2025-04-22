@@ -16,7 +16,6 @@ type TCardShopInfo = {
   cardCode: string;
   available: boolean;
   lastUpdated: string;
-  used: boolean;
 };
 
 type TCardInfo = {
@@ -30,7 +29,10 @@ type TCardInfo = {
 
 type TCardRarityPrices = {
   [key in TCardLanguageLabel]: {
-    [key in TCardRarityLabel]: TCardShopInfo[];
+    [key in TCardRarityLabel]: {
+      image: string;
+      prices: TCardShopInfo[];
+    };
   };
 };
 

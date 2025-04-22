@@ -8,100 +8,67 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
-import { cardLanguages, cardRarities } from '@/data/card';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
-import { useState } from 'react';
-
 interface CardOptionSelectorProps {
-  initialRarity?: string;
-  initialLanguage?: string;
-  initialQuantity?: number;
-  onOptionsChange?: (
-    rarity: TCardRarityLabel,
-    language: TCardLanguageLabel,
-    quantity: number,
-  ) => void;
+  availableLanguages: TCardLanguageLabel[];
+  availableRarities: {
+    [key in TCardLanguageLabel]: TCardRarityLabel[];
+  };
+  selectedLanguage: TCardLanguageLabel;
+  selectedRarity: TCardRarityLabel;
+  quantity: number;
+  onLanguageChange: (language: TCardLanguageLabel) => void;
+  onRarityChange: (rarity: TCardRarityLabel) => void;
+  onQuantityChange: (quantity: string) => void;
 }
 
 export default function CardOptionSelector({
-  initialRarity,
-  initialLanguage,
-  initialQuantity = 1,
-  onOptionsChange,
+  availableLanguages,
+  availableRarities,
+  selectedLanguage,
+  selectedRarity,
+  quantity,
+  onLanguageChange,
+  onRarityChange,
+  onQuantityChange,
 }: CardOptionSelectorProps) {
-  const [rarity, setRarity] = useState<TCardRarityLabel>(
-    (initialRarity as TCardRarityLabel) || cardRarities[0].label,
-  );
-  const [language, setLanguage] = useState<TCardLanguageLabel>(
-    (initialLanguage as TCardLanguageLabel) || cardLanguages[0].label,
-  );
-  const [quantity, setQuantity] = useState<number>(initialQuantity);
-
-  const handleRarityChange = (value: string) => {
-    const newRarity = value as TCardRarityLabel;
-    setRarity(newRarity);
-    if (onOptionsChange) {
-      onOptionsChange(newRarity, language, quantity);
-    }
-  };
-
-  const handleLanguageChange = (value: string) => {
-    const newLanguage = value as TCardLanguageLabel;
-    setLanguage(newLanguage);
-    if (onOptionsChange) {
-      onOptionsChange(rarity, newLanguage, quantity);
-    }
-  };
-
-  const handleQuantityChange = (value: string) => {
-    const newQuantity = parseInt(value, 10);
-    setQuantity(newQuantity);
-    if (onOptionsChange) {
-      onOptionsChange(rarity, language, newQuantity);
-    }
-  };
-
   return (
-    <div className="flex flex-col gap-2">
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col gap-2">
-          <Label>레어도</Label>
-          <Select value={rarity} onValueChange={handleRarityChange}>
-            <SelectTrigger>
-              <SelectValue placeholder="레어도 선택" />
-            </SelectTrigger>
-            <SelectContent>
-              {cardRarities.map((rarity) => (
-                <SelectItem key={rarity.value} value={rarity.label}>
-                  {rarity.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="flex flex-col gap-2">
-          <Label>언어</Label>
-          <Select value={language} onValueChange={handleLanguageChange}>
-            <SelectTrigger>
-              <SelectValue placeholder="언어 선택" />
-            </SelectTrigger>
-            <SelectContent>
-              {cardLanguages.map((language) => (
-                <SelectItem key={language.value} value={language.label}>
-                  {language.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+    <div className="flex gap-2">
+      <div className="flex flex-col gap-2 w-full">
+        <Label className="text-gray-500">언어</Label>
+        <Select value={selectedLanguage} onValueChange={onLanguageChange}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="언어 선택" />
+          </SelectTrigger>
+          <SelectContent>
+            {availableLanguages.map((language) => (
+              <SelectItem key={language} value={language}>
+                {language}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
-      <div className="flex flex-col gap-2">
-        <Label>수량</Label>
-        <Select
-          value={quantity.toString()}
-          onValueChange={handleQuantityChange}
-        >
-          <SelectTrigger>
+      <div className="flex flex-col gap-2 w-full">
+        <Label className="text-gray-500">레어도</Label>
+        <Select value={selectedRarity} onValueChange={onRarityChange}>
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="레어도 선택" />
+          </SelectTrigger>
+          <SelectContent>
+            {availableRarities[selectedLanguage].map((rarity) => (
+              <SelectItem key={rarity} value={rarity}>
+                {rarity}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div className="flex flex-col gap-2 w-full">
+        <Label className="text-gray-500">수량</Label>
+        <Select value={quantity.toString()} onValueChange={onQuantityChange}>
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="수량 선택" />
           </SelectTrigger>
           <SelectContent>

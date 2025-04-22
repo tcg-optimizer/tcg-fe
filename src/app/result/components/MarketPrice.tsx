@@ -82,7 +82,6 @@ export default function MarketPrice({
                               cardCode: price.cardCode,
                               available: price.available,
                               lastUpdated: price.lastUpdated,
-                              used: price.condition !== '신품',
                             }}
                           />
                         ))}

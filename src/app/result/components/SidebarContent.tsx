@@ -9,8 +9,8 @@ interface SidebarContentProps {
 
 export default function SidebarContent({
   cardInfo,
-  width = 16,
-}: SidebarContentProps) {
+}: // width = 16,
+SidebarContentProps) {
   const { cardName, cardCode, condition, rarity, language, quantity } =
     cardInfo;
 

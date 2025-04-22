@@ -22,7 +22,12 @@ export default async function CardResult({
       <div>
         <div className="w-full flex h-[400px] gap-4">
           <CardFace src={data.image} alt={data.cardName} />
-          <CardInfo cardName={data.cardName} />
+          <div className="flex-1">
+            <CardInfo
+              cardRarityPrices={rarityPrices}
+              cardName={data.cardName}
+            />
+          </div>
         </div>
 
         <Separator className="my-8" />
