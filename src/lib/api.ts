@@ -1,7 +1,5 @@
 // API 엔드포인트 기본 URL
 
-import { mockResult } from '@/data/mock/card';
-
 // 환경에 따라 다른 URL 사용
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/cards';
@@ -13,8 +11,6 @@ export async function fetchCardPricesServer(
   cardName: string,
   includeUsed: boolean = true,
 ) {
-  // return mockResult;
-
   try {
     const response = await fetch(
       `${API_BASE_URL}/rarity-prices?cardName=${encodeURIComponent(
