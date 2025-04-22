@@ -1,4 +1,7 @@
+'use client';
+
 import { cn } from '@/lib/utils';
+import { useResultStore } from '@/store/resultStore';
 import Image from 'next/image';
 
 interface CardFaceProps {
@@ -8,6 +11,9 @@ interface CardFaceProps {
 }
 
 export default function CardFace({ src, alt, className }: CardFaceProps) {
+  const { selectedCardShopsInfo } = useResultStore();
+  const selectedImage = selectedCardShopsInfo.image;
+
   return (
     <div
       className={cn(
@@ -16,7 +22,7 @@ export default function CardFace({ src, alt, className }: CardFaceProps) {
       )}
     >
       <Image
-        src={src}
+        src={selectedImage || src}
         alt={alt}
         width={0}
         height={0}

@@ -9,7 +9,8 @@ import {
   TCardRarityPrices,
 } from '@/types/card';
 import { objectFromEntries, objectKeys } from '@/lib/utils';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
+import { useResultStore } from '@/store/resultStore';
 interface CardInfoProps {
   cardRarityPrices: TCardRarityPrices;
   cardName: string;
@@ -19,9 +20,6 @@ export default function CardInfo({
   cardRarityPrices,
   cardName,
 }: CardInfoProps) {
-  const minCardPrice = 10000;
-  const maxCardPrice = 100000;
-
   const availableLanguages = useMemo(
     () => objectKeys(cardRarityPrices),
     [cardRarityPrices],
@@ -36,13 +34,28 @@ export default function CardInfo({
     [availableLanguages, cardRarityPrices],
   );
 
-  const [selectedLanguage, setSelectedLanguage] = useState(
-    availableLanguages[0],
-  );
-  const [selectedRarity, setSelectedRarity] = useState(
-    availableRarities[availableLanguages[0]][0],
-  );
-  const [quantity, setQuantity] = useState(1);
+  const {
+    selectedLanguage,
+    selectedRarity,
+    quantity,
+    setSelectedLanguage,
+    setSelectedRarity,
+    setQuantity,
+    selectedCardShopsInfo,
+    setSelectedCardShopsInfo,
+  } = useResultStore();
+
+  const selectedCardPrices = useMemo(() => {
+    return selectedCardShopsInfo.prices?.map((shop) => shop.price);
+  }, [selectedCardShopsInfo]);
+  const minSelectedCardPrice = useMemo(() => {
+    return Math.min(...(selectedCardPrices || [0]));
+  }, [selectedCardPrices]);
+  const maxSelectedCardPrice = useMemo(() => {
+    return Math.max(...(selectedCardPrices || [0]));
+  }, [selectedCardPrices]);
+
+  // **************** Handlers ****************
 
   const handleLanguageChange = (language: TCardLanguageLabel) => {
     setSelectedLanguage(language);
@@ -54,6 +67,29 @@ export default function CardInfo({
   const handleQuantityChange = (quantity: string) => {
     setQuantity(parseInt(quantity));
   };
+
+  // **************** Effects ****************
+
+  useEffect(() => {
+    setSelectedLanguage(availableLanguages[0]);
+    setSelectedRarity(availableRarities[availableLanguages[0]][0]);
+  }, [
+    availableLanguages,
+    availableRarities,
+    setSelectedLanguage,
+    setSelectedRarity,
+  ]);
+
+  useEffect(() => {
+    setSelectedCardShopsInfo(
+      cardRarityPrices[selectedLanguage][selectedRarity],
+    );
+  }, [
+    cardRarityPrices,
+    selectedLanguage,
+    selectedRarity,
+    setSelectedCardShopsInfo,
+  ]);
 
   return (
     <div className="w-full h-full p-4 flex flex-col bg-gray-50 rounded-lg">
@@ -77,7 +113,7 @@ export default function CardInfo({
         <div className="flex justify-between items-center mt-4">
           <div className="flex items-center gap-2">
             <h3 className="text-xl font-bold">
-              {`${minCardPrice.toLocaleString()}원 ~ ${maxCardPrice.toLocaleString()}원`}
+              {`${minSelectedCardPrice.toLocaleString()}원 ~ ${maxSelectedCardPrice.toLocaleString()}원`}
             </h3>
           </div>
 
