@@ -20,7 +20,7 @@ export default function SearchInput({
   const placeholder = keyword || '검색어를 입력해주세요.';
 
   return (
-    <div className="w-full flex justify-center items-center gap-2">
+    <div className="flex justify-center items-center gap-2">
       <Input
         className={cn(className, 'w-[400px]')}
         placeholder={placeholder}
