@@ -11,6 +11,8 @@ export default async function ResultPage({
   const cardName = (await searchParams).cardName as string;
   const includeUsed = (await searchParams).used === 'true';
 
+  console.log(cardName, includeUsed);
+
   if (!cardName) {
     return (
       <div className="w-full flex justify-center items-center h-[400px]">

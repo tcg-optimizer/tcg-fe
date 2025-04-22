@@ -30,7 +30,7 @@ export default function MarketPrice() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {selectedCardShopsInfo?.prices?.map((price) => (
             <Shop
-              key={price.id}
+              key={`${price.id}-${price.url}`}
               shopInfo={{
                 id: price.id,
                 price: price.price,

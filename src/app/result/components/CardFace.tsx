@@ -23,7 +23,7 @@ export default function CardFace({ src, alt, className }: CardFaceProps) {
     >
       <Image
         src={selectedImage || src}
-        alt={alt}
+        alt={alt || ''}
         width={0}
         height={0}
         sizes="100vw"

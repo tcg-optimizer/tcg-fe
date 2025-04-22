@@ -13,7 +13,7 @@ export async function fetchCardPricesServer(
   cardName: string,
   includeUsed: boolean = true,
 ) {
-  return mockResult;
+  // return mockResult;
 
   try {
     const response = await fetch(

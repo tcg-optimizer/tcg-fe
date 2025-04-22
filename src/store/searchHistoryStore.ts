@@ -23,7 +23,7 @@ export const useSearchHistoryStore = create<SearchHistoryState>()(
       history: [],
 
       addToHistory: (historyInfo) => {
-        if (!historyInfo.query.trim()) return;
+        if (!historyInfo.query?.trim()) return;
 
         set((state) => {
           // 중복 검색어 제거
