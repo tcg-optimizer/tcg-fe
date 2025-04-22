@@ -26,6 +26,7 @@ export default async function CardResult({
             <CardInfo
               cardRarityPrices={rarityPrices}
               cardName={data.cardName}
+              cardCacheId={data.cacheId}
             />
           </div>
         </div>

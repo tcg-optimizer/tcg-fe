@@ -63,10 +63,10 @@ export default function FinalHistory() {
 
             <div className="w-full space-y-12">
               <h3 className="text-lg font-bold">{selectedCard.name}</h3>
-
+              {/* 
               <CardOptionSelector>
                 <Button onClick={handleAddToCart}>장바구니에 담기</Button>
-              </CardOptionSelector>
+              </CardOptionSelector> */}
             </div>
           </div>
         </div>

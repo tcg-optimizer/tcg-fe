@@ -27,12 +27,14 @@ type TCardInfo = {
   quantity: number;
 } & TCardShopInfo;
 
+type TSelectedCardShopInfo = {
+  image: string;
+  prices: TCardShopInfo[];
+};
+
 type TCardRarityPrices = {
   [key in TCardLanguageLabel]: {
-    [key in TCardRarityLabel]: {
-      image: string;
-      prices: TCardShopInfo[];
-    };
+    [key in TCardRarityLabel]: TSelectedCardShopInfo;
   };
 };
 
@@ -44,4 +46,5 @@ export type {
   TCardShopInfo,
   TCardInfo,
   TCardRarityPrices,
+  TSelectedCardShopInfo,
 };

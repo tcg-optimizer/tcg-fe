@@ -1,7 +1,6 @@
 'use client';
 
 import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
 import CardOptionSelector from '@/components/CardOptionSelector';
 import {
   TCardLanguageLabel,
@@ -11,14 +10,18 @@ import {
 import { objectFromEntries, objectKeys } from '@/lib/utils';
 import { useEffect, useMemo } from 'react';
 import { useResultStore } from '@/store/resultStore';
+import AddToCartButton from './AddToCartButton';
+
 interface CardInfoProps {
   cardRarityPrices: TCardRarityPrices;
   cardName: string;
+  cardCacheId: string;
 }
 
 export default function CardInfo({
   cardRarityPrices,
   cardName,
+  cardCacheId,
 }: CardInfoProps) {
   const availableLanguages = useMemo(
     () => objectKeys(cardRarityPrices),
@@ -117,7 +120,16 @@ export default function CardInfo({
             </h3>
           </div>
 
-          <Button className="">장바구니에 담기</Button>
+          <AddToCartButton
+            cardName={cardName}
+            selectedCardShopsInfo={selectedCardShopsInfo}
+            selectedRarity={selectedRarity}
+            selectedLanguage={selectedLanguage}
+            quantity={quantity}
+            availableLanguages={availableLanguages}
+            availableRarities={availableRarities}
+            cardCacheId={cardCacheId}
+          />
         </div>
       </div>
     </div>

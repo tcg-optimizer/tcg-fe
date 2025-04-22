@@ -5,12 +5,15 @@ import { TCardRarityLabel, TCardLanguageLabel } from '@/types/card';
 export interface CartItem {
   id: string;
   name: string;
-  code: string;
   image: string;
   rarity: TCardRarityLabel;
   language: TCardLanguageLabel;
   quantity: number;
   cacheId: string;
+  availableLanguages: TCardLanguageLabel[];
+  availableRarities: {
+    [key in TCardLanguageLabel]: TCardRarityLabel[];
+  };
 }
 
 interface CartState {
@@ -18,11 +21,8 @@ interface CartState {
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
-  updateOptions: (
-    id: string,
-    rarity: TCardRarityLabel,
-    language: TCardLanguageLabel,
-  ) => void;
+  updateLanguage: (id: string, language: TCardLanguageLabel) => void;
+  updateRarity: (id: string, rarity: TCardRarityLabel) => void;
   clearCart: () => void;
 }
 
@@ -63,11 +63,16 @@ export const useCartStore = create<CartState>()(
             item.id === id ? { ...item, quantity } : item,
           ),
         })),
-
-      updateOptions: (id, rarity, language) =>
+      updateLanguage: (id, language) =>
         set((state) => ({
           items: state.items.map((item) =>
-            item.id === id ? { ...item, rarity, language } : item,
+            item.id === id ? { ...item, language } : item,
+          ),
+        })),
+      updateRarity: (id, rarity) =>
+        set((state) => ({
+          items: state.items.map((item) =>
+            item.id === id ? { ...item, rarity } : item,
           ),
         })),
 

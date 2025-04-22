@@ -10,25 +10,42 @@ import { useCartStore, CartItem } from '@/store/cartStore';
 import Image from 'next/image';
 import { useState } from 'react';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
+import { X } from 'lucide-react';
 
 interface CartItemProps {
   item: CartItem;
   isSelected: boolean;
   onSelectChange: (id: string, selected: boolean) => void;
-  onOptionsChange: (
-    id: string,
-    rarity: TCardRarityLabel,
-    language: TCardLanguageLabel,
-    quantity: number,
-  ) => void;
 }
 
 function CartItemComponent({
   item,
   isSelected,
   onSelectChange,
-  onOptionsChange,
 }: CartItemProps) {
+  const { removeItem, updateLanguage, updateRarity, updateQuantity } =
+    useCartStore();
+
+  const handleRemoveItem = () => {
+    const confirm = window.confirm('정말 삭제하시겠습니까?');
+    if (confirm) {
+      removeItem(item.id);
+    }
+  };
+
+  const handleLanguageChange = (language: TCardLanguageLabel) => {
+    const defaultRarity = item.availableRarities[language][0];
+
+    updateLanguage(item.id, language);
+    updateRarity(item.id, defaultRarity);
+  };
+  const handleRarityChange = (rarity: TCardRarityLabel) => {
+    updateRarity(item.id, rarity);
+  };
+  const handleQuantityChange = (quantity: string) => {
+    updateQuantity(item.id, parseInt(quantity));
+  };
+
   return (
     <div className="flex gap-4">
       <div className="flex items-center">
@@ -40,19 +57,34 @@ function CartItemComponent({
         />
       </div>
       <div className="w-24 aspect-[2/3] rounded-md overflow-hidden">
-        <Image src={item.image} alt="card" width={500} height={500} />
+        <Image
+          className="w-full h-full object-cover"
+          src={item.image}
+          alt="card"
+          width={500}
+          height={500}
+        />
       </div>
       <div className="w-full flex flex-col">
-        <p className="text-lg font-bold">{item.name}</p>
-        <p className="text-sm text-gray-500">{item.code}</p>
+        <div className="flex items-center justify-between">
+          <p className="text-lg font-bold">{item.name}</p>
+          <p
+            className="text-gray-500 cursor-pointer"
+            onClick={handleRemoveItem}
+          >
+            <X className="w-4 h-4" />
+          </p>
+        </div>
         <div className="w-full mt-auto">
           <CardOptionSelector
-            initialRarity={item.rarity}
-            initialLanguage={item.language}
-            initialQuantity={item.quantity}
-            onOptionsChange={(rarity, language, quantity) =>
-              onOptionsChange(item.id, rarity, language, quantity)
-            }
+            availableLanguages={item.availableLanguages}
+            availableRarities={item.availableRarities}
+            selectedLanguage={item.language}
+            selectedRarity={item.rarity}
+            quantity={item.quantity}
+            onLanguageChange={handleLanguageChange}
+            onRarityChange={handleRarityChange}
+            onQuantityChange={handleQuantityChange}
           />
         </div>
       </div>
@@ -62,7 +94,7 @@ function CartItemComponent({
 
 export default function FinalCart() {
   // Zustand 스토어에서 장바구니 상태 가져오기
-  const { items, updateQuantity, updateOptions } = useCartStore();
+  const { items } = useCartStore();
 
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [shippingRegion, setShippingRegion] = useState<
@@ -87,17 +119,6 @@ export default function FinalCart() {
     } else {
       setSelectedItems((prev) => prev.filter((itemId) => itemId !== id));
     }
-  };
-
-  const handleOptionsChange = (
-    id: string,
-    rarity: TCardRarityLabel,
-    language: TCardLanguageLabel,
-    quantity: number,
-  ) => {
-    // 옵션과 수량 업데이트
-    updateOptions(id, rarity, language);
-    updateQuantity(id, quantity);
   };
 
   const handleCalculateOptimalPurchase = async () => {
@@ -172,7 +193,6 @@ export default function FinalCart() {
               item={item}
               isSelected={selectedItems.includes(item.id)}
               onSelectChange={handleSelectItem}
-              onOptionsChange={handleOptionsChange}
             />
             {index < items.length - 1 && <Separator className="my-4" />}
           </div>
