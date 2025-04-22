@@ -5,12 +5,14 @@ type TCardRarityLabel = (typeof cardRarities)[number]['label'];
 type TCardLanguageValue = (typeof cardLanguages)[number]['value'];
 type TCardLanguageLabel = (typeof cardLanguages)[number]['label'];
 
+type TCardCondition = '신품' | '중고';
+
 type TCardShopInfo = {
   id: number;
   price: number;
   site: string;
   url: string;
-  condition: string;
+  condition: TCardCondition;
   rarity: TCardRarityLabel;
   language: TCardLanguageLabel;
   cardCode: string;
@@ -47,4 +49,5 @@ export type {
   TCardInfo,
   TCardRarityPrices,
   TSelectedCardShopInfo,
+  TCardCondition,
 };

@@ -25,6 +25,7 @@ export default async function CardResult({
           <div className="flex-1">
             <CardInfo
               cardRarityPrices={rarityPrices}
+              cardImage={data.image}
               cardName={data.cardName}
               cardCacheId={data.cacheId}
             />

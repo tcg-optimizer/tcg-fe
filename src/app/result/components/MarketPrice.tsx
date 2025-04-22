@@ -21,14 +21,14 @@ export default function MarketPrice() {
         <div className="flex gap-4 items-start mb-4">
           <div>
             <p className="text-gray-500">
-              {selectedCardShopsInfo.prices?.length || 0}개의 가격 정보가
+              {selectedCardShopsInfo?.prices?.length || 0}개의 가격 정보가
               있습니다.
             </p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {selectedCardShopsInfo.prices?.map((price) => (
+          {selectedCardShopsInfo?.prices?.map((price) => (
             <Shop
               key={price.id}
               shopInfo={{

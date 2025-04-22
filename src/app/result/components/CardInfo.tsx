@@ -11,16 +11,19 @@ import { objectFromEntries, objectKeys } from '@/lib/utils';
 import { useEffect, useMemo } from 'react';
 import { useResultStore } from '@/store/resultStore';
 import AddToCartButton from './AddToCartButton';
+import { useSearchHistoryStore } from '@/store/searchHistoryStore';
 
 interface CardInfoProps {
   cardRarityPrices: TCardRarityPrices;
   cardName: string;
+  cardImage: string;
   cardCacheId: string;
 }
 
 export default function CardInfo({
   cardRarityPrices,
   cardName,
+  cardImage,
   cardCacheId,
 }: CardInfoProps) {
   const availableLanguages = useMemo(
@@ -47,8 +50,11 @@ export default function CardInfo({
     selectedCardShopsInfo,
     setSelectedCardShopsInfo,
   } = useResultStore();
+  const { addToHistory } = useSearchHistoryStore();
 
   const selectedCardPrices = useMemo(() => {
+    if (!selectedCardShopsInfo) return [];
+
     return selectedCardShopsInfo.prices?.map((shop) => shop.price);
   }, [selectedCardShopsInfo]);
   const minSelectedCardPrice = useMemo(() => {
@@ -74,13 +80,36 @@ export default function CardInfo({
   // **************** Effects ****************
 
   useEffect(() => {
-    setSelectedLanguage(availableLanguages[0]);
-    setSelectedRarity(availableRarities[availableLanguages[0]][0]);
+    const language = availableLanguages[0];
+    const rarity = availableRarities[language][0];
+
+    setSelectedLanguage(language);
+    setSelectedRarity(rarity);
   }, [
     availableLanguages,
     availableRarities,
     setSelectedLanguage,
     setSelectedRarity,
+  ]);
+
+  useEffect(() => {
+    const language = availableLanguages[0];
+    const rarity = availableRarities[language][0];
+
+    const historyInfo = {
+      query: cardName,
+      cardName,
+      cardImage,
+      cardContitions: cardRarityPrices[language][rarity].prices[0].condition,
+    };
+    addToHistory(historyInfo);
+  }, [
+    cardName,
+    cardImage,
+    cardRarityPrices,
+    addToHistory,
+    availableLanguages,
+    availableRarities,
   ]);
 
   useEffect(() => {

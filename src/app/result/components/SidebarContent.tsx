@@ -4,13 +4,9 @@ import { CartItem } from '@/store/cartStore';
 
 interface SidebarContentProps {
   cardInfo: CartItem;
-  width?: number;
 }
 
-export default function SidebarContent({
-  cardInfo,
-}: // width = 16,
-SidebarContentProps) {
+export default function SidebarContent({ cardInfo }: SidebarContentProps) {
   const { name, condition, rarity, language, quantity, image } = cardInfo;
 
   return (

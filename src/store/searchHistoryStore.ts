@@ -1,14 +1,18 @@
+import { TCardCondition } from '@/types/card';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export interface SearchHistoryItem {
   query: string;
   timestamp: number;
+  cardName: string;
+  cardImage: string;
+  cardContitions: TCardCondition;
 }
 
 interface SearchHistoryState {
   history: SearchHistoryItem[];
-  addToHistory: (query: string) => void;
+  addToHistory: (historyInfo: Omit<SearchHistoryItem, 'timestamp'>) => void;
   removeFromHistory: (query: string) => void;
   clearHistory: () => void;
 }
@@ -18,18 +22,18 @@ export const useSearchHistoryStore = create<SearchHistoryState>()(
     (set) => ({
       history: [],
 
-      addToHistory: (query) => {
-        if (!query.trim()) return;
+      addToHistory: (historyInfo) => {
+        if (!historyInfo.query.trim()) return;
 
         set((state) => {
           // 중복 검색어 제거
           const filteredHistory = state.history.filter(
-            (item) => item.query !== query,
+            (item) => item.query !== historyInfo.query,
           );
 
           // 최대 10개만 유지
           const newHistory = [
-            { query, timestamp: Date.now() },
+            { ...historyInfo, timestamp: Date.now() },
             ...filteredHistory,
           ].slice(0, 10);
 

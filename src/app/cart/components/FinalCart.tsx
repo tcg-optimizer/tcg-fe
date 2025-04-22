@@ -61,8 +61,8 @@ function CartItemComponent({
           className="w-full h-full object-cover"
           src={item.image}
           alt="card"
-          width={500}
-          height={500}
+          width={100}
+          height={100}
         />
       </div>
       <div className="w-full flex flex-col">

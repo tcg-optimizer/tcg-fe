@@ -12,7 +12,7 @@ interface CardFaceProps {
 
 export default function CardFace({ src, alt, className }: CardFaceProps) {
   const { selectedCardShopsInfo } = useResultStore();
-  const selectedImage = selectedCardShopsInfo.image;
+  const selectedImage = selectedCardShopsInfo?.image;
 
   return (
     <div
