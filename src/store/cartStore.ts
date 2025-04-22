@@ -6,6 +6,7 @@ export interface CartItem {
   id: string;
   name: string;
   image: string;
+  condition: string;
   rarity: TCardRarityLabel;
   language: TCardLanguageLabel;
   quantity: number;

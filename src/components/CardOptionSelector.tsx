@@ -72,7 +72,7 @@ export default function CardOptionSelector({
             <SelectValue placeholder="수량 선택" />
           </SelectTrigger>
           <SelectContent>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((value) => (
+            {[1, 2, 3].map((value) => (
               <SelectItem key={value} value={value.toString()}>
                 {value}
               </SelectItem>

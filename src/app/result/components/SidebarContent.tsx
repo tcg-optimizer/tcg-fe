@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
-import { TCardInfo } from '@/types/card';
+import { CartItem } from '@/store/cartStore';
 
 interface SidebarContentProps {
-  cardInfo: TCardInfo;
+  cardInfo: CartItem;
   width?: number;
 }
 
@@ -11,23 +11,22 @@ export default function SidebarContent({
   cardInfo,
 }: // width = 16,
 SidebarContentProps) {
-  const { cardName, cardCode, condition, rarity, language, quantity } =
-    cardInfo;
+  const { name, condition, rarity, language, quantity, image } = cardInfo;
 
   return (
     <div className="flex flex-col gap-2 group relative">
       <div className="flex gap-2">
         <div className={`aspect-[2/3] w-16 rounded-md`}>
           <Image
-            src="/images/tomori_card.png"
+            className="w-full h-full object-cover"
+            src={image}
             alt="card"
             width={200}
             height={200}
           />
         </div>
         <div className="flex flex-col">
-          <p className="text-md font-bold">{cardName}</p>
-          <p className="text-sm text-gray-500 grow">{cardCode}</p>
+          <p className="text-md font-bold grow">{name}</p>
           <p className="text-sm text-gray-500 mb-2">
             {/* {price}원 *  */}
             <b>{quantity}장</b>

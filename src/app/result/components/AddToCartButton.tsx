@@ -45,6 +45,7 @@ export default function AddToCartButton({
       cacheId: cardCacheId,
       availableLanguages: availableLanguages,
       availableRarities: availableRarities,
+      condition: selectedCardShopsInfo.prices[0]?.condition || '신품',
     };
 
     addItem(card);
