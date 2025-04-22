@@ -1,34 +1,29 @@
-'use client';
+import { Suspense } from 'react';
+import CardSkeleton from './components/CardSkeleton';
+import CardResult from './components/CardResult';
 
-import MarketPrice from './components/MarketPrice';
-import CardInfo from './components/CardInfo';
-import { cardShopInfos } from '@/data/mock/card';
-import { Separator } from '@/components/ui/separator';
-import CardFace from './components/CardFace';
-import { useSearchParams } from 'next/navigation';
+// 서버 컴포넌트에서는 searchParams를 props로 받습니다
+export default async function ResultPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const cardName = (await searchParams).cardName as string;
+  const includeUsed = (await searchParams).used === 'true';
 
-export default function ResultPage() {
-  const searchParams = useSearchParams();
-  const cardName = searchParams.get('cardName');
-  const includeUsed = searchParams.get('used') === 'true';
+  console.log(cardName, includeUsed);
 
-  const imageSrc = '/images/tomori_card.png';
-  const imageAlt = 'card';
-
-  // 여기에서 cardName과 includeUsed를 이용해 데이터를 가져오는 로직을 추가할 수 있습니다
+  if (!cardName) {
+    return (
+      <div className="w-full flex justify-center items-center h-[400px]">
+        카드 이름이 제공되지 않았습니다.
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <div className="w-full flex h-[400px] gap-4">
-        <CardFace src={imageSrc} alt={imageAlt} />
-        <CardInfo cardName={cardName || '카드명'} />
-      </div>
-
-      <Separator className="my-8" />
-
-      <div className="w-full mt-8">
-        <MarketPrice shopInfos={cardShopInfos} includeUsed={includeUsed} />
-      </div>
-    </div>
+    <Suspense fallback={<CardSkeleton />}>
+      <CardResult cardName={cardName} includeUsed={includeUsed} />
+    </Suspense>
   );
 }

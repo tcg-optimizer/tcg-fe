@@ -6,23 +6,38 @@ interface ShopProps {
 }
 
 export default function Shop({ shopInfo }: ShopProps) {
-  const { site, url, condition, rarity, language, cardCode, price } = shopInfo;
+  const { site, price, rarity, language, url, condition, cardCode, available } =
+    shopInfo;
+
+  const formattedPrice = new Intl.NumberFormat('ko-KR').format(price);
 
   return (
     <a
       href={url}
       target="_blank"
-      className="w-full rounded-lg border border-gray-200 p-2 px-4 space-y-2"
+      rel="noopener noreferrer"
+      className="block p-4 border rounded-md shadow-sm transition-all hover:shadow-md"
     >
-      <div className="w-full flex justify-between">
-        <span>{site}</span>
-        <b>{price.toLocaleString()}원</b>
+      <div className="flex justify-between items-start">
+        <h3 className="text-xl font-bold">{site}</h3>
+        <div className="text-xl font-bold text-primary">{formattedPrice}원</div>
       </div>
-      <p className="text-sm text-gray-500">{cardCode}</p>
-      <div className="mt-2 flex gap-2">
-        <Badge>{condition}</Badge>
-        <Badge>{rarity}</Badge>
-        <Badge>{language}</Badge>
+
+      <div className="mt-2 text-sm text-muted-foreground">
+        <div className="mt-2 flex gap-2">
+          <Badge variant="outline">{language}</Badge>
+          <Badge variant="outline">{rarity}</Badge>
+          <Badge variant="outline">{condition}</Badge>
+        </div>
+      </div>
+
+      <div className="mt-2 flex justify-between">
+        <p>{cardCode}</p>
+        {available ? (
+          <p className="text-green-600 font-medium">구매 가능</p>
+        ) : (
+          <p className="text-red-600 font-medium">품절</p>
+        )}
       </div>
     </a>
   );

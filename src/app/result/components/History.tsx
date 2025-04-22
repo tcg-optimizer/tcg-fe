@@ -1,7 +1,17 @@
+'use client';
+
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import SidebarContent from './SidebarContent';
 import { Separator } from '@/components/ui/separator';
+import {
+  SearchHistoryItem,
+  useSearchHistoryStore,
+} from '@/store/searchHistoryStore';
+import Image from 'next/image';
+import { Fragment } from 'react';
+
 export default function History() {
+  const { history } = useSearchHistoryStore();
+
   return (
     <Card className="xl:sticky top-20 h-[calc(50vh-32px-1.5rem)] w-64 overflow-auto">
       <CardHeader>
@@ -9,142 +19,43 @@ export default function History() {
       </CardHeader>
 
       <CardContent className="overflow-auto flex flex-col">
-        <SidebarContent
-          cardInfo={{
-            cardId: 1,
-            cardName: '우우우우 돌돌돌',
-            cardCode: 'TMR-0102',
-            price: 12000,
-            image: '/images/tomori_card.png',
-            cacheId: '1',
-            cacheExpiredAt: '2025-01-01',
-            id: 1,
-            site: 'TCGShop',
-            url: 'https://tcgshop.com/product/123',
-            condition: '신품',
-            rarity: '울트라 레어',
-            language: '한글판',
-            available: true,
-            lastUpdated: '2025-01-01',
-            quantity: 1,
-            used: false,
-          }}
-        />
-        <Separator className="mb-4" />
-        <SidebarContent
-          cardInfo={{
-            cardId: 1,
-            cardName: '우우우우 돌돌돌',
-            cardCode: 'TMR-0102',
-            price: 12000,
-            image: '/images/tomori_card.png',
-            cacheId: '1',
-            cacheExpiredAt: '2025-01-01',
-            id: 1,
-            site: 'TCGShop',
-            url: 'https://tcgshop.com/product/123',
-            condition: '신품',
-            rarity: '울트라 레어',
-            language: '한글판',
-            available: true,
-            lastUpdated: '2025-01-01',
-            quantity: 1,
-            used: false,
-          }}
-        />
-        <Separator className="mb-4" />
-
-        <SidebarContent
-          cardInfo={{
-            cardId: 1,
-            cardName: '우우우우 돌돌돌',
-            cardCode: 'TMR-0102',
-            price: 12000,
-            image: '/images/tomori_card.png',
-            cacheId: '1',
-            cacheExpiredAt: '2025-01-01',
-            id: 1,
-            site: 'TCGShop',
-            url: 'https://tcgshop.com/product/123',
-            condition: '신품',
-            rarity: '울트라 레어',
-            language: '한글판',
-            available: true,
-            lastUpdated: '2025-01-01',
-            quantity: 1,
-            used: false,
-          }}
-        />
-        <Separator className="mb-4" />
-
-        <SidebarContent
-          cardInfo={{
-            cardId: 1,
-            cardName: '우우우우 돌돌돌',
-            cardCode: 'TMR-0102',
-            price: 12000,
-            image: '/images/tomori_card.png',
-            cacheId: '1',
-            cacheExpiredAt: '2025-01-01',
-            id: 1,
-            site: 'TCGShop',
-            url: 'https://tcgshop.com/product/123',
-            condition: '신품',
-            rarity: '울트라 레어',
-            language: '한글판',
-            available: true,
-            lastUpdated: '2025-01-01',
-            quantity: 1,
-            used: false,
-          }}
-        />
-        <Separator className="mb-4" />
-
-        <SidebarContent
-          cardInfo={{
-            cardId: 1,
-            cardName: '우우우우 돌돌돌',
-            cardCode: 'TMR-0102',
-            price: 12000,
-            image: '/images/tomori_card.png',
-            cacheId: '1',
-            cacheExpiredAt: '2025-01-01',
-            id: 1,
-            site: 'TCGShop',
-            url: 'https://tcgshop.com/product/123',
-            condition: '신품',
-            rarity: '울트라 레어',
-            language: '한글판',
-            available: true,
-            lastUpdated: '2025-01-01',
-            quantity: 1,
-            used: false,
-          }}
-        />
-        <Separator className="mb-4" />
-
-        <SidebarContent
-          cardInfo={{
-            cardId: 1,
-            cardName: '우우우우 돌돌돌',
-            cardCode: 'TMR-0102',
-            price: 12000,
-            image: '/images/tomori_card.png',
-            cacheId: '1',
-            cacheExpiredAt: '2025-01-01',
-            id: 1,
-            site: 'TCGShop',
-            url: 'https://tcgshop.com/product/123',
-            condition: '신품',
-            rarity: '울트라 레어',
-            language: '한글판',
-            available: true,
-            lastUpdated: '2025-01-01',
-            quantity: 1,
-            used: false,
-          }}
-        />
+        {history.map((historyInfo, i) => (
+          <Fragment key={historyInfo.query}>
+            <HistoryComponent historyInfo={historyInfo} />
+            {i !== history.length - 1 && <Separator className="my-4" />}
+          </Fragment>
+        ))}
       </CardContent>
     </Card>
   );
 }
+
+interface HistoryComponentProps {
+  historyInfo: SearchHistoryItem;
+}
+
+const HistoryComponent = ({ historyInfo }: HistoryComponentProps) => {
+  const { cardName, cardImage, cardContitions } = historyInfo;
+
+  return (
+    <div className="flex flex-col gap-2 group relative">
+      <div className="flex gap-2">
+        <div className={`aspect-[2/3] w-16 rounded-md`}>
+          <Image
+            className="w-full h-full object-cover"
+            src={cardImage}
+            alt="card"
+            width={200}
+            height={200}
+          />
+        </div>
+        <div className="flex flex-col">
+          <p className="text-md font-bold grow">{cardName}</p>
+          <p className="text-sm text-gray-500 mb-2">
+            <b>{cardContitions}</b>
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};

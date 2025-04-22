@@ -1,11 +1,14 @@
 import FinalCart from './components/FinalCart';
 import FinalHistory from './components/FinalHistory';
+import CartClientWrapper from './components/CartClientWrapper';
 
 export default function CartPage() {
   return (
     <div className="">
-      <FinalCart />
-      <FinalHistory />
+      <CartClientWrapper>
+        <FinalCart />
+        <FinalHistory />
+      </CartClientWrapper>
     </div>
   );
 }

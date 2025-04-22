@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Card,
   CardHeader,
@@ -6,11 +8,16 @@ import {
   CardFooter,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import SidebarContent from './SidebarContent';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
+import { CartItem, useCartStore } from '@/store/cartStore';
+import { Fragment } from 'react';
+import Image from 'next/image';
+import { Badge } from '@/components/ui/badge';
 
 export default function Cart() {
+  const { items } = useCartStore();
+
   return (
     <Card className="xl:sticky top-20 h-[calc(50vh-32px-1.5rem)] w-64 overflow-hidden">
       <CardHeader>
@@ -18,49 +25,12 @@ export default function Cart() {
       </CardHeader>
 
       <CardContent className="overflow-auto flex flex-col">
-        <SidebarContent
-          cardInfo={{
-            cardId: 1,
-            cardName: '우우우우 돌돌돌',
-            cardCode: 'TMR-0102',
-            price: 12000,
-            image: '/images/tomori_card.png',
-            cacheId: '1',
-            cacheExpiredAt: '2025-01-01',
-            id: 1,
-            site: 'TCGShop',
-            url: 'https://tcgshop.com/product/123',
-            condition: '신품',
-            rarity: '울트라 레어',
-            language: '한글판',
-            available: true,
-            lastUpdated: '2025-01-01',
-            quantity: 1,
-            used: false,
-          }}
-        />
-        <Separator className="mb-4" />
-        <SidebarContent
-          cardInfo={{
-            cardId: 1,
-            cardName: '우우우우 돌돌돌',
-            cardCode: 'TMR-0102',
-            price: 12000,
-            image: '/images/tomori_card.png',
-            cacheId: '1',
-            cacheExpiredAt: '2025-01-01',
-            id: 1,
-            site: 'TCGShop',
-            url: 'https://tcgshop.com/product/123',
-            condition: '신품',
-            rarity: '울트라 레어',
-            language: '한글판',
-            available: true,
-            lastUpdated: '2025-01-01',
-            quantity: 1,
-            used: false,
-          }}
-        />
+        {items.map((item, i) => (
+          <Fragment key={item.id}>
+            <CardComponent cardInfo={item} />
+            {i !== items.length - 1 && <Separator className="mb-4" />}
+          </Fragment>
+        ))}
       </CardContent>
       <CardFooter className="mt-auto">
         <Link className="w-full" href="/cart">
@@ -72,3 +42,41 @@ export default function Cart() {
     </Card>
   );
 }
+
+interface CardComponentProps {
+  cardInfo: CartItem;
+}
+
+const CardComponent = ({ cardInfo }: CardComponentProps) => {
+  const { name, condition, rarity, language, quantity, image } = cardInfo;
+
+  return (
+    <div className="flex flex-col gap-2 group relative">
+      <div className="flex gap-2">
+        <div className={`aspect-[2/3] w-16 rounded-md`}>
+          <Image
+            className="w-full h-full object-cover"
+            src={image}
+            alt="card"
+            width={200}
+            height={200}
+          />
+        </div>
+        <div className="flex flex-col">
+          <p className="text-md font-bold grow">{name}</p>
+          <p className="text-sm text-gray-500 mb-2">
+            {/* {price}원 *  */}
+            <b>{quantity}장</b>
+          </p>
+        </div>
+      </div>
+      <div className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-20 group-hover:mb-4">
+        <div className="flex gap-2 flex-wrap mt-2">
+          <Badge variant="outline">{condition}</Badge>
+          <Badge variant="outline">{rarity}</Badge>
+          <Badge variant="outline">{language}</Badge>
+        </div>
+      </div>
+    </div>
+  );
+};

@@ -5,18 +5,19 @@ type TCardRarityLabel = (typeof cardRarities)[number]['label'];
 type TCardLanguageValue = (typeof cardLanguages)[number]['value'];
 type TCardLanguageLabel = (typeof cardLanguages)[number]['label'];
 
+type TCardCondition = '신품' | '중고';
+
 type TCardShopInfo = {
   id: number;
   price: number;
   site: string;
   url: string;
-  condition: string;
+  condition: TCardCondition;
   rarity: TCardRarityLabel;
   language: TCardLanguageLabel;
   cardCode: string;
   available: boolean;
   lastUpdated: string;
-  used: boolean;
 };
 
 type TCardInfo = {
@@ -28,9 +29,14 @@ type TCardInfo = {
   quantity: number;
 } & TCardShopInfo;
 
+type TSelectedCardShopInfo = {
+  image: string;
+  prices: TCardShopInfo[];
+};
+
 type TCardRarityPrices = {
   [key in TCardLanguageLabel]: {
-    [key in TCardRarityLabel]: TCardShopInfo[];
+    [key in TCardRarityLabel]: TSelectedCardShopInfo;
   };
 };
 
@@ -42,4 +48,6 @@ export type {
   TCardShopInfo,
   TCardInfo,
   TCardRarityPrices,
+  TSelectedCardShopInfo,
+  TCardCondition,
 };
