@@ -50,6 +50,21 @@ export async function fetchCardPricesServer(
 export async function calculateOptimalPurchase(
   cards: CardPurchaseRequest[],
   shippingRegion: 'default' | 'jeju' | 'island' = 'default',
+  discounts: {
+    tcgshopPoints: boolean;
+    carddcPoints: boolean;
+    naverBasicPoints: boolean;
+    naverBankbookPoints: boolean;
+    naverMembershipPoints: boolean;
+    naverHyundaiCardPoints: boolean;
+  } = {
+    tcgshopPoints: false,
+    carddcPoints: false,
+    naverBasicPoints: false,
+    naverBankbookPoints: false,
+    naverMembershipPoints: false,
+    naverHyundaiCardPoints: false,
+  },
 ) {
   try {
     const response = await fetch(`${API_BASE_URL}/optimal-purchase`, {
@@ -60,6 +75,7 @@ export async function calculateOptimalPurchase(
       body: JSON.stringify({
         cards,
         shippingRegion,
+        ...discounts,
       }),
     });
 
