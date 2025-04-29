@@ -1,6 +1,8 @@
 // API 엔드포인트 기본 URL
 
 import { TCardResultResponse } from '@/types/api/result';
+import { TCardShopInfo } from '@/types/card';
+import { TPointOption } from '@/types/cart';
 
 // 환경에 따라 다른 URL 사용
 const API_BASE_URL =
@@ -86,7 +88,7 @@ export async function calculateOptimalPurchase(
       );
     }
 
-    return await response.json();
+    return (await response.json()) as OptimalPurchaseResponse;
   } catch (error) {
     console.error('API 오류:', error);
     throw error;
@@ -148,9 +150,10 @@ interface CardPurchaseRequest {
 
 interface OptimalPurchaseResponse {
   success: boolean;
-  totalPrice: number;
+  totalCost: number;
+  totalPointsEarned: number;
+  totalProductCost: number;
   totalShippingCost: number;
-  finalPrice: number;
   shippingRegion: string;
   cardsOptimalPurchase: {
     [site: string]: {
@@ -159,21 +162,19 @@ interface OptimalPurchaseResponse {
         price: number;
         quantity: number;
         totalPrice: number;
-        product: {
-          price: number;
-          rarity: string;
-          language: string;
-          site: string;
-          url: string;
-          cardCode: string;
-        };
+        product: TCardShopInfo;
         image: string;
       }[];
-      subtotal: number;
+      finalPrice: number;
+      pointsEarned: number;
+      productCost: number;
       shippingCost: number;
     };
   };
   cardImages: {
     [cardName: string]: string;
+  };
+  pointOptions: {
+    [key in TPointOption]: boolean;
   };
 }
