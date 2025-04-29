@@ -29,6 +29,7 @@ function CartItemComponent({
   const handleRemoveItem = () => {
     const confirm = window.confirm('정말 삭제하시겠습니까?');
     if (confirm) {
+      onSelectChange(item.id, false);
       removeItem(item.id);
     }
   };
@@ -130,6 +131,8 @@ export default function FinalCart() {
     try {
       setIsCalculating(true);
       setCalculationError(null);
+
+      console.log(items);
 
       const selectedCards = items
         .filter((item) => selectedItems.includes(item.id))

@@ -16,7 +16,7 @@ export default async function CardResult({
   // 서버 사이드에서 API 호출 - 데이터가 로드될 때까지 이 컴포넌트 렌더링 지연
   try {
     const cardData = await fetchCardPricesServer(cardName, includeUsed);
-    const { data, rarityPrices } = cardData;
+    const { data, rarityPrices, cacheId } = cardData;
 
     return (
       <div>
@@ -27,7 +27,7 @@ export default async function CardResult({
               cardRarityPrices={rarityPrices}
               cardImage={data.image}
               cardName={data.cardName || cardName}
-              cardCacheId={data.cacheId}
+              cardCacheId={cacheId}
             />
           </div>
         </div>
