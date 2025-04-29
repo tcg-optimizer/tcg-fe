@@ -1,5 +1,9 @@
 // API 엔드포인트 기본 URL
 
+import { TCardResultResponse } from '@/types/api/result';
+import { TCardShopInfo } from '@/types/card';
+import { TPointOption } from '@/types/cart';
+
 // 환경에 따라 다른 URL 사용
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/cards';
@@ -33,41 +37,9 @@ export async function fetchCardPricesServer(
       );
     }
 
-    return await response.json();
-  } catch (error) {
-    console.error('API 오류:', error);
-    throw error;
-  }
-}
+    const result = (await response.json()) as TCardResultResponse;
 
-/**
- * 레어도별 가격 정보 조회 API (클라이언트 사이드)
- */
-export async function fetchCardPrices(
-  cardName: string,
-  includeUsed: boolean = true,
-) {
-  try {
-    const response = await fetch(
-      `${API_BASE_URL}/rarity-prices?cardName=${encodeURIComponent(
-        cardName,
-      )}&includeUsed=${includeUsed}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        errorData.error || '카드 가격 정보를 가져오는데 실패했습니다.',
-      );
-    }
-
-    return await response.json();
+    return result;
   } catch (error) {
     console.error('API 오류:', error);
     throw error;
@@ -80,6 +52,21 @@ export async function fetchCardPrices(
 export async function calculateOptimalPurchase(
   cards: CardPurchaseRequest[],
   shippingRegion: 'default' | 'jeju' | 'island' = 'default',
+  discounts: {
+    tcgshopPoints: boolean;
+    carddcPoints: boolean;
+    naverBasicPoints: boolean;
+    naverBankbookPoints: boolean;
+    naverMembershipPoints: boolean;
+    naverHyundaiCardPoints: boolean;
+  } = {
+    tcgshopPoints: false,
+    carddcPoints: false,
+    naverBasicPoints: false,
+    naverBankbookPoints: false,
+    naverMembershipPoints: false,
+    naverHyundaiCardPoints: false,
+  },
 ) {
   try {
     const response = await fetch(`${API_BASE_URL}/optimal-purchase`, {
@@ -90,6 +77,7 @@ export async function calculateOptimalPurchase(
       body: JSON.stringify({
         cards,
         shippingRegion,
+        ...discounts,
       }),
     });
 
@@ -100,7 +88,7 @@ export async function calculateOptimalPurchase(
       );
     }
 
-    return await response.json();
+    return (await response.json()) as OptimalPurchaseResponse;
   } catch (error) {
     console.error('API 오류:', error);
     throw error;
@@ -162,9 +150,10 @@ interface CardPurchaseRequest {
 
 interface OptimalPurchaseResponse {
   success: boolean;
-  totalPrice: number;
+  totalCost: number;
+  totalPointsEarned: number;
+  totalProductCost: number;
   totalShippingCost: number;
-  finalPrice: number;
   shippingRegion: string;
   cardsOptimalPurchase: {
     [site: string]: {
@@ -173,21 +162,19 @@ interface OptimalPurchaseResponse {
         price: number;
         quantity: number;
         totalPrice: number;
-        product: {
-          price: number;
-          rarity: string;
-          language: string;
-          site: string;
-          url: string;
-          cardCode: string;
-        };
+        product: TCardShopInfo;
         image: string;
       }[];
-      subtotal: number;
+      finalPrice: number;
+      pointsEarned: number;
+      productCost: number;
       shippingCost: number;
     };
   };
   cardImages: {
     [cardName: string]: string;
+  };
+  pointOptions: {
+    [key in TPointOption]: boolean;
   };
 }
