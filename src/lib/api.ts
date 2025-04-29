@@ -1,5 +1,7 @@
 // API 엔드포인트 기본 URL
 
+import { TCardResultResponse } from '@/types/api/result';
+
 // 환경에 따라 다른 URL 사용
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/cards';
@@ -33,41 +35,9 @@ export async function fetchCardPricesServer(
       );
     }
 
-    return await response.json();
-  } catch (error) {
-    console.error('API 오류:', error);
-    throw error;
-  }
-}
+    const result = (await response.json()) as TCardResultResponse;
 
-/**
- * 레어도별 가격 정보 조회 API (클라이언트 사이드)
- */
-export async function fetchCardPrices(
-  cardName: string,
-  includeUsed: boolean = true,
-) {
-  try {
-    const response = await fetch(
-      `${API_BASE_URL}/rarity-prices?cardName=${encodeURIComponent(
-        cardName,
-      )}&includeUsed=${includeUsed}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      },
-    );
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        errorData.error || '카드 가격 정보를 가져오는데 실패했습니다.',
-      );
-    }
-
-    return await response.json();
+    return result;
   } catch (error) {
     console.error('API 오류:', error);
     throw error;
