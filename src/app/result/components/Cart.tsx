@@ -19,7 +19,7 @@ export default function Cart() {
   const { items } = useCartStore();
 
   return (
-    <Card className="xl:sticky top-20 h-[calc(50vh-32px-1.5rem)] w-64 overflow-hidden">
+    <Card className="xl:sticky top-20 h-[calc(50vh-32px-1.5rem)] xl:h-[calc(100vh-64px-2rem)] w-64 overflow-hidden">
       <CardHeader>
         <CardTitle>장바구니</CardTitle>
       </CardHeader>
