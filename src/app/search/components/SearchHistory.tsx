@@ -27,7 +27,7 @@ export default function SearchHistory() {
   };
 
   return (
-    <div className="w-full mt-4">
+    <div className="w-full">
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-sm font-medium">최근 검색어</h3>
         <Button
