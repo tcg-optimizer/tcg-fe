@@ -1,6 +1,5 @@
 'use client';
 
-import { Checkbox } from '@/components/ui/checkbox';
 import SearchInput from '@/components/SearchInput';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -8,7 +7,6 @@ import SearchHistory from './components/SearchHistory';
 
 export default function Search() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [includeUsed, setIncludeUsed] = useState(false);
   const router = useRouter();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -17,9 +15,7 @@ export default function Search() {
       // 검색어를 기록에 추가
 
       router.push(
-        `/result?cardName=${encodeURIComponent(
-          searchTerm,
-        )}&used=${includeUsed}`,
+        `/result?cardName=${encodeURIComponent(searchTerm)}&used=false`,
       );
     }
   };
@@ -32,19 +28,6 @@ export default function Search() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <div className="w-full flex justify-end items-center space-x-2">
-            <Checkbox
-              id="check-used"
-              checked={includeUsed}
-              onCheckedChange={(checked) => setIncludeUsed(checked === true)}
-            />
-            <label
-              htmlFor="check-used"
-              className="text-sm font-medium leading-tone peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              중고 상품을 포함합니다
-            </label>
-          </div>
           <button type="submit" className="hidden">
             검색
           </button>

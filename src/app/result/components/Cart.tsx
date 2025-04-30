@@ -28,7 +28,7 @@ export default function Cart() {
         {items.map((item, i) => (
           <Fragment key={item.id}>
             <CardComponent cardInfo={item} />
-            {i !== items.length - 1 && <Separator className="mb-4" />}
+            {i !== items.length - 1 && <Separator className="my-4" />}
           </Fragment>
         ))}
       </CardContent>
@@ -48,7 +48,7 @@ interface CardComponentProps {
 }
 
 const CardComponent = ({ cardInfo }: CardComponentProps) => {
-  const { name, condition, rarity, language, quantity, image } = cardInfo;
+  const { name, rarity, language, quantity, image } = cardInfo;
 
   return (
     <div className="flex flex-col gap-2 group relative">
@@ -63,18 +63,15 @@ const CardComponent = ({ cardInfo }: CardComponentProps) => {
           />
         </div>
         <div className="flex flex-col">
-          <p className="text-md font-bold grow">{name}</p>
-          <p className="text-sm text-gray-500 mb-2">
-            {/* {price}원 *  */}
-            <b>{quantity}장</b>
+          <p className="text-md font-bold grow">
+            {name} <span className="text-gray-500 text-sm">x {quantity}장</span>
           </p>
-        </div>
-      </div>
-      <div className="max-h-0 overflow-hidden transition-all duration-300 ease-in-out group-hover:max-h-20 group-hover:mb-4">
-        <div className="flex gap-2 flex-wrap mt-2">
-          <Badge variant="outline">{condition}</Badge>
-          <Badge variant="outline">{rarity}</Badge>
-          <Badge variant="outline">{language}</Badge>
+          <Badge variant="outline" className="mt-2">
+            {rarity}
+          </Badge>
+          <Badge variant="outline" className="mt-2">
+            {language}
+          </Badge>
         </div>
       </div>
     </div>

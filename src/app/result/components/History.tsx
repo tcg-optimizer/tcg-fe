@@ -35,7 +35,7 @@ interface HistoryComponentProps {
 }
 
 const HistoryComponent = ({ historyInfo }: HistoryComponentProps) => {
-  const { cardName, cardImage, cardContitions } = historyInfo;
+  const { cardName, cardImage } = historyInfo;
 
   return (
     <div className="flex flex-col gap-2 group relative">
@@ -51,9 +51,6 @@ const HistoryComponent = ({ historyInfo }: HistoryComponentProps) => {
         </div>
         <div className="flex flex-col">
           <p className="text-md font-bold grow">{cardName}</p>
-          <p className="text-sm text-gray-500 mb-2">
-            <b>{cardContitions}</b>
-          </p>
         </div>
       </div>
     </div>
