@@ -25,11 +25,12 @@ interface CartState {
   updateLanguage: (id: string, language: TCardLanguageLabel) => void;
   updateRarity: (id: string, rarity: TCardRarityLabel) => void;
   clearCart: () => void;
+  findItem: (item: CartItem) => CartItem | undefined;
 }
 
 export const useCartStore = create<CartState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       items: [],
 
       addItem: (newItem) =>
@@ -45,13 +46,29 @@ export const useCartStore = create<CartState>()(
           if (existingItemIndex >= 0) {
             // 이미 있으면 수량만 증가
             const updatedItems = [...state.items];
-            updatedItems[existingItemIndex].quantity += newItem.quantity;
+
+            if (
+              updatedItems[existingItemIndex].quantity + newItem.quantity <=
+              3
+            ) {
+              updatedItems[existingItemIndex].quantity += newItem.quantity;
+            } else {
+              updatedItems[existingItemIndex].quantity = 3;
+            }
             return { items: updatedItems };
           } else {
             // 새 아이템 추가
             return { items: [...state.items, newItem] };
           }
         }),
+
+      findItem: (item: CartItem) =>
+        get().items.find(
+          (i) =>
+            i.name === item.name &&
+            i.rarity === item.rarity &&
+            i.language === item.language,
+        ),
 
       removeItem: (id) =>
         set((state) => ({

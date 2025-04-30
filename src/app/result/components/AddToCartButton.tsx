@@ -32,6 +32,8 @@ export default function AddToCartButton({
   cardCacheId,
 }: AddToCartButtonProps) {
   const addItem = useCartStore((state) => state.addItem);
+  const findItem = useCartStore((state) => state.findItem);
+
   const [added, setAdded] = useState(false);
 
   const handleAddToCart = () => {
@@ -47,6 +49,11 @@ export default function AddToCartButton({
       availableRarities: availableRarities,
       condition: selectedCardShopsInfo.prices[0]?.condition || '신품',
     };
+
+    const existingItem = findItem(card);
+    if (existingItem && existingItem.quantity + quantity > 3) {
+      alert('동일한 언어/레어도를 가지는 상품당 최대 3개까지만 추가됩니다.');
+    }
 
     addItem(card);
     // 추가 완료 표시
