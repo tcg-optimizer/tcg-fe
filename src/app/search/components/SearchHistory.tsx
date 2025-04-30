@@ -27,7 +27,7 @@ export default function SearchHistory() {
   };
 
   return (
-    <div className="w-full mt-4">
+    <div className="w-full">
       <div className="flex justify-between items-center mb-2">
         <h3 className="text-sm font-medium">최근 검색어</h3>
         <Button
@@ -44,17 +44,17 @@ export default function SearchHistory() {
         {history.map((item) => (
           <div
             key={item.query}
-            className="flex items-center bg-gray-100 rounded-full px-3 py-1"
+            className="flex items-center bg-gray-100 rounded-full px-3 py-1 cursor-pointer"
           >
             <button
               onClick={() => handleSearchClick(item.query)}
-              className="text-sm mr-1"
+              className="text-sm mr-1 cursor-pointer"
             >
               {item.query}
             </button>
             <button
               onClick={() => removeFromHistory(item.query)}
-              className="text-gray-500 hover:text-gray-700"
+              className="text-gray-500 hover:text-gray-700 cursor-pointer"
               aria-label="삭제"
             >
               <X size={14} />

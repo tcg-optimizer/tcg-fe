@@ -12,7 +12,7 @@ export default function ResultLayout({
       <Header />
 
       <div className="flex min-h-screen relative">
-        <div className="hidden xl:block mx-auto ">
+        <div className="hidden xl:block mx-auto">
           <History />
         </div>
         <div className="max-w-[1024px] mx-auto grow p-4">{children}</div>

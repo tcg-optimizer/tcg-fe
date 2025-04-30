@@ -1,3 +1,4 @@
+import FormattedShopName from '@/components/FormattedShopName';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { OptimalPurchaseResponse } from '@/lib/api';
@@ -39,7 +40,7 @@ const OptimalPrices = ({ optimalPurchaseResult }: OptimalPricesProps) => {
           {optimalPurchaseResult.totalPointsEarned.toLocaleString()}원
         </p>
         <Separator className="col-span-2" />
-        <p className="font-bold z-10">실질 금액:</p>
+        <p className="font-bold z-10">실질 예상가:</p>
         <p className="font-bold z-10">
           {(
             optimalPurchaseResult.totalCost -
@@ -59,12 +60,17 @@ interface OptimalPriceStoreProps {
 const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
   return (
     <div className="mt-4">
-      <h2 className="text-lg font-bold">{site}</h2>
+      <h2 className="text-lg font-bold">
+        <FormattedShopName name={site} />
+      </h2>
 
       {stores.cards.map((card) => (
         <div
           key={card.cardName}
-          className="bg-white border border-gray-200 p-4 rounded-md flex gap-4 max-h-[128px] mt-4"
+          className="bg-white border border-gray-200 p-4 rounded-md flex gap-4 max-h-[128px] mt-4 cursor-pointer"
+          onClick={() => {
+            window.open(card.product.url, '_blank');
+          }}
         >
           <Image
             src={card.image}

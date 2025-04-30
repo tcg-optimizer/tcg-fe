@@ -16,10 +16,7 @@ export default function CardFace({ src, alt, className }: CardFaceProps) {
 
   return (
     <div
-      className={cn(
-        'aspect-[2/3] rounded-lg border-4 box-content border-blue-500',
-        className,
-      )}
+      className={cn('aspect-[2/3] rounded-lg border-4 box-content', className)}
     >
       <Image
         src={selectedImage || src}

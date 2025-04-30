@@ -2,39 +2,38 @@
 
 import { Separator } from '@/components/ui/separator';
 import CardOptionSelector from '@/components/CardOptionSelector';
-import {
-  TCardLanguageLabel,
-  TCardRarityLabel,
-  TCardRarityPrices,
-} from '@/types/card';
+import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
 import { objectFromEntries, objectKeys } from '@/lib/utils';
 import { useEffect, useMemo } from 'react';
 import { useResultStore } from '@/store/resultStore';
 import AddToCartButton from './AddToCartButton';
 import { useSearchHistoryStore } from '@/store/searchHistoryStore';
-
+import { TCardResultResponse } from '@/types/api/result';
+import { sortCardLanguages, sortCardRarities } from '@/lib/utils/card';
 interface CardInfoProps {
-  cardRarityPrices: TCardRarityPrices;
-  cardName: string;
-  cardImage: string;
-  cardCacheId: string;
+  cardData: TCardResultResponse;
+  defaultCardName: string;
 }
 
-export default function CardInfo({
-  cardRarityPrices,
-  cardName,
-  cardImage,
-  cardCacheId,
-}: CardInfoProps) {
+export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
+  const { data, rarityPrices: cardRarityPrices, cacheId } = cardData;
+  const cardName = data.cardName || defaultCardName;
+  const cardImage = data.image;
+  const cardCacheId = cacheId;
+  const totalProducts = data.totalProducts;
+
   const availableLanguages = useMemo(
-    () => objectKeys(cardRarityPrices),
+    () => sortCardLanguages(objectKeys(cardRarityPrices)),
     [cardRarityPrices],
   );
   const availableRarities = useMemo(
     () =>
       objectFromEntries(
         availableLanguages.map((language) => {
-          return [language, objectKeys(cardRarityPrices[language])];
+          return [
+            language,
+            sortCardRarities(objectKeys(cardRarityPrices[language])),
+          ];
         }),
       ),
     [availableLanguages, cardRarityPrices],
@@ -127,7 +126,9 @@ export default function CardInfo({
     <div className="w-full h-full p-4 flex flex-col bg-gray-50 rounded-lg">
       <div className="grow">
         <h1 className="text-3xl font-bold">{cardName}</h1>
-        <p className="text-gray-500 mt-4">총 200건을 찾았습니다.</p>
+        <p className="text-gray-500 mt-4">
+          총 {totalProducts || 0}건을 찾았습니다.
+        </p>
       </div>
 
       <Separator className="my-4" />
