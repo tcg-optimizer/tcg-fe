@@ -39,7 +39,7 @@ const OptimalPrices = ({ optimalPurchaseResult }: OptimalPricesProps) => {
           {optimalPurchaseResult.totalPointsEarned.toLocaleString()}원
         </p>
         <Separator className="col-span-2" />
-        <p className="font-bold z-10">실질 금액:</p>
+        <p className="font-bold z-10">실질 예상가:</p>
         <p className="font-bold z-10">
           {(
             optimalPurchaseResult.totalCost -

@@ -9,6 +9,7 @@ import { useResultStore } from '@/store/resultStore';
 import AddToCartButton from './AddToCartButton';
 import { useSearchHistoryStore } from '@/store/searchHistoryStore';
 import { TCardResultResponse } from '@/types/api/result';
+import { sortCardLanguages, sortCardRarities } from '@/lib/utils/card';
 interface CardInfoProps {
   cardData: TCardResultResponse;
   defaultCardName: string;
@@ -22,14 +23,17 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
   const totalProducts = data.totalProducts;
 
   const availableLanguages = useMemo(
-    () => objectKeys(cardRarityPrices),
+    () => sortCardLanguages(objectKeys(cardRarityPrices)),
     [cardRarityPrices],
   );
   const availableRarities = useMemo(
     () =>
       objectFromEntries(
         availableLanguages.map((language) => {
-          return [language, objectKeys(cardRarityPrices[language])];
+          return [
+            language,
+            sortCardRarities(objectKeys(cardRarityPrices[language])),
+          ];
         }),
       ),
     [availableLanguages, cardRarityPrices],
