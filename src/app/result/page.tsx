@@ -11,8 +11,6 @@ export default async function ResultPage({
   const cardName = (await searchParams).cardName as string;
   const includeUsed = (await searchParams).used === 'true';
 
-  console.log(cardName, includeUsed);
-
   if (!cardName) {
     return (
       <div className="w-full flex justify-center items-center h-[400px]">
@@ -22,8 +20,12 @@ export default async function ResultPage({
   }
 
   return (
-    <Suspense fallback={<CardSkeleton />}>
-      <CardResult cardName={cardName} includeUsed={includeUsed} />
+    <Suspense key={cardName} fallback={<CardSkeleton />}>
+      <CardResult
+        key={cardName}
+        cardName={cardName}
+        includeUsed={includeUsed}
+      />
     </Suspense>
   );
 }
