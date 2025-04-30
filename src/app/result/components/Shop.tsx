@@ -1,3 +1,4 @@
+import FormattedShopName from '@/components/FormattedShopName';
 import { Badge } from '@/components/ui/badge';
 import { TCardShopInfo } from '@/types/card';
 
@@ -6,8 +7,7 @@ interface ShopProps {
 }
 
 export default function Shop({ shopInfo }: ShopProps) {
-  const { site, price, rarity, language, url, condition, cardCode, available } =
-    shopInfo;
+  const { site, price, rarity, language, url, cardCode, available } = shopInfo;
 
   const formattedPrice = new Intl.NumberFormat('ko-KR').format(price);
 
@@ -19,7 +19,9 @@ export default function Shop({ shopInfo }: ShopProps) {
       className="block p-4 border rounded-md shadow-sm transition-all hover:shadow-md"
     >
       <div className="flex justify-between items-start">
-        <h3 className="text-xl font-bold">{site}</h3>
+        <h3 className="text-xl font-bold">
+          <FormattedShopName name={site} />
+        </h3>
         <div className="text-xl font-bold text-primary">{formattedPrice}원</div>
       </div>
 
@@ -27,7 +29,6 @@ export default function Shop({ shopInfo }: ShopProps) {
         <div className="mt-2 flex gap-2">
           <Badge variant="outline">{language}</Badge>
           <Badge variant="outline">{rarity}</Badge>
-          <Badge variant="outline">{condition}</Badge>
         </div>
       </div>
 
