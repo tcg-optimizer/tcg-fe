@@ -31,7 +31,13 @@ const OptimalPrices = ({ optimalPurchaseResult }: OptimalPricesProps) => {
         </p>
         <Separator className="col-span-2" />
         <p>최종 가격:</p>
-        <p>{optimalPurchaseResult.totalCost.toLocaleString()}원</p>
+        <p>
+          {(
+            optimalPurchaseResult.totalCost +
+            optimalPurchaseResult.totalPointsEarned
+          ).toLocaleString()}
+          원
+        </p>
         <div className="flex items-center gap-2 text-green-600">
           <p>-</p>
           <p className="flex-1">적립금:</p>
@@ -42,11 +48,7 @@ const OptimalPrices = ({ optimalPurchaseResult }: OptimalPricesProps) => {
         <Separator className="col-span-2" />
         <p className="font-bold z-10">실질 예상가:</p>
         <p className="font-bold z-10">
-          {(
-            optimalPurchaseResult.totalCost -
-            optimalPurchaseResult.totalPointsEarned
-          ).toLocaleString()}
-          원
+          {optimalPurchaseResult.totalCost.toLocaleString()}원
         </p>
       </div>
     </div>
@@ -98,7 +100,9 @@ const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
         <p>배송비:</p>
         <p>{stores.shippingCost.toLocaleString()}원</p>
         <p>소계:</p>
-        <p className="font-bold">{stores.finalPrice.toLocaleString()}원</p>
+        <p className="font-bold">
+          {(stores.finalPrice + stores.pointsEarned).toLocaleString()}원
+        </p>
       </div>
     </div>
   );

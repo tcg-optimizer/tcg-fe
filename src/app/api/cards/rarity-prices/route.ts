@@ -6,7 +6,6 @@ const API_BASE_URL =
 // GET 요청 처리 함수
 export async function GET(request: NextRequest) {
   try {
-    console.log(request);
     // URL에서 쿼리 파라미터 추출
     const searchParams = request.nextUrl.searchParams;
     const cardName = searchParams.get('cardName');
