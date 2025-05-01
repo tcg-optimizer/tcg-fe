@@ -4,9 +4,21 @@ import { TCardResultResponse } from '@/types/api/result';
 import { TCardShopInfo } from '@/types/card';
 import { TPointOption } from '@/types/cart';
 
-// 환경에 따라 다른 URL 사용
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api/cards';
+// 내부 API 라우트 URL 생성 함수
+function getBaseUrl() {
+  // 서버 사이드인 경우
+  if (typeof window === 'undefined') {
+    // 환경 변수에서 URL 가져오기, 없으면 기본값 사용
+    return process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'http://localhost:3000';
+  }
+  // 클라이언트 사이드인 경우 상대 경로 사용
+  return '';
+}
+
+// 내부 API 라우트 URL
+const API_ROUTE_URL = `${getBaseUrl()}/api/cards`;
 
 /**
  * 레어도별 가격 정보 조회 API (서버 사이드)
@@ -17,7 +29,7 @@ export async function fetchCardPricesServer(
 ) {
   try {
     const response = await fetch(
-      `${API_BASE_URL}/rarity-prices?cardName=${encodeURIComponent(
+      `${API_ROUTE_URL}/rarity-prices?cardName=${encodeURIComponent(
         cardName,
       )}&includeUsed=${includeUsed}`,
       {
@@ -69,7 +81,7 @@ export async function calculateOptimalPurchase(
   },
 ) {
   try {
-    const response = await fetch(`${API_BASE_URL}/optimal-purchase`, {
+    const response = await fetch(`${API_ROUTE_URL}/optimal-purchase`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
