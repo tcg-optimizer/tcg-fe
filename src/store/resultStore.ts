@@ -4,6 +4,7 @@ import {
   TCardRarityLabel,
   TCardRarityPrices,
 } from '@/types/card';
+import { TCardResultResponse } from '@/types/api/result';
 
 type ResultStore = {
   selectedLanguage: TCardLanguageLabel;
@@ -17,6 +18,10 @@ type ResultStore = {
   setSelectedCardShopsInfo: (
     shopsInfo: TCardRarityPrices[TCardLanguageLabel][TCardRarityLabel],
   ) => void;
+
+  // 카드 데이터 전체를 저장
+  cardData: TCardResultResponse | null;
+  setCardData: (data: TCardResultResponse) => void;
 };
 
 const initialState = {
@@ -25,6 +30,7 @@ const initialState = {
   quantity: 1,
   selectedCardShopsInfo:
     {} as TCardRarityPrices[TCardLanguageLabel][TCardRarityLabel],
+  cardData: null,
 } as ResultStore;
 
 export const useResultStore = create<ResultStore>((set) => ({
@@ -35,4 +41,22 @@ export const useResultStore = create<ResultStore>((set) => ({
 
   setSelectedCardShopsInfo: (shopsInfo) =>
     set({ selectedCardShopsInfo: shopsInfo }),
+
+  setCardData: (data) => {
+    // 카드 데이터 설정 시 기본 언어, 레어도의 가격 정보도 함께 설정
+    const defaultLanguage = Object.keys(
+      data.rarityPrices,
+    )[0] as TCardLanguageLabel;
+    const defaultRarity = Object.keys(
+      data.rarityPrices[defaultLanguage] || {},
+    )[0] as TCardRarityLabel;
+
+    set({
+      cardData: data,
+      selectedLanguage: defaultLanguage,
+      selectedRarity: defaultRarity,
+      selectedCardShopsInfo:
+        data.rarityPrices[defaultLanguage]?.[defaultRarity] || {},
+    });
+  },
 }));

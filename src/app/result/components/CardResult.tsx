@@ -2,7 +2,10 @@ import { Separator } from '@/components/ui/separator';
 import { fetchCardPricesServer } from '@/lib/api';
 import CardFace from './CardFace';
 import CardInfo from './CardInfo';
-import MarketPrice from './MarketPrice';
+import { ClientMarketPriceWrapper } from './ClientMarketPriceWrapper';
+import { TCardResultResponse } from '@/types/api/result';
+import { Suspense } from 'react';
+import CardSkeleton from './CardSkeleton';
 
 interface CardResultProps {
   cardName: string;
@@ -23,14 +26,16 @@ export default async function CardResult({
         <div className="w-full flex h-[400px] gap-4">
           <CardFace src={data.image} alt={data.cardName} />
           <div className="flex-1">
-            <CardInfo cardData={cardData} defaultCardName={cardName} />
+            <Suspense fallback={<CardSkeleton />}>
+              <CardInfoWrapper cardData={cardData} defaultCardName={cardName} />
+            </Suspense>
           </div>
         </div>
 
         <Separator className="my-8" />
 
         <div className="w-full mt-8">
-          <MarketPrice />
+          <ClientMarketPriceWrapper cardData={cardData} />
         </div>
       </div>
     );
@@ -46,4 +51,15 @@ export default async function CardResult({
       </div>
     );
   }
+}
+
+// 클라이언트 컴포넌트에 Props를 전달하기 위한 서버 컴포넌트 래퍼
+function CardInfoWrapper({
+  cardData,
+  defaultCardName,
+}: {
+  cardData: TCardResultResponse;
+  defaultCardName: string;
+}) {
+  return <CardInfo cardData={cardData} defaultCardName={defaultCardName} />;
 }
