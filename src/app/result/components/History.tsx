@@ -47,9 +47,9 @@ const HistoryComponent = ({ historyInfo }: HistoryComponentProps) => {
       }}
     >
       <div className="flex gap-2">
-        <div className={`aspect-[2/3] w-12 rounded-md`}>
+        <div className={`relative aspect-[2/3] w-12 rounded-md flex-shrink-0`}>
           <Image
-            className="w-full h-full object-cover"
+            className="min-w-full min-h-full object-cover"
             src={cardImage}
             alt="card"
             width={100}
