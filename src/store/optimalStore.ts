@@ -1,11 +1,16 @@
 import { create } from 'zustand';
 
+export type TExcludedCard = {
+  id: number;
+  name: string;
+};
+
 interface OptimalStore {
-  excludedCards: number[];
+  excludedCards: TExcludedCard[];
   excludedStore: string[];
-  addExcludedCard: (cardId: number) => void;
+  addExcludedCard: (card: TExcludedCard) => void;
   addExcludedStore: (store: string) => void;
-  removeExcludedCard: (cardId: number) => void;
+  removeExcludedCard: (card: TExcludedCard) => void;
   removeExcludedStore: (store: string) => void;
   clearExcludedCards: () => void;
   clearExcludedStores: () => void;
@@ -14,13 +19,13 @@ interface OptimalStore {
 const useOptimalStore = create<OptimalStore>((set) => ({
   excludedCards: [],
   excludedStore: [],
-  addExcludedCard: (cardId) =>
-    set((state) => ({ excludedCards: [...state.excludedCards, cardId] })),
+  addExcludedCard: (card) =>
+    set((state) => ({ excludedCards: [...state.excludedCards, card] })),
   addExcludedStore: (store) =>
     set((state) => ({ excludedStore: [...state.excludedStore, store] })),
-  removeExcludedCard: (cardId) =>
+  removeExcludedCard: (card) =>
     set((state) => ({
-      excludedCards: state.excludedCards.filter((id) => id !== cardId),
+      excludedCards: state.excludedCards.filter((c) => c.id !== card.id),
     })),
   removeExcludedStore: (store) =>
     set((state) => ({

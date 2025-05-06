@@ -3,8 +3,8 @@
 import { useSearchHistoryStore } from '@/store/searchHistoryStore';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import DeletableBadgeButton from '@/components/DeletableBadgeButton';
 
 export default function SearchHistory() {
   const { history, removeFromHistory, clearHistory } = useSearchHistoryStore();
@@ -42,24 +42,12 @@ export default function SearchHistory() {
 
       <div className="flex flex-wrap gap-2">
         {history.map((item) => (
-          <div
+          <DeletableBadgeButton
             key={item.query}
-            className="flex items-center bg-gray-100 rounded-full px-3 py-1 cursor-pointer"
-          >
-            <button
-              onClick={() => handleSearchClick(item.query)}
-              className="text-sm mr-1 cursor-pointer"
-            >
-              {item.query}
-            </button>
-            <button
-              onClick={() => removeFromHistory(item.query)}
-              className="text-gray-500 hover:text-gray-700 cursor-pointer"
-              aria-label="삭제"
-            >
-              <X size={14} />
-            </button>
-          </div>
+            content={item.query}
+            onClick={() => handleSearchClick(item.query)}
+            onDelete={() => removeFromHistory(item.query)}
+          />
         ))}
       </div>
     </div>

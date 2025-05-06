@@ -114,7 +114,7 @@ export default function FinalCart() {
         selectedCards,
         data.shippingRegion,
         data.discounts,
-        excludedCards ?? [],
+        excludedCards.map((c) => c.id) ?? [],
         excludedStore ?? [],
       );
 
