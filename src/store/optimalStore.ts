@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 export type TExcludedCard = {
-  id: number;
+  id: string;
   name: string;
 };
 

@@ -79,7 +79,7 @@ export async function calculateOptimalPurchase(
     naverMembershipPoints: false,
     naverHyundaiCardPoints: false,
   },
-  excludedProductIds: number[] = [],
+  excludedProductIds: string[] = [],
   excludedStores: string[] = [],
 ) {
   try {
