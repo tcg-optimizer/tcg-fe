@@ -19,7 +19,7 @@ export default function ResultLayout({
         <div className="hidden xl:block mx-auto">
           <Cart />
         </div>
-        <div className="sticky h-[calc(100vh-64px-2rem)] top-20 space-y-4 block xl:hidden mr-4">
+        <div className="sticky h-[calc(100vh-64px-2rem)] top-20 space-y-4 hidden md:block xl:hidden mr-4">
           <Cart />
           <History />
         </div>

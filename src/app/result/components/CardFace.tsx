@@ -18,7 +18,10 @@ export default function CardFace({ src, alt, className }: CardFaceProps) {
 
   return (
     <div
-      className={cn('aspect-[2/3] rounded-lg border-4 box-content', className)}
+      className={cn(
+        className,
+        'mx-auto aspect-[2/3] w-max h-[400px] sm:h-full rounded-lg border-4 box-content',
+      )}
     >
       <Image
         src={srcImage!}

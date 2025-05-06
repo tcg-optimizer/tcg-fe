@@ -22,7 +22,7 @@ export default function SearchInput({
   return (
     <div className="flex justify-center items-center gap-2">
       <Input
-        className={cn(className, 'w-[400px]')}
+        className={cn(className, 'w-full md:w-[400px]')}
         placeholder={placeholder}
         value={value}
         onChange={onChange}

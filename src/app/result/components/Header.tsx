@@ -23,9 +23,11 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-10 shadow-sm w-full h-16 bg-white min-w-screen">
-      <div className="w-full h-full grid grid-cols-3 items-center justify-center px-20">
-        <Link href="/" className="">
-          <h1 className="text-2xl font-bold tracking-tight">TCG Scanner</h1>
+      <div className="w-full h-full grid grid-cols-[1fr_auto] gap-4 sm:grid-cols-[1fr_3fr_1fr] items-center justify-center px-4 lg:px-20">
+        <Link href="/" className="hidden sm:block">
+          <h1 className="hidden lg:block text-2xl font-bold tracking-tight">
+            TCG Scanner
+          </h1>
         </Link>
 
         <form onSubmit={handleSearch} className="w-full flex flex-col gap-4">
