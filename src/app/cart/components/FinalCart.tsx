@@ -12,18 +12,14 @@ import {
 } from '@/lib/api';
 import { useCartStore, CartItem } from '@/store/cartStore';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
-import { Info, X } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
 import { finalCartOptions } from '../data/finalCartOptions';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import OptimalPrices from './OptimalPrices';
+import TooltipWithInfoIcon from '@/components/TooltipWithInfoIcon';
+import useOptimalStore from '@/store/optimalStore';
 
 export default function FinalCart() {
   // Zustand 스토어에서 장바구니 상태 가져오기
@@ -34,6 +30,14 @@ export default function FinalCart() {
   const [calculationError, setCalculationError] = useState<string | null>(null);
   const [optimalPurchaseResult, setOptimalPurchaseResult] =
     useState<OptimalPurchaseResponse | null>(null);
+
+  const { excludedCards, excludedStore } = useOptimalStore();
+  const { clearCart } = useCartStore();
+
+  const isExcludedOn = useMemo(
+    () => excludedCards.length > 0 || excludedStore.length > 0,
+    [excludedCards, excludedStore],
+  );
 
   const allSelected = items.length > 0 && selectedItems.length === items.length;
 
@@ -79,6 +83,13 @@ export default function FinalCart() {
     }
   };
 
+  const handleDeleteAll = () => {
+    const confirm = window.confirm('정말 모든 상품을 삭제하시겠습니까?');
+    if (confirm) {
+      clearCart();
+    }
+  };
+
   const onSubmit = async (data: DiscountForm) => {
     if (selectedItems.length === 0) {
       setCalculationError('선택된 상품이 없습니다.');
@@ -103,6 +114,8 @@ export default function FinalCart() {
         selectedCards,
         data.shippingRegion,
         data.discounts,
+        excludedCards.map((c) => c.id) ?? [],
+        excludedStore ?? [],
       );
 
       if (!result.success) {
@@ -138,15 +151,28 @@ export default function FinalCart() {
         <h1 className="text-2xl font-bold">장바구니</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4 mt-8 bg-gray-50 p-4 rounded-md">
-            <div className="flex items-center gap-2 mb-4">
-              <Checkbox
-                id="select-all"
-                checked={allSelected}
-                onCheckedChange={handleSelectAll}
-              />
-              <Label htmlFor="select-all" className="font-medium">
-                전체 선택 ({selectedItems.length}/{items.length})
-              </Label>
+            <div className="flex justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="select-all"
+                  checked={allSelected}
+                  onCheckedChange={handleSelectAll}
+                />
+                <Label htmlFor="select-all" className="font-medium">
+                  전체 선택 ({selectedItems.length}/{items.length})
+                </Label>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Label
+                  htmlFor="delete-all"
+                  className="font-medium text-red-500 cursor-pointer"
+                  onClick={handleDeleteAll}
+                >
+                  전체 삭제
+                </Label>
+                <X className="w-4 h-4 text-red-500 cursor-pointer" />
+              </div>
             </div>
 
             {items.map((item, index) => (
@@ -187,18 +213,9 @@ export default function FinalCart() {
                               <p className="break-keep break-words">
                                 {discount.label}
                               </p>
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Info className="w-4 h-4" />
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <p className="whitespace-pre-wrap">
-                                      {discount.description}
-                                    </p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
+                              <TooltipWithInfoIcon
+                                message={discount.description}
+                              />
                             </Label>
                           </div>
                         )}
@@ -249,7 +266,13 @@ export default function FinalCart() {
                 type="submit"
                 disabled={isCalculating || selectedItems.length === 0}
               >
-                {isCalculating ? '계산 중...' : '최저가 계산하기'}
+                {isCalculating
+                  ? '계산 중...'
+                  : optimalPurchaseResult
+                  ? isExcludedOn
+                    ? '특정 상품을 제외하고 다시 계산하기'
+                    : '다시 계산하기'
+                  : '최저가 계산하기'}
               </Button>
             </div>
 

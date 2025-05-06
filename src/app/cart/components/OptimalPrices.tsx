@@ -1,7 +1,14 @@
+'use client';
+
+import DeletableBadgeButton from '@/components/DeletableBadgeButton';
 import FormattedShopName from '@/components/FormattedShopName';
+import TooltipWithInfoIcon from '@/components/TooltipWithInfoIcon';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { OptimalPurchaseResponse } from '@/lib/api';
+import useOptimalStore, { TExcludedCard } from '@/store/optimalStore';
 import Image from 'next/image';
 
 interface OptimalPricesProps {
@@ -9,9 +16,78 @@ interface OptimalPricesProps {
 }
 
 const OptimalPrices = ({ optimalPurchaseResult }: OptimalPricesProps) => {
+  const {
+    excludedStore,
+    excludedCards,
+    removeExcludedStore,
+    removeExcludedCard,
+    clearExcludedStores,
+    clearExcludedCards,
+  } = useOptimalStore();
+
   return (
     <div>
       <h1 className="text-2xl font-bold">최저가 조합을 찾았습니다!</h1>
+      <p className="text-sm text-blue-400 mt-2">
+        * 특정 상점 / 상품을 제외하고 다시 검색할 수 있습니다.
+      </p>
+      <div className="text-sm mb-8">
+        {excludedStore.length > 0 && (
+          <div className="mt-4 flex items-center gap-2">
+            <p className="font-bold border-r-2 pr-2 flex items-center">
+              제외된 상점{' '}
+              <Badge
+                className="cursor-pointer ml-2 bg-red-100 text-red-500"
+                onClick={() => {
+                  clearExcludedStores();
+                }}
+              >
+                초기화
+              </Badge>
+            </p>
+
+            <div className="flex flex-wrap gap-2">
+              {excludedStore.map((store) => (
+                <DeletableBadgeButton
+                  key={store}
+                  content={store}
+                  onClick={() => {}}
+                  onDelete={() => {
+                    removeExcludedStore(store);
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+        {excludedCards.length > 0 && (
+          <div className="mt-2 flex items-center gap-2">
+            <p className="font-bold border-r-2 pr-2 flex items-center">
+              제외된 카드(ID){' '}
+              <Badge
+                className="cursor-pointer ml-2 bg-red-100 text-red-500"
+                onClick={() => {
+                  clearExcludedCards();
+                }}
+              >
+                초기화
+              </Badge>
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {excludedCards.map((card) => (
+                <DeletableBadgeButton
+                  key={card.id}
+                  content={`${card.name} (${card.id})`}
+                  onClick={() => {}}
+                  onDelete={() => {
+                    removeExcludedCard(card);
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
 
       {Object.entries(optimalPurchaseResult.cardsOptimalPurchase).map(
         ([site, stores]) => (
@@ -60,42 +136,107 @@ interface OptimalPriceStoreProps {
   stores: OptimalPurchaseResponse['cardsOptimalPurchase'][string];
 }
 const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
+  const siteKey = `${site}`;
+
+  const {
+    excludedCards,
+    excludedStore,
+    addExcludedCard,
+    addExcludedStore,
+    removeExcludedCard,
+    removeExcludedStore,
+  } = useOptimalStore();
+
+  const handleCheckStore = (checked: boolean) => {
+    if (checked) {
+      addExcludedStore(siteKey);
+    } else {
+      removeExcludedStore(siteKey);
+    }
+  };
+
+  const handleCheckCard = (checked: boolean, card: TExcludedCard) => {
+    if (checked) {
+      addExcludedCard(card);
+    } else {
+      removeExcludedCard(card);
+    }
+  };
+
   return (
     <div className="mt-4">
-      <h2 className="text-lg font-bold">
+      <h2 className="text-lg font-bold flex items-center gap-4">
         <FormattedShopName name={site} />
+        <div
+          className="flex items-center gap-2"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Checkbox
+            id={siteKey}
+            checked={excludedStore.includes(siteKey)}
+            onCheckedChange={handleCheckStore}
+          />
+          <Label className="text-gray-500" htmlFor={siteKey}>
+            이 상점 제외하기
+            <TooltipWithInfoIcon message="해당 상점을 특정한 이유 (재고 부족, 사기 등) 로 제외하고 싶습니다." />
+          </Label>
+        </div>
       </h2>
 
-      {stores.cards.map((card) => (
-        <div
-          key={card.cardName}
-          className="bg-white border border-gray-200 p-4 rounded-md flex gap-4 max-h-[128px] mt-4 cursor-pointer"
-          onClick={() => {
-            window.open(card.product.url, '_blank');
-          }}
-        >
-          <Image
-            src={card.image}
-            alt={card.cardName}
-            width={100}
-            height={100}
-            className="w-16 h-full aspect-[2/3] object-cover"
-          />
-          <div className="flex flex-col gap-2 flex-1">
-            <h3 className="text-md font-bold flex-1">{card.cardName}</h3>
-            <Badge>{card.product.language}</Badge>
-            <Badge>{card.product.rarity}</Badge>
+      {stores.cards.map((card) => {
+        const cardId = card.product.id;
+        const isExcluded = excludedCards.some((c) => c.id === cardId);
+
+        return (
+          <div
+            key={card.cardName}
+            className="bg-white border border-gray-200 p-4 rounded-md flex gap-4 max-h-[128px] mt-4 cursor-pointer"
+            onClick={() => {
+              window.open(card.product.url, '_blank');
+            }}
+          >
+            <Image
+              src={card.image}
+              alt={card.cardName}
+              width={100}
+              height={100}
+              className="w-16 h-full aspect-[2/3] object-cover"
+            />
+            <div className="flex flex-col gap-2 flex-1">
+              <h3 className="text-md font-bold flex-1">{card.cardName}</h3>
+              <Badge>{card.product.language}</Badge>
+              <Badge>{card.product.rarity}</Badge>
+            </div>
+            <div className="flex flex-col">
+              <div
+                className="flex items-center gap-2 ml-auto"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <Checkbox
+                  id={`${cardId}`}
+                  checked={isExcluded}
+                  onCheckedChange={(checked) =>
+                    handleCheckCard(checked as boolean, {
+                      id: cardId,
+                      name: card.cardName,
+                    })
+                  }
+                />
+                <Label className="text-gray-500" htmlFor={`${cardId}`}>
+                  이 상품 제외하기
+                  <TooltipWithInfoIcon message="해당 상점의 상품을 특정한 이유 (재고 부족, 사기 등) 로 제외하고 싶습니다." />
+                </Label>
+              </div>
+              <p className="mt-auto">
+                {card.price.toLocaleString()}원 x {card.quantity}장 ={' '}
+                <span className="font-bold">
+                  {card.totalPrice.toLocaleString()}원
+                </span>
+              </p>
+            </div>
           </div>
-          <div className="flex mt-auto">
-            <p>
-              {card.price.toLocaleString()}원 x {card.quantity}장 ={' '}
-              <span className="font-bold">
-                {card.totalPrice.toLocaleString()}원
-              </span>
-            </p>
-          </div>
-        </div>
-      ))}
+        );
+      })}
       <div className="grid grid-cols-2 gap-2 gap-x-4 w-fit ml-auto mt-4 text-right [&>*]:min-w-[100px]">
         <p>배송비:</p>
         <p>{stores.shippingCost.toLocaleString()}원</p>

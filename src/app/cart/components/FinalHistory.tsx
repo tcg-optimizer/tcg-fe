@@ -11,7 +11,7 @@ export default function FinalHistory() {
     <div>
       <h1 className="text-2xl font-bold mt-8">검색 기록</h1>
 
-      <div className="flex gap-4 mt-8">
+      <div className="flex gap-4 mt-8 flex-wrap">
         {history.map((historyInfo) => (
           <Link
             key={historyInfo.query}

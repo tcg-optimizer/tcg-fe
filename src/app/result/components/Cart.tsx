@@ -53,9 +53,9 @@ const CardComponent = ({ cardInfo }: CardComponentProps) => {
   return (
     <div className="flex flex-col gap-2 group relative">
       <div className="flex gap-2">
-        <div className={`aspect-[2/3] w-16 rounded-md`}>
+        <div className={`relative aspect-[2/3] w-16 rounded-md flex-shrink-0`}>
           <Image
-            className="w-full h-full object-cover"
+            className="object-cover"
             src={image}
             alt="card"
             width={200}

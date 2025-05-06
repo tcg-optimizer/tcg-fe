@@ -8,7 +8,7 @@ type TCardLanguageLabel = (typeof cardLanguages)[number]['label'];
 type TCardCondition = '신품' | '중고';
 
 type TCardShopInfo = {
-  id: number;
+  id: string;
   price: number;
   site: string;
   url: string;

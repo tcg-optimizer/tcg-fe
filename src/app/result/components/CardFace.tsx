@@ -14,12 +14,14 @@ export default function CardFace({ src, alt, className }: CardFaceProps) {
   const { selectedCardShopsInfo } = useResultStore();
   const selectedImage = selectedCardShopsInfo?.image;
 
+  const srcImage = (selectedImage || src) === '' ? null : selectedImage || src;
+
   return (
     <div
       className={cn('aspect-[2/3] rounded-lg border-4 box-content', className)}
     >
       <Image
-        src={selectedImage || src}
+        src={srcImage!}
         alt={alt || ''}
         width={0}
         height={0}
