@@ -148,9 +148,9 @@ export default function FinalCart() {
   return (
     <div>
       <div>
-        <h1 className="text-2xl font-bold">장바구니</h1>
+        <h1 className="text-xl sm:text-2xl font-bold">장바구니</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-4 mt-8 bg-gray-50 p-4 rounded-md">
+          <div className="flex flex-col gap-4 mt-4 sm:mt-8 bg-gray-50 p-4 rounded-md">
             <div className="flex justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -158,7 +158,7 @@ export default function FinalCart() {
                   checked={allSelected}
                   onCheckedChange={handleSelectAll}
                 />
-                <Label htmlFor="select-all" className="font-medium">
+                <Label htmlFor="select-all" className="font-bold">
                   전체 선택 ({selectedItems.length}/{items.length})
                 </Label>
               </div>
@@ -166,7 +166,7 @@ export default function FinalCart() {
               <div className="flex items-center gap-2">
                 <Label
                   htmlFor="delete-all"
-                  className="font-medium text-red-500 cursor-pointer"
+                  className="font-bold text-red-500 cursor-pointer"
                   onClick={handleDeleteAll}
                 >
                   전체 삭제
@@ -193,7 +193,7 @@ export default function FinalCart() {
                   <Label className="text-gray-700 font-bold mb-4">
                     적립 옵션
                   </Label>
-                  <div className="flex gap-8">
+                  <div className="lg:flex gap-8 grid md:grid-cols-3 grid-cols-2">
                     {finalCartOptions.discounts.map((discount) => (
                       <Controller
                         key={discount.id}
@@ -330,35 +330,35 @@ function CartItemComponent({
   };
 
   return (
-    <div className="flex gap-4">
-      <div className="flex items-center">
-        <Checkbox
-          checked={isSelected}
-          onCheckedChange={(checked) =>
-            onSelectChange(item.id, checked as boolean)
-          }
-        />
-      </div>
-      <div className="w-24 aspect-[2/3] rounded-md overflow-hidden">
-        <Image
-          className="w-full h-full object-cover"
-          src={item.image}
-          alt="card"
-          width={100}
-          height={100}
-        />
-      </div>
-      <div className="w-full flex flex-col">
-        <div className="flex items-center justify-between">
-          <p className="text-lg font-bold">{item.name}</p>
-          <p
-            className="text-gray-500 cursor-pointer"
-            onClick={handleRemoveItem}
-          >
-            <X className="w-4 h-4" />
-          </p>
+    <div className="flex flex-col gap-4">
+      <div className="flex w-full justify-between">
+        <div className="flex items-center">
+          <Checkbox
+            checked={isSelected}
+            onCheckedChange={(checked) =>
+              onSelectChange(item.id, checked as boolean)
+            }
+          />
         </div>
-        <div className="w-full mt-auto">
+        <p className="text-gray-500 cursor-pointer" onClick={handleRemoveItem}>
+          <X className="w-4 h-4" />
+        </p>
+      </div>
+
+      <div className="grid grid-cols-[auto_1fr] gap-4 grid-rows-auto grow">
+        <div className="w-16 sm:w-24 aspect-[2/3] rounded-md overflow-hidden row-span-2">
+          <Image
+            className="w-full h-full object-cover"
+            src={item.image}
+            alt="card"
+            width={100}
+            height={100}
+          />
+        </div>
+        <div className="flex justify-between items-start">
+          <p className="text-base sm:text-lg font-bold">{item.name}</p>
+        </div>
+        <div className="w-full mt-auto sm:col-start-2 col-start-1 col-span-2">
           <CardOptionSelector
             availableLanguages={item.availableLanguages}
             availableRarities={item.availableRarities}

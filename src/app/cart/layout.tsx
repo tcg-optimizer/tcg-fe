@@ -9,7 +9,7 @@ export default function CartLayout({
     <main className="w-full min-h-screen">
       <Header />
 
-      <div className="flex relative mt-8">
+      <div className="flex relative sm:mt-8">
         <div className="max-w-[1200px] mx-auto grow p-4">{children}</div>
       </div>
     </main>
