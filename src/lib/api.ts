@@ -79,6 +79,8 @@ export async function calculateOptimalPurchase(
     naverMembershipPoints: false,
     naverHyundaiCardPoints: false,
   },
+  excludedCards: number[] = [],
+  excludedStore: string[] = [],
 ) {
   try {
     const response = await fetch(`${API_ROUTE_URL}/optimal-purchase`, {
@@ -90,6 +92,8 @@ export async function calculateOptimalPurchase(
         cards,
         shippingRegion,
         ...discounts,
+        excludedCards,
+        excludedStore,
       }),
     });
 
