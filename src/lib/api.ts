@@ -92,8 +92,8 @@ export async function calculateOptimalPurchase(
         cards,
         shippingRegion,
         ...discounts,
-        excludedCards,
-        excludedStore,
+        excludedProductIds: excludedCards,
+        excludedStores: excludedStore,
       }),
     });
 

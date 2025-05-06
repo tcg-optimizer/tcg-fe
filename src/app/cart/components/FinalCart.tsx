@@ -32,6 +32,7 @@ export default function FinalCart() {
     useState<OptimalPurchaseResponse | null>(null);
 
   const { excludedCards, excludedStore } = useOptimalStore();
+  const { clearCart } = useCartStore();
 
   const isExcludedOn = useMemo(
     () => excludedCards.length > 0 || excludedStore.length > 0,
@@ -79,6 +80,13 @@ export default function FinalCart() {
       setSelectedItems((prev) => [...prev, id]);
     } else {
       setSelectedItems((prev) => prev.filter((itemId) => itemId !== id));
+    }
+  };
+
+  const handleDeleteAll = () => {
+    const confirm = window.confirm('정말 모든 상품을 삭제하시겠습니까?');
+    if (confirm) {
+      clearCart();
     }
   };
 
@@ -143,15 +151,28 @@ export default function FinalCart() {
         <h1 className="text-2xl font-bold">장바구니</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4 mt-8 bg-gray-50 p-4 rounded-md">
-            <div className="flex items-center gap-2 mb-4">
-              <Checkbox
-                id="select-all"
-                checked={allSelected}
-                onCheckedChange={handleSelectAll}
-              />
-              <Label htmlFor="select-all" className="font-medium">
-                전체 선택 ({selectedItems.length}/{items.length})
-              </Label>
+            <div className="flex justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Checkbox
+                  id="select-all"
+                  checked={allSelected}
+                  onCheckedChange={handleSelectAll}
+                />
+                <Label htmlFor="select-all" className="font-medium">
+                  전체 선택 ({selectedItems.length}/{items.length})
+                </Label>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Label
+                  htmlFor="delete-all"
+                  className="font-medium text-red-500 cursor-pointer"
+                  onClick={handleDeleteAll}
+                >
+                  전체 삭제
+                </Label>
+                <X className="w-4 h-4 text-red-500 cursor-pointer" />
+              </div>
             </div>
 
             {items.map((item, index) => (
