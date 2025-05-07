@@ -11,7 +11,7 @@ export default function MarketPrice() {
     <div>
       <div className="flex items-center gap-2 mb-4">
         <div>
-          <h1 className="text-2xl font-bold">가격 정보</h1>
+          <h1 className="text-xl sm:text-2xl font-bold">가격 정보</h1>
           <p className="text-gray-500 text-sm">
             *언어와 레어도를 선택하여 가격을 확인하세요.
           </p>
@@ -20,7 +20,7 @@ export default function MarketPrice() {
       <div className="mb-8">
         <div className="flex gap-4 items-start mb-4">
           <div>
-            <p className="text-gray-500">
+            <p className="text-gray-500 text-sm">
               {selectedCardShopsInfo?.prices?.length || 0}개의 가격 정보가
               있습니다.
             </p>

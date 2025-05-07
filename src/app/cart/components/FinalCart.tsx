@@ -12,7 +12,7 @@ import {
 } from '@/lib/api';
 import { useCartStore, CartItem } from '@/store/cartStore';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
 import { X } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
@@ -35,6 +35,14 @@ export default function FinalCart() {
 
   const { excludedCards, excludedStore } = useOptimalStore();
   const { clearCart } = useCartStore();
+
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (optimalPurchaseResult && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [optimalPurchaseResult]);
 
   const isExcludedOn = useMemo(
     () => excludedCards.length > 0 || excludedStore.length > 0,
@@ -268,7 +276,7 @@ export default function FinalCart() {
 
             {/* 모바일 옵션 체크박스 */}
             <Tabs defaultValue="discount" className="block xs:hidden mt-8">
-              <p className="text-gray-700 font-bold">추가 선택 옵션</p>
+              <p className="text-gray-700 font-bold mb-2">추가 선택 옵션</p>
               <TabsList className="w-full mx-auto mb-2">
                 <TabsTrigger value="discount">할인 옵션</TabsTrigger>
                 <TabsTrigger value="region">배송 지역</TabsTrigger>
@@ -350,7 +358,11 @@ export default function FinalCart() {
       </div>
 
       {optimalPurchaseResult && (
-        <div className="mt-4 bg-gray-50 p-4 rounded-md">
+        <div
+          ref={resultRef}
+          className="mt-4 bg-gray-50 p-4 rounded-md"
+          style={{ scrollMarginTop: '80px' }}
+        >
           <OptimalPrices optimalPurchaseResult={optimalPurchaseResult} />
         </div>
       )}

@@ -179,8 +179,12 @@ const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
             onCheckedChange={handleCheckStore}
           />
           <Label className="text-gray-500" htmlFor={siteKey}>
-            이 상점 제외하기
-            <TooltipWithInfoIcon message="해당 상점을 특정한 이유 (재고 부족, 사기 등) 로 제외하고 싶습니다." />
+            <span className="hidden sm:block">이 상점 제외하기</span>
+            <span className="block sm:hidden">제외</span>
+            <TooltipWithInfoIcon
+              className="hidden sm:block"
+              message="해당 상점을 특정한 이유 (재고 부족, 사기 등) 로 제외하고 싶습니다."
+            />
           </Label>
         </div>
       </h2>
