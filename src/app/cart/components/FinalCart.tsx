@@ -432,6 +432,7 @@ function CartItemComponent({
             onLanguageChange={handleLanguageChange}
             onRarityChange={handleRarityChange}
             onQuantityChange={handleQuantityChange}
+            vertical
           />
         </div>
       </div>

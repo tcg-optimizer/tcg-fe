@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@/lib/utils';
 import { Label } from './ui/label';
 import {
   Select,
@@ -20,6 +21,7 @@ interface CardOptionSelectorProps {
   onLanguageChange: (language: TCardLanguageLabel) => void;
   onRarityChange: (rarity: TCardRarityLabel) => void;
   onQuantityChange: (quantity: string) => void;
+  vertical?: boolean;
 }
 
 export default function CardOptionSelector({
@@ -31,9 +33,10 @@ export default function CardOptionSelector({
   onLanguageChange,
   onRarityChange,
   onQuantityChange,
+  vertical = false,
 }: CardOptionSelectorProps) {
   return (
-    <div className="flex gap-2">
+    <div className={cn('flex gap-2', vertical && 'flex-col sm:flex-row')}>
       <div className="flex flex-col gap-2 w-full">
         <Label className="text-gray-500 text-sm">언어</Label>
         <Select value={selectedLanguage} onValueChange={onLanguageChange}>
