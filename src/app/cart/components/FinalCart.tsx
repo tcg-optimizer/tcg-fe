@@ -20,6 +20,8 @@ import { finalCartOptions } from '../data/finalCartOptions';
 import OptimalPrices from './OptimalPrices';
 import TooltipWithInfoIcon from '@/components/TooltipWithInfoIcon';
 import useOptimalStore from '@/store/optimalStore';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import MobileCheckbox from '@/components/MobileCheckbox';
 
 export default function FinalCart() {
   // Zustand 스토어에서 장바구니 상태 가져오기
@@ -186,7 +188,8 @@ export default function FinalCart() {
               </div>
             ))}
 
-            <div className="flex flex-col">
+            {/* 옵션 체크박스  */}
+            <div className="hidden xs:flex flex-col">
               <div className="flex flex-1 flex-col justify-end gap-8 items-center mt-8">
                 {/* 할인 옵션 체크박스 */}
                 <div className="w-full">
@@ -261,20 +264,81 @@ export default function FinalCart() {
                   </div>
                 </div>
               </div>
-              <Button
-                className="mt-8 w-fit mx-auto px-8"
-                type="submit"
-                disabled={isCalculating || selectedItems.length === 0}
-              >
-                {isCalculating
-                  ? '계산 중...'
-                  : optimalPurchaseResult
-                  ? isExcludedOn
-                    ? '특정 상품을 제외하고 다시 계산하기'
-                    : '다시 계산하기'
-                  : '최저가 계산하기'}
-              </Button>
             </div>
+
+            {/* 모바일 옵션 체크박스 */}
+            <Tabs defaultValue="discount" className="block xs:hidden mt-8">
+              <p className="text-gray-700 font-bold">추가 선택 옵션</p>
+              <TabsList className="w-full mx-auto mb-2">
+                <TabsTrigger value="discount">할인 옵션</TabsTrigger>
+                <TabsTrigger value="region">배송 지역</TabsTrigger>
+              </TabsList>
+              <TabsContent value="discount">
+                <div className="flex flex-col gap-2">
+                  {finalCartOptions.discounts.map((discount) => (
+                    <Controller
+                      key={discount.id}
+                      name={`discounts.${discount.id}`}
+                      control={control}
+                      render={({ field }) => (
+                        <MobileCheckbox
+                          id={discount.id}
+                          key={discount.id}
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        >
+                          {discount.label}
+                        </MobileCheckbox>
+                      )}
+                    />
+                  ))}
+                </div>
+              </TabsContent>
+              <TabsContent value="region">
+                <div className="flex flex-col gap-2">
+                  {finalCartOptions.shippingRegion.map((region) => (
+                    <Controller
+                      key={region.id}
+                      name="shippingRegion"
+                      control={control}
+                      render={({ field }) => (
+                        <MobileCheckbox
+                          key={region.id}
+                          id={region.id}
+                          checked={field.value === region.id}
+                          onCheckedChange={(checked) =>
+                            field.onChange(
+                              checked
+                                ? region.id
+                                : field.value === region.id
+                                ? 'default'
+                                : field.value,
+                            )
+                          }
+                        >
+                          {region.label}
+                        </MobileCheckbox>
+                      )}
+                    />
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+
+            <div className="fixed xs:hidden bottom-0 left-0 right-0 bg-white p-4 w-full h-16" />
+            <Button
+              className="mt-8 w-[calc(100%-2rem)] xs:w-fit mx-auto px-8 fixed z-20 xs:static bottom-4 left-0 right-0"
+              type="submit"
+              disabled={isCalculating || selectedItems.length === 0}
+            >
+              {isCalculating
+                ? '계산 중...'
+                : optimalPurchaseResult
+                ? isExcludedOn
+                  ? '특정 상품을 제외하고 다시 계산하기'
+                  : '다시 계산하기'
+                : '최저가 계산하기'}
+            </Button>
 
             {calculationError && (
               <div className="mt-4 p-3 bg-red-100 text-red-800 rounded">
