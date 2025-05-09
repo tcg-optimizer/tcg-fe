@@ -5,10 +5,12 @@ import Link from 'next/link';
 import { ShoppingCartIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-
+import { useCartStore } from '@/store/cartStore';
 export default function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
+
+  const { items: cartItems } = useCartStore();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,10 +24,12 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-10 shadow-sm w-full h-16 bg-white min-w-screen">
-      <div className="w-full h-full grid grid-cols-3 items-center justify-center px-20">
-        <Link href="/" className="">
-          <h1 className="text-2xl font-bold tracking-tight">TCG Scanner</h1>
+    <header className="sticky top-0 z-100 shadow-sm w-full h-16 bg-white min-w-screen">
+      <div className="w-full h-full grid grid-cols-[1fr_auto] gap-8 sm:grid-cols-[1fr_3fr_1fr] items-center justify-center px-6 lg:px-20">
+        <Link href="/" className="hidden sm:block">
+          <h1 className="hidden lg:block text-2xl font-bold tracking-tight">
+            TCG Scanner
+          </h1>
         </Link>
 
         <form onSubmit={handleSearch} className="w-full flex flex-col gap-4">
@@ -35,8 +39,13 @@ export default function Header() {
           />
         </form>
 
-        <Link href="/cart" className="ml-auto">
-          <ShoppingCartIcon className="w-4 h-4" />
+        <Link href="/cart" className="ml-auto relative">
+          <ShoppingCartIcon className="w-5 h-5" />
+          {cartItems.length > 0 && (
+            <span className="absolute top-2 left-3 inline-flex items-center justify-center p-1 text-[8px] font-bold leading-none text-red-100 bg-red-400 w-4 h-4 rounded-full">
+              {cartItems.length}
+            </span>
+          )}
         </Link>
       </div>
     </header>

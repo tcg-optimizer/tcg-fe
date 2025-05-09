@@ -29,7 +29,7 @@ export default function SearchClientForm() {
   };
 
   return (
-    <>
+    <div className="w-full flex flex-col gap-4 my-auto">
       <form onSubmit={handleSearch} className="w-full flex flex-col gap-4">
         <SearchInput
           value={searchTerm}
@@ -50,6 +50,6 @@ export default function SearchClientForm() {
           장바구니 <ArrowUpRight className="w-4 h-4" />
         </h3>
       </div>
-    </>
+    </div>
   );
 }

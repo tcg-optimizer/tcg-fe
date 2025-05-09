@@ -12,7 +12,7 @@ import {
 } from '@/lib/api';
 import { useCartStore, CartItem } from '@/store/cartStore';
 import Image from 'next/image';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
 import { X } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
@@ -20,6 +20,8 @@ import { finalCartOptions } from '../data/finalCartOptions';
 import OptimalPrices from './OptimalPrices';
 import TooltipWithInfoIcon from '@/components/TooltipWithInfoIcon';
 import useOptimalStore from '@/store/optimalStore';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import MobileCheckbox from '@/components/MobileCheckbox';
 
 export default function FinalCart() {
   // Zustand 스토어에서 장바구니 상태 가져오기
@@ -33,6 +35,14 @@ export default function FinalCart() {
 
   const { excludedCards, excludedStore } = useOptimalStore();
   const { clearCart } = useCartStore();
+
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (optimalPurchaseResult && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [optimalPurchaseResult]);
 
   const isExcludedOn = useMemo(
     () => excludedCards.length > 0 || excludedStore.length > 0,
@@ -148,9 +158,9 @@ export default function FinalCart() {
   return (
     <div>
       <div>
-        <h1 className="text-2xl font-bold">장바구니</h1>
+        <h1 className="text-xl sm:text-2xl font-bold">장바구니</h1>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-4 mt-8 bg-gray-50 p-4 rounded-md">
+          <div className="flex flex-col gap-4 mt-4 sm:mt-8 bg-gray-50 p-4 rounded-md">
             <div className="flex justify-between mb-4">
               <div className="flex items-center gap-2">
                 <Checkbox
@@ -158,7 +168,7 @@ export default function FinalCart() {
                   checked={allSelected}
                   onCheckedChange={handleSelectAll}
                 />
-                <Label htmlFor="select-all" className="font-medium">
+                <Label htmlFor="select-all" className="font-bold">
                   전체 선택 ({selectedItems.length}/{items.length})
                 </Label>
               </div>
@@ -166,7 +176,7 @@ export default function FinalCart() {
               <div className="flex items-center gap-2">
                 <Label
                   htmlFor="delete-all"
-                  className="font-medium text-red-500 cursor-pointer"
+                  className="font-bold text-red-500 cursor-pointer"
                   onClick={handleDeleteAll}
                 >
                   전체 삭제
@@ -186,14 +196,15 @@ export default function FinalCart() {
               </div>
             ))}
 
-            <div className="flex flex-col">
+            {/* 옵션 체크박스  */}
+            <div className="hidden xs:flex flex-col">
               <div className="flex flex-1 flex-col justify-end gap-8 items-center mt-8">
                 {/* 할인 옵션 체크박스 */}
                 <div className="w-full">
                   <Label className="text-gray-700 font-bold mb-4">
                     적립 옵션
                   </Label>
-                  <div className="flex gap-8">
+                  <div className="lg:flex gap-8 grid md:grid-cols-3 grid-cols-2">
                     {finalCartOptions.discounts.map((discount) => (
                       <Controller
                         key={discount.id}
@@ -261,20 +272,81 @@ export default function FinalCart() {
                   </div>
                 </div>
               </div>
-              <Button
-                className="mt-8 w-fit mx-auto px-8"
-                type="submit"
-                disabled={isCalculating || selectedItems.length === 0}
-              >
-                {isCalculating
-                  ? '계산 중...'
-                  : optimalPurchaseResult
-                  ? isExcludedOn
-                    ? '특정 상품을 제외하고 다시 계산하기'
-                    : '다시 계산하기'
-                  : '최저가 계산하기'}
-              </Button>
             </div>
+
+            {/* 모바일 옵션 체크박스 */}
+            <Tabs defaultValue="discount" className="block xs:hidden mt-8">
+              <p className="text-gray-700 font-bold mb-2">추가 선택 옵션</p>
+              <TabsList className="w-full mx-auto mb-2">
+                <TabsTrigger value="discount">할인 옵션</TabsTrigger>
+                <TabsTrigger value="region">배송 지역</TabsTrigger>
+              </TabsList>
+              <TabsContent value="discount">
+                <div className="flex flex-col gap-2">
+                  {finalCartOptions.discounts.map((discount) => (
+                    <Controller
+                      key={discount.id}
+                      name={`discounts.${discount.id}`}
+                      control={control}
+                      render={({ field }) => (
+                        <MobileCheckbox
+                          id={discount.id}
+                          key={discount.id}
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        >
+                          {discount.label}
+                        </MobileCheckbox>
+                      )}
+                    />
+                  ))}
+                </div>
+              </TabsContent>
+              <TabsContent value="region">
+                <div className="flex flex-col gap-2">
+                  {finalCartOptions.shippingRegion.map((region) => (
+                    <Controller
+                      key={region.id}
+                      name="shippingRegion"
+                      control={control}
+                      render={({ field }) => (
+                        <MobileCheckbox
+                          key={region.id}
+                          id={region.id}
+                          checked={field.value === region.id}
+                          onCheckedChange={(checked) =>
+                            field.onChange(
+                              checked
+                                ? region.id
+                                : field.value === region.id
+                                ? 'default'
+                                : field.value,
+                            )
+                          }
+                        >
+                          {region.label}
+                        </MobileCheckbox>
+                      )}
+                    />
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+
+            <div className="fixed xs:hidden bottom-0 left-0 right-0 bg-white p-4 w-full h-16" />
+            <Button
+              className="mt-8 w-[calc(100%-2rem)] xs:w-fit mx-auto px-8 fixed z-20 xs:static bottom-4 left-0 right-0"
+              type="submit"
+              disabled={isCalculating || selectedItems.length === 0}
+            >
+              {isCalculating
+                ? '계산 중...'
+                : optimalPurchaseResult
+                ? isExcludedOn
+                  ? '특정 상품을 제외하고 다시 계산하기'
+                  : '다시 계산하기'
+                : '최저가 계산하기'}
+            </Button>
 
             {calculationError && (
               <div className="mt-4 p-3 bg-red-100 text-red-800 rounded">
@@ -286,7 +358,11 @@ export default function FinalCart() {
       </div>
 
       {optimalPurchaseResult && (
-        <div className="mt-4 bg-gray-50 p-4 rounded-md">
+        <div
+          ref={resultRef}
+          className="mt-4 bg-gray-50 p-4 rounded-md"
+          style={{ scrollMarginTop: '80px' }}
+        >
           <OptimalPrices optimalPurchaseResult={optimalPurchaseResult} />
         </div>
       )}
@@ -330,35 +406,35 @@ function CartItemComponent({
   };
 
   return (
-    <div className="flex gap-4">
-      <div className="flex items-center">
-        <Checkbox
-          checked={isSelected}
-          onCheckedChange={(checked) =>
-            onSelectChange(item.id, checked as boolean)
-          }
-        />
-      </div>
-      <div className="w-24 aspect-[2/3] rounded-md overflow-hidden">
-        <Image
-          className="w-full h-full object-cover"
-          src={item.image}
-          alt="card"
-          width={100}
-          height={100}
-        />
-      </div>
-      <div className="w-full flex flex-col">
-        <div className="flex items-center justify-between">
-          <p className="text-lg font-bold">{item.name}</p>
-          <p
-            className="text-gray-500 cursor-pointer"
-            onClick={handleRemoveItem}
-          >
-            <X className="w-4 h-4" />
-          </p>
+    <div className="flex flex-col gap-4">
+      <div className="flex w-full justify-between">
+        <div className="flex items-center">
+          <Checkbox
+            checked={isSelected}
+            onCheckedChange={(checked) =>
+              onSelectChange(item.id, checked as boolean)
+            }
+          />
         </div>
-        <div className="w-full mt-auto">
+        <p className="text-gray-500 cursor-pointer" onClick={handleRemoveItem}>
+          <X className="w-4 h-4" />
+        </p>
+      </div>
+
+      <div className="grid grid-cols-[auto_1fr] gap-4 grid-rows-auto grow">
+        <div className="w-16 sm:w-24 aspect-[2/3] rounded-md overflow-hidden row-span-2">
+          <Image
+            className="w-full h-full object-cover"
+            src={item.image}
+            alt="card"
+            width={100}
+            height={100}
+          />
+        </div>
+        <div className="flex justify-between items-start">
+          <p className="text-base sm:text-lg font-bold">{item.name}</p>
+        </div>
+        <div className="w-full mt-auto sm:col-start-2 col-start-1 col-span-2">
           <CardOptionSelector
             availableLanguages={item.availableLanguages}
             availableRarities={item.availableRarities}
@@ -368,6 +444,7 @@ function CartItemComponent({
             onLanguageChange={handleLanguageChange}
             onRarityChange={handleRarityChange}
             onQuantityChange={handleQuantityChange}
+            vertical
           />
         </div>
       </div>

@@ -62,8 +62,15 @@ export default function AddToCartButton({
   };
 
   return (
-    <Button onClick={handleAddToCart} variant={added ? 'outline' : 'default'}>
-      {added ? '장바구니에 추가됨' : '장바구니에 추가'}
-    </Button>
+    <>
+      <div className="fixed xs:hidden bottom-0 left-0 right-0 bg-white p-4 w-full h-16" />
+      <Button
+        className="fixed z-20 w-[calc(100%-2rem)] xs:w-auto mx-auto xs:mx-0 xs:static bottom-4 left-0 right-0"
+        onClick={handleAddToCart}
+        variant={added ? 'outline' : 'default'}
+      >
+        {added ? '장바구니에 추가됨' : '장바구니에 추가'}
+      </Button>
+    </>
   );
 }

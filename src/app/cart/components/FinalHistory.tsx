@@ -9,16 +9,16 @@ export default function FinalHistory() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mt-8">검색 기록</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mt-8">검색 기록</h1>
 
-      <div className="flex gap-4 mt-8 flex-wrap">
+      <div className="flex justify-between sm:justify-start gap-4 mt-8 flex-wrap">
         {history.map((historyInfo) => (
           <Link
             key={historyInfo.query}
             href={`/result?cardName=${historyInfo.cardName}&used=${historyInfo.cardContitions}`}
-            className={`flex flex-col gap-2 rounded-md p-4 bg-gray-100 max-w-32 cursor-pointer`}
+            className={`flex flex-col gap-2 rounded-md p-4 bg-gray-100 max-w-24 sm:max-w-32 cursor-pointer`}
           >
-            <div className="w-24 aspect-[2/3] rounded-md overflow-hidden">
+            <div className="w-16 sm:w-24 aspect-[2/3] rounded-md overflow-hidden">
               <Image
                 src={historyInfo.cardImage}
                 alt={historyInfo.cardName}

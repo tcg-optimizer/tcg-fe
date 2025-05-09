@@ -125,8 +125,8 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
   return (
     <div className="w-full h-full p-4 flex flex-col bg-gray-50 rounded-lg">
       <div className="grow">
-        <h1 className="text-3xl font-bold">{cardName}</h1>
-        <p className="text-gray-500 mt-4">
+        <h1 className="text-2xl lg:text-3xl font-bold">{cardName}</h1>
+        <p className="text-gray-500 mt-4 text-sm lg:text-base">
           총 {totalProducts || 0}건을 찾았습니다.
         </p>
       </div>
@@ -143,9 +143,9 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
           onRarityChange={handleRarityChange}
           onQuantityChange={handleQuantityChange}
         />
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-between lg:items-center mt-4 flex-col lg:flex-row gap-4">
           <div className="flex items-center gap-2">
-            <h3 className="text-xl font-bold">
+            <h3 className="text-lg lg:text-xl font-bold">
               {`${minSelectedCardPrice.toLocaleString()}원 ~ ${maxSelectedCardPrice.toLocaleString()}원`}
             </h3>
           </div>

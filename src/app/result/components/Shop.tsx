@@ -19,10 +19,12 @@ export default function Shop({ shopInfo }: ShopProps) {
       className="block p-4 border rounded-md shadow-sm transition-all hover:shadow-md"
     >
       <div className="flex justify-between items-start">
-        <h3 className="text-xl font-bold">
+        <h3 className="text-base sm:text-xl font-bold">
           <FormattedShopName name={site} />
         </h3>
-        <div className="text-xl font-bold text-primary">{formattedPrice}원</div>
+        <div className="text-base sm:text-xl font-bold text-primary">
+          {formattedPrice}원
+        </div>
       </div>
 
       <div className="mt-2 text-sm text-muted-foreground">
@@ -33,11 +35,13 @@ export default function Shop({ shopInfo }: ShopProps) {
       </div>
 
       <div className="mt-2 flex justify-between">
-        <p>{cardCode}</p>
+        <p className="text-sm sm:text-base">{cardCode}</p>
         {available ? (
-          <p className="text-green-600 font-medium">구매 가능</p>
+          <p className="text-green-600 text-sm sm:text-base font-medium">
+            구매 가능
+          </p>
         ) : (
-          <p className="text-red-600 font-medium">품절</p>
+          <p className="text-red-600 text-sm sm:text-base font-medium">품절</p>
         )}
       </div>
     </a>

@@ -23,7 +23,7 @@ export default async function CardResult({
 
     return (
       <div>
-        <div className="w-full flex h-[400px] gap-4">
+        <div className="w-full flex flex-col sm:flex-row sm:h-[300px] lg:h-[400px] gap-4">
           <CardFace src={data.image} alt={data.cardName} />
           <div className="flex-1">
             <Suspense fallback={<CardSkeleton />}>
