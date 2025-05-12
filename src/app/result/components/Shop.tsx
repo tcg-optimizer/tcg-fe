@@ -19,10 +19,10 @@ export default function Shop({ shopInfo }: ShopProps) {
       className="block p-4 border rounded-md shadow-sm transition-all hover:shadow-md"
     >
       <div className="flex justify-between items-start">
-        <h3 className="text-base sm:text-xl font-bold">
+        <h3 className="text-base lg:text-xl font-bold">
           <FormattedShopName name={site} />
         </h3>
-        <div className="text-base sm:text-xl font-bold text-primary">
+        <div className="text-base lg:text-xl font-bold text-primary">
           {formattedPrice}원
         </div>
       </div>
