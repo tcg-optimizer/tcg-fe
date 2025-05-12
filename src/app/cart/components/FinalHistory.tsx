@@ -19,13 +19,15 @@ export default function FinalHistory() {
             className={`flex flex-col gap-2 rounded-md p-4 bg-gray-100 max-w-24 sm:max-w-32 cursor-pointer`}
           >
             <div className="w-16 sm:w-24 aspect-[2/3] rounded-md overflow-hidden">
-              <Image
-                src={historyInfo.cardImage}
-                alt={historyInfo.cardName}
-                className="w-full h-full object-cover"
-                width={100}
-                height={100}
-              />
+              {historyInfo.cardImage && (
+                <Image
+                  src={historyInfo.cardImage}
+                  alt={historyInfo.cardName}
+                  className="w-full h-full object-cover"
+                  width={100}
+                  height={100}
+                />
+              )}
             </div>
             <p className="text-sm break-keep break-words">
               <b>{historyInfo.cardName}</b>

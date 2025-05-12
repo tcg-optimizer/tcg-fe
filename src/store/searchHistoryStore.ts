@@ -6,7 +6,7 @@ export interface SearchHistoryItem {
   query: string;
   timestamp: number;
   cardName: string;
-  cardImage: string;
+  cardImage: string | null;
   cardContitions: TCardCondition;
 }
 

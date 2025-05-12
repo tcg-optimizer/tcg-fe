@@ -2,8 +2,8 @@ import { Separator } from '@/components/ui/separator';
 import { fetchCardPricesServer } from '@/lib/api';
 import CardFace from './CardFace';
 import CardInfo from './CardInfo';
-import { ClientMarketPriceWrapper } from './ClientMarketPriceWrapper';
 import { TCardResultResponse } from '@/types/api/result';
+import MarketPrice from './MarketPrice';
 
 interface CardResultProps {
   cardName: string;
@@ -31,7 +31,7 @@ export default async function CardResult({
         <Separator className="my-8" />
 
         <div className="w-full mt-8">
-          <ClientMarketPriceWrapper cardData={cardData} />
+          <MarketPrice />
         </div>
       </div>
     );

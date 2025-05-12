@@ -18,7 +18,7 @@ export default function SearchClientForm() {
       addToHistory({
         query: searchTerm,
         cardName: searchTerm,
-        cardImage: '', // 검색 시점에는 이미지 정보가 없으므로 빈 문자열
+        cardImage: null, // 검색 시점에는 이미지 정보가 없으므로 빈 문자열
         cardContitions: '신품', // TCardCondition 타입에 맞게 수정
       });
 
