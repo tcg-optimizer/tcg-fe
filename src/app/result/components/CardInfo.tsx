@@ -160,6 +160,7 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
           onLanguageChange={handleLanguageChange}
           onRarityChange={handleRarityChange}
           onQuantityChange={handleQuantityChange}
+          vertical
         />
         <div className="flex justify-between lg:items-center mt-4 flex-col lg:flex-row gap-4">
           <div className="flex items-center gap-2">
