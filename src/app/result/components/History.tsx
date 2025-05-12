@@ -48,13 +48,16 @@ const HistoryComponent = ({ historyInfo }: HistoryComponentProps) => {
     >
       <div className="flex gap-2">
         <div className={`relative aspect-[2/3] w-12 rounded-md flex-shrink-0`}>
-          <Image
-            className="min-w-full min-h-full object-cover"
-            src={cardImage}
-            alt="card"
-            width={100}
-            height={100}
-          />
+          {cardImage && (
+            <Image
+              className="min-w-full min-h-full object-cover"
+              src={cardImage}
+              alt="card"
+              width={100}
+              height={100}
+              priority
+            />
+          )}
         </div>
         <div className="flex flex-col">
           <p className="text-md font-bold grow">{cardName}</p>

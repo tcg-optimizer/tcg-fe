@@ -44,11 +44,12 @@ export default function CardOptionSelector({
             <SelectValue placeholder="언어 선택" />
           </SelectTrigger>
           <SelectContent>
-            {availableLanguages.map((language) => (
-              <SelectItem key={language} value={language}>
-                {language}
-              </SelectItem>
-            ))}
+            {availableLanguages &&
+              availableLanguages.map((language) => (
+                <SelectItem key={language} value={language}>
+                  {language}
+                </SelectItem>
+              ))}
           </SelectContent>
         </Select>
       </div>
@@ -59,11 +60,12 @@ export default function CardOptionSelector({
             <SelectValue placeholder="레어도 선택" />
           </SelectTrigger>
           <SelectContent>
-            {availableRarities[selectedLanguage].map((rarity) => (
-              <SelectItem key={rarity} value={rarity}>
-                {rarity}
-              </SelectItem>
-            ))}
+            {availableRarities?.[selectedLanguage] &&
+              availableRarities[selectedLanguage].map((rarity) => (
+                <SelectItem key={rarity} value={rarity}>
+                  {rarity}
+                </SelectItem>
+              ))}
           </SelectContent>
         </Select>
       </div>
