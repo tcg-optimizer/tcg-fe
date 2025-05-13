@@ -27,16 +27,16 @@ const finalCartOptions = {
         '네이버페이 기본 적립금(2.5%)과 네이버 리뷰 적립금(3000원 이상 제품당 150원)을 고려해서 최저가 조합 계산을 합니다.',
     },
     {
-      id: 'naverBankbookPoints',
-      label: '네이버 제휴통장 적립금',
-      description:
-        '네이버 제휴통장(네이버페이 머니 하나통장, 미래에셋증권 CMA-RP 네이버통장) 적립금(0.5%)을 고려해서 최저가 조합 계산을 합니다.',
-    },
-    {
       id: 'naverMembershipPoints',
       label: '네이버 멤버십 적립금',
       description:
         '네이버 멤버십 적립금(4%)을 고려해서 최저가 조합 계산을 합니다.',
+    },
+    {
+      id: 'naverBankbookPoints',
+      label: '네이버 제휴통장 적립금',
+      description:
+        '네이버 제휴통장(네이버페이 머니 하나통장, 미래에셋증권 CMA-RP 네이버통장) 적립금(0.5%)을 고려해서 최저가 조합 계산을 합니다.',
     },
     {
       id: 'naverHyundaiCardPoints',
