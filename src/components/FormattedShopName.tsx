@@ -8,7 +8,7 @@ const FormattedShopName = ({ name }: { name: string }) => {
     return (
       <span className="flex items-center gap-2">
         <Image
-          src="/naver_icon.png"
+          src="/icons/naver_icon.png"
           alt="Naver"
           width={64}
           height={64}
