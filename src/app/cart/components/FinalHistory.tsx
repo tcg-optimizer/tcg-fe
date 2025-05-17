@@ -11,7 +11,7 @@ export default function FinalHistory() {
     <div>
       <h1 className="text-xl sm:text-2xl font-bold mt-8">검색 기록</h1>
 
-      <div className="flex justify-between sm:justify-start gap-4 mt-8 flex-wrap">
+      <div className="flex gap-4 mt-8 flex-wrap">
         {history.map((historyInfo) => (
           <Link
             key={historyInfo.query}
@@ -29,7 +29,7 @@ export default function FinalHistory() {
                 />
               )}
             </div>
-            <p className="text-sm break-keep break-words">
+            <p className="text-xs sm:text-sm break-keep break-words">
               <b>{historyInfo.cardName}</b>
             </p>
           </Link>

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import DeletableBadgeButton from '@/components/DeletableBadgeButton';
+import { debounce } from 'lodash';
 
 export default function SearchHistory() {
   const { history, removeFromHistory, clearHistory } = useSearchHistoryStore();
@@ -16,6 +17,19 @@ export default function SearchHistory() {
     setMounted(true);
   }, []);
 
+  // debounce된 함수들
+  const debouncedClearHistory = debounce(() => {
+    clearHistory();
+  }, 300);
+
+  const debouncedSearchClick = debounce((query: string) => {
+    router.push(`/result?cardName=${encodeURIComponent(query)}&used=false`);
+  }, 300);
+
+  const debouncedRemoveFromHistory = debounce((query: string) => {
+    removeFromHistory(query);
+  }, 300);
+
   // 클라이언트에서만 표시
   if (!mounted) return null;
 
@@ -23,7 +37,7 @@ export default function SearchHistory() {
   if (history.length === 0) return null;
 
   const handleSearchClick = (query: string) => {
-    router.push(`/result?cardName=${encodeURIComponent(query)}&used=true`);
+    debouncedSearchClick(query);
   };
 
   return (
@@ -33,7 +47,7 @@ export default function SearchHistory() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={clearHistory}
+          onClick={debouncedClearHistory}
           className="h-6 px-2 text-xs"
         >
           전체 삭제
@@ -46,7 +60,7 @@ export default function SearchHistory() {
             key={item.query}
             content={item.query}
             onClick={() => handleSearchClick(item.query)}
-            onDelete={() => removeFromHistory(item.query)}
+            onDelete={() => debouncedRemoveFromHistory(item.query)}
           />
         ))}
       </div>
