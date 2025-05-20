@@ -12,7 +12,7 @@ import {
 } from '@/lib/api';
 import { useCartStore, CartItem } from '@/store/cartStore';
 import Image from 'next/image';
-import { useMemo, useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
 import { X } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
@@ -37,17 +37,13 @@ export default function FinalCart() {
   const { clearCart } = useCartStore();
 
   const resultRef = useRef<HTMLDivElement>(null);
+  const calcButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (optimalPurchaseResult && resultRef.current) {
       resultRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [optimalPurchaseResult]);
-
-  const isExcludedOn = useMemo(
-    () => excludedCards.length > 0 || excludedStore.length > 0,
-    [excludedCards, excludedStore],
-  );
 
   const allSelected = items.length > 0 && selectedItems.length === items.length;
 
@@ -338,13 +334,12 @@ export default function FinalCart() {
               className="mt-8 w-[calc(100%-2rem)] xs:w-fit mx-auto px-8 fixed z-20 xs:static bottom-4 left-0 right-0"
               type="submit"
               disabled={isCalculating || selectedItems.length === 0}
+              ref={calcButtonRef}
             >
               {isCalculating
                 ? '계산 중...'
                 : optimalPurchaseResult
-                ? isExcludedOn
-                  ? '특정 상품을 제외하고 다시 계산하기'
-                  : '다시 계산하기'
+                ? '다시 계산하기'
                 : '최저가 계산하기'}
             </Button>
 
@@ -360,10 +355,25 @@ export default function FinalCart() {
       {optimalPurchaseResult && (
         <div
           ref={resultRef}
-          className="mt-4 bg-gray-50 p-4 rounded-md"
+          className="mt-4 bg-gray-50 p-4 rounded-md w-full flex flex-col gap-4"
           style={{ scrollMarginTop: '80px' }}
         >
           <OptimalPrices optimalPurchaseResult={optimalPurchaseResult} />
+          <Button
+            className="mt-8 w-[calc(100%-2rem)] xs:w-fit mx-auto px-8 fixed z-20 xs:static bottom-4 left-0 right-0"
+            type="submit"
+            disabled={isCalculating || selectedItems.length === 0}
+            onClick={() => {
+              // 위의 버튼을 클릭하는 것과 동일한 효과
+              calcButtonRef.current?.click();
+            }}
+          >
+            {isCalculating
+              ? '계산 중...'
+              : optimalPurchaseResult
+              ? '다시 계산하기'
+              : '최저가 계산하기'}
+          </Button>
         </div>
       )}
     </div>

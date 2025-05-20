@@ -6,6 +6,7 @@ import { ShoppingCartIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useCartStore } from '@/store/cartStore';
+import Logo from '@/components/Logo';
 export default function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
@@ -27,15 +28,14 @@ export default function Header() {
     <header className="sticky top-0 z-100 shadow-sm w-full h-16 bg-white min-w-screen">
       <div className="w-full h-full grid grid-cols-[1fr_auto] gap-8 sm:grid-cols-[1fr_3fr_1fr] items-center justify-center px-6 lg:px-20">
         <Link href="/" className="hidden sm:block">
-          <h1 className="hidden lg:block text-2xl font-bold tracking-tight">
-            TCG Scanner
-          </h1>
+          <Logo className="h-12 shrink-0" />
         </Link>
 
         <form onSubmit={handleSearch} className="w-full flex flex-col gap-4">
           <SearchInput
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="max-w-[400px]"
           />
         </form>
 

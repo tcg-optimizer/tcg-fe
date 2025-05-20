@@ -23,14 +23,16 @@ export default function CardFace({ src, alt, className }: CardFaceProps) {
         'mx-auto aspect-[2/3] w-max h-[400px] sm:h-full rounded-lg border-4 box-content',
       )}
     >
-      <Image
-        src={srcImage!}
-        alt={alt || ''}
-        width={0}
-        height={0}
-        sizes="100vw"
-        className="w-full h-full object-cover rounded-md"
-      />
+      {srcImage && (
+        <Image
+          src={srcImage!}
+          alt={alt || ''}
+          width={0}
+          height={0}
+          sizes="100vw"
+          className="w-full h-full object-cover rounded-md"
+        />
+      )}
     </div>
   );
 }

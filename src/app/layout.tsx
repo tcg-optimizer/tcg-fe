@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
 import StoreInitializer from '@/components/StoreInitializer';
+import Footer from '@/components/Footer';
+import { PublicEnvScript } from 'next-runtime-env';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardJPVariable.woff2',
@@ -11,7 +13,7 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'TCG 카드 가격 비교',
+  title: 'tcgscanner',
   description:
     '여러 판매처의 TCG 카드 가격을 비교하고 최적의 구매 조합을 계산합니다.',
 };
@@ -23,13 +25,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={pretendard.variable}>
+      <head>
+        <PublicEnvScript />
+      </head>
       <body className={`${pretendard.className} antialiased`}>
         <StoreInitializer />
         <div className="mx-auto">
           <main>{children}</main>
-          <footer className="py-6 text-center text-gray-500 text-sm">
-            © 2025 TCG 카드 가격 비교. All rights reserved.
-          </footer>
+          <Footer />
         </div>
       </body>
     </html>

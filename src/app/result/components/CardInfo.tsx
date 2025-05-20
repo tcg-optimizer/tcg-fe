@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import CardOptionSelector from '@/components/CardOptionSelector';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
 import { objectFromEntries, objectKeys } from '@/lib/utils';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useResultStore } from '@/store/resultStore';
 import AddToCartButton from './AddToCartButton';
 import { useSearchHistoryStore } from '@/store/searchHistoryStore';
@@ -21,6 +21,19 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
   const cardImage = data.image;
   const cardCacheId = cacheId;
   const totalProducts = data.totalProducts;
+
+  const [selectedLanguage, setSelectedLanguage] =
+    useState<TCardLanguageLabel>('한글판');
+  const [selectedRarity, setSelectedRarity] =
+    useState<TCardRarityLabel>('노멀');
+
+  const {
+    quantity,
+    setQuantity,
+    selectedCardShopsInfo,
+    setSelectedCardShopsInfo,
+  } = useResultStore();
+  const { addToHistory } = useSearchHistoryStore();
 
   const availableLanguages = useMemo(
     () => sortCardLanguages(objectKeys(cardRarityPrices)),
@@ -39,18 +52,6 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
     [availableLanguages, cardRarityPrices],
   );
 
-  const {
-    selectedLanguage,
-    selectedRarity,
-    quantity,
-    setSelectedLanguage,
-    setSelectedRarity,
-    setQuantity,
-    selectedCardShopsInfo,
-    setSelectedCardShopsInfo,
-  } = useResultStore();
-  const { addToHistory } = useSearchHistoryStore();
-
   const selectedCardPrices = useMemo(() => {
     if (!selectedCardShopsInfo) return [];
 
@@ -65,16 +66,25 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
 
   // **************** Handlers ****************
 
-  const handleLanguageChange = (language: TCardLanguageLabel) => {
-    setSelectedLanguage(language);
-    setSelectedRarity(availableRarities[language][0]);
-  };
-  const handleRarityChange = (rarity: TCardRarityLabel) => {
-    setSelectedRarity(rarity);
-  };
-  const handleQuantityChange = (quantity: string) => {
-    setQuantity(parseInt(quantity));
-  };
+  const handleLanguageChange = useCallback(
+    (language: TCardLanguageLabel) => {
+      setSelectedLanguage(language);
+      setSelectedRarity(availableRarities[language][0]);
+    },
+    [availableRarities, setSelectedLanguage, setSelectedRarity],
+  );
+  const handleRarityChange = useCallback(
+    (rarity: TCardRarityLabel) => {
+      setSelectedRarity(rarity);
+    },
+    [setSelectedRarity],
+  );
+  const handleQuantityChange = useCallback(
+    (quantity: string) => {
+      setQuantity(parseInt(quantity));
+    },
+    [setQuantity],
+  );
 
   // **************** Effects ****************
 
@@ -112,6 +122,14 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
   ]);
 
   useEffect(() => {
+    if (!cardRarityPrices) return;
+    if (!selectedLanguage || !selectedRarity) return;
+    if (
+      !cardRarityPrices[selectedLanguage] ||
+      !cardRarityPrices[selectedLanguage][selectedRarity]
+    )
+      return;
+
     setSelectedCardShopsInfo(
       cardRarityPrices[selectedLanguage][selectedRarity],
     );
@@ -142,6 +160,7 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
           onLanguageChange={handleLanguageChange}
           onRarityChange={handleRarityChange}
           onQuantityChange={handleQuantityChange}
+          vertical
         />
         <div className="flex justify-between lg:items-center mt-4 flex-col lg:flex-row gap-4">
           <div className="flex items-center gap-2">
