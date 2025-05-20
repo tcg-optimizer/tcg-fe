@@ -3,6 +3,7 @@ import './globals.css';
 import localFont from 'next/font/local';
 import StoreInitializer from '@/components/StoreInitializer';
 import Footer from '@/components/Footer';
+import { PublicEnvScript } from 'next-runtime-env';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardJPVariable.woff2',
@@ -24,6 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={pretendard.variable}>
+      <head>
+        <PublicEnvScript />
+      </head>
       <body className={`${pretendard.className} antialiased`}>
         <StoreInitializer />
         <div className="mx-auto">

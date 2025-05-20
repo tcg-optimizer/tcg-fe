@@ -1,8 +1,12 @@
 import { MailIcon } from 'lucide-react';
+import { env } from 'next-runtime-env';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const Footer = () => {
+  const frontendVersion = env('NEXT_PUBLIC_FRONT_VERSION') ?? 'dev';
+  const backendVersion = env('NEXT_PUBLIC_BACK_VERSION') ?? 'dev';
+
   return (
     <footer className="py-6 px-6 text-center text-gray-500 text-sm grid grid-cols-[1fr_auto_1fr] gap-4 w-full justify-center items-center mt-8">
       <div></div>
@@ -39,8 +43,7 @@ const Footer = () => {
       </div>
       <div>
         <p className="text-xs ml-auto w-fit text-transparent" aria-hidden>
-          {`${process.env.FRONT_VERSION ?? 'dev'}`} /{' '}
-          {`${process.env.BACK_VERSION ?? 'dev'}`}
+          {`${frontendVersion}`} / {`${backendVersion}`}
         </p>
       </div>
     </footer>
