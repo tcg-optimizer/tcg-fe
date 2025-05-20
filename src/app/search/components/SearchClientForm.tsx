@@ -5,27 +5,28 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowUpRight } from 'lucide-react';
 import { useSearchHistoryStore } from '@/store/searchHistoryStore';
+import { debounce } from 'lodash';
 
 export default function SearchClientForm() {
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
   const { addToHistory } = useSearchHistoryStore();
 
+  const debouncedSearch = debounce((term: string) => {
+    if (term.trim()) {
+      addToHistory({
+        query: term,
+        cardName: term,
+        cardImage: null,
+        cardContitions: '신품',
+      });
+      router.push(`/result?cardName=${encodeURIComponent(term)}&used=false`);
+    }
+  }, 300);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchTerm.trim()) {
-      // 검색어를 기록에 추가
-      addToHistory({
-        query: searchTerm,
-        cardName: searchTerm,
-        cardImage: null, // 검색 시점에는 이미지 정보가 없으므로 빈 문자열
-        cardContitions: '신품', // TCardCondition 타입에 맞게 수정
-      });
-
-      router.push(
-        `/result?cardName=${encodeURIComponent(searchTerm)}&used=false`,
-      );
-    }
+    debouncedSearch(searchTerm);
   };
 
   return (

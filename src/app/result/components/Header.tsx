@@ -7,21 +7,23 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useCartStore } from '@/store/cartStore';
 import Logo from '@/components/Logo';
+import { debounce } from 'lodash';
+
 export default function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
 
   const { items: cartItems } = useCartStore();
 
+  const debouncedSearch = debounce((term: string) => {
+    if (term.trim()) {
+      router.push(`/result?cardName=${encodeURIComponent(term)}&used=false`);
+    }
+  }, 300);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchTerm.trim()) {
-      // 검색어를 기록에 추가
-
-      router.push(
-        `/result?cardName=${encodeURIComponent(searchTerm)}&used=false`,
-      );
-    }
+    debouncedSearch(searchTerm);
   };
 
   return (
