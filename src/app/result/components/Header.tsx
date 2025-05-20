@@ -35,6 +35,7 @@ export default function Header() {
           <SearchInput
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            className="max-w-[400px]"
           />
         </form>
 
