@@ -47,6 +47,7 @@ jobs:
             # nvm 실행
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
+            nvm use 22
 
             # 버전 설정 및 재시작
             NEXT_PUBLIC_FRONT_VERSION=$(git rev-parse --short HEAD) \
