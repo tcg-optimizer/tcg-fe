@@ -44,6 +44,10 @@ jobs:
           script: |
             cd /home/ubuntu/fe
 
+            # nvm 실행
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+
             # 버전 설정 및 재시작
             NEXT_PUBLIC_FRONT_VERSION=$(git rev-parse --short HEAD) \
             NEXT_PUBLIC_BACK_VERSION=$(git -C ../be rev-parse --short HEAD) \
