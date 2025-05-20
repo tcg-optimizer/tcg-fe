@@ -183,7 +183,7 @@ const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
             <span className="block sm:hidden">제외</span>
             <TooltipWithInfoIcon
               className="hidden sm:block"
-              message="해당 상점을 특정한 이유 (재고 부족, 사기 등) 로 제외하고 싶습니다."
+              message="해당 상점을 제외하고 싶습니다."
             />
           </Label>
         </div>
@@ -236,7 +236,7 @@ const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
                 <span className="block sm:hidden">제외</span>
                 <TooltipWithInfoIcon
                   className="hidden sm:block"
-                  message="해당 상점의 상품을 특정한 이유 (재고 부족, 사기 등) 로 제외하고 싶습니다."
+                  message="해당 상점의 상품을 특정한 이유 (재고 부족, 중고 상품 등) 로 제외하고 싶습니다."
                 />
               </Label>
             </div>
