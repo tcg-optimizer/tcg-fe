@@ -44,6 +44,10 @@ jobs:
           script: |
             cd /home/ubuntu/fe
 
+            # git commit 최신으로 설정
+            git switch main
+            git pull origin main
+
             # nvm 실행
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
