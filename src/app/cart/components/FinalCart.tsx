@@ -14,7 +14,7 @@ import { useCartStore, CartItem } from '@/store/cartStore';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
-import { X } from 'lucide-react';
+import { Trash2, X } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
 import { finalCartOptions } from '../data/finalCartOptions';
 import OptimalPrices from './OptimalPrices';
@@ -158,27 +158,27 @@ export default function FinalCart() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4 mt-4 sm:mt-8 bg-gray-50 p-4 rounded-md">
             <div className="flex justify-between mb-4">
-              <div className="flex items-center gap-2">
+              <Label
+                className="flex items-center gap-2 font-bold border rounded-md p-2 px-4 cursor-pointer bg-background shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50"
+                htmlFor="select-all"
+              >
                 <Checkbox
                   id="select-all"
                   checked={allSelected}
                   onCheckedChange={handleSelectAll}
                 />
-                <Label htmlFor="select-all" className="font-bold">
-                  전체 선택 ({selectedItems.length}/{items.length})
-                </Label>
-              </div>
+                전체 선택 ({selectedItems.length}/{items.length})
+              </Label>
 
-              <div className="flex items-center gap-2">
-                <Label
-                  htmlFor="delete-all"
-                  className="font-bold text-red-500 cursor-pointer"
-                  onClick={handleDeleteAll}
-                >
-                  전체 삭제
-                </Label>
-                <X className="w-4 h-4 text-red-500 cursor-pointer" />
-              </div>
+              <Button
+                variant="outline"
+                onClick={handleDeleteAll}
+                type="button"
+                className="text-red-500 hover:bg-red-500 hover:text-white"
+              >
+                <span className="text-sm">전체 삭제</span>
+                <Trash2 className="w-4 h-4 " />
+              </Button>
             </div>
 
             {items.map((item, index) => (
