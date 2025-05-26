@@ -118,7 +118,7 @@ const OptimalPrices = ({ optimalPurchaseResult }: OptimalPricesProps) => {
         </p>
         <div className="flex items-center gap-2 text-green-600">
           <p>-</p>
-          <p className="flex-1">적립금:</p>
+          <p className="flex-1">총 적립금:</p>
         </div>
         <p className="text-green-600">
           {optimalPurchaseResult.totalPointsEarned.toLocaleString()}원
@@ -252,12 +252,22 @@ const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
         );
       })}
       <div className="grid grid-cols-2 gap-2 gap-x-4 w-fit ml-auto mt-4 text-right [&>*]:min-w-[100px]">
-        <p>배송비:</p>
-        <p>{stores.shippingCost.toLocaleString()}원</p>
-        <p>소계:</p>
-        <p className="font-bold">
-          {(stores.finalPrice + stores.pointsEarned).toLocaleString()}원
+        <p>상품 가격:</p>
+        <p>{stores.productCost.toLocaleString()}원</p>
+        <div className="flex items-center gap-2 text-red-400">
+          <p>+</p>
+          <p className="flex-1">배송비:</p>
+        </div>
+        <p className="text-red-400">{stores.shippingCost.toLocaleString()}원</p>
+        <div className="flex items-center gap-2 text-green-600">
+          <p>-</p>
+          <p className="flex-1">적립금:</p>
+        </div>
+        <p className="text-green-600">
+          {stores.pointsEarned.toLocaleString()}원
         </p>
+        <p>소계:</p>
+        <p className="font-bold">{stores.finalPrice.toLocaleString()}원</p>
       </div>
     </div>
   );
