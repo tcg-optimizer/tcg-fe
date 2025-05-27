@@ -3,9 +3,17 @@
 import SearchInput from '@/components/SearchInput';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Info } from 'lucide-react';
 import { useSearchHistoryStore } from '@/store/searchHistoryStore';
 import { debounce } from 'lodash';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
+import SearchGuide from './SearchGuide';
 
 export default function SearchClientForm() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -41,9 +49,23 @@ export default function SearchClientForm() {
         </button>
       </form>
 
-      <div className="w-full mb-4">
+      <div className="w-full mb-4 flex justify-between">
+        <Sheet>
+          <SheetTrigger asChild>
+            <h3 className="text-sm font-medium flex items-center gap-2 cursor-pointer border-b-2 border-transparent transition-all ease-in-out duration-150 hover:text-blue-400 hover:border-blue-400 pb-1 w-fit">
+              검색 가이드 <Info className="w-4 h-4" />
+            </h3>
+          </SheetTrigger>
+          <SheetContent className="w-full sm:w-[400px]">
+            <SheetHeader>
+              <SheetTitle className="text-lg font-bold">검색 가이드</SheetTitle>
+            </SheetHeader>
+            <SearchGuide />
+          </SheetContent>
+        </Sheet>
+
         <h3
-          className="ml-auto text-sm font-medium flex items-center gap-2 cursor-pointer border-b-2 border-transparent transition-all ease-in-out duration-150 hover:text-blue-400 hover:border-blue-400 pb-1 w-fit"
+          className="text-sm font-medium flex items-center gap-2 cursor-pointer border-b-2 border-transparent transition-all ease-in-out duration-150 hover:text-blue-400 hover:border-blue-400 pb-1 w-fit"
           onClick={() => {
             router.push('/cart');
           }}
