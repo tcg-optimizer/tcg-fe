@@ -1,6 +1,6 @@
 const SearchGuide = () => {
   return (
-    <div className="p-4 [&>p]:mb-8 overflow-y-auto">
+    <div className="p-4 overflow-y-auto [&>p]:mb-8 [&>p]:break-keep [&>p]:break-words">
       <p>
         검색 시 카드의 띄어쓰기를 하지 않는 것을 권장합니다. → 하루 우라라 (X),
         하루우라라 (O)
@@ -17,7 +17,8 @@ const SearchGuide = () => {
       </p>
       <p>
         <b>ARG☆S</b> 카드군의 경우 ARG☆S 이름 그대로 검색해야 합니다. →
-        ARG☆S-영관의 아드라 “아르고스타즈”로 검색하면 문제가 생길 수 있습니다.{' '}
+        ARG☆S-영관의 아드라 <br />
+        “아르고스타즈”로 검색하면 문제가 생길 수 있습니다.{' '}
       </p>
       <p>
         <b>A·O·J</b> 카드군의 경우 매우 많은 예외 케이스가 존재하기 때문에 전부
