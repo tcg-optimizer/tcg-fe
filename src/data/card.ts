@@ -63,6 +63,18 @@ const cardRarities = [
     label: '시크릿 레어',
   },
   {
+    value: 'rush-rare',
+    label: '러시 레어',
+  },
+  {
+    value: 'gold-rush-rare',
+    label: '골드 러시 레어',
+  },
+  {
+    value: 'over-rush-rare',
+    label: '오버 러시 레어',
+  },
+  {
     value: 'holo',
     label: '홀로그래픽 레어',
   },
