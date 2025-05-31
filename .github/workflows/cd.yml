@@ -53,6 +53,9 @@ jobs:
             source ~/.nvm/nvm.sh
             nvm use 22
 
+            # yarn 의존성 재설치
+            yarn
+
             # 버전 설정 및 재시작
             NEXT_PUBLIC_FRONT_VERSION=$(git rev-parse --short HEAD) \
             NEXT_PUBLIC_BACK_VERSION=$(git -C ../be rev-parse --short HEAD) \
