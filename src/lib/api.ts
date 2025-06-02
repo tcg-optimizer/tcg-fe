@@ -3,6 +3,7 @@
 import { TCardResultResponse } from '@/types/api/result';
 import { TCardShopInfo } from '@/types/card';
 import { TPointOption } from '@/types/cart';
+import { headers } from 'next/headers';
 
 // 내부 API 라우트 URL 생성 함수
 function getBaseUrl() {
@@ -28,6 +29,17 @@ export async function fetchCardPricesServer(
   includeUsed: boolean = true,
 ) {
   try {
+    const headersList = await headers();
+    const clientIP = headersList.get('x-forwarded-for');
+    console.log(
+      `[API] /rarity-prices | [Client IP]: ${clientIP} | [Data]: ${JSON.stringify(
+        {
+          cardName,
+          includeUsed,
+        },
+      )}`,
+    );
+
     const response = await fetch(
       `${API_ROUTE_URL}/rarity-prices?cardName=${encodeURIComponent(
         cardName,
@@ -83,6 +95,20 @@ export async function calculateOptimalPurchase(
   excludedStores: string[] = [],
 ) {
   try {
+    const headersList = await headers();
+    const clientIP = headersList.get('x-forwarded-for');
+    console.log(
+      `[API] /optimal-purchase | [Client IP]: ${clientIP} | [Data]: ${JSON.stringify(
+        {
+          cards,
+          shippingRegion,
+          ...discounts,
+          excludedProductIds,
+          excludedStores,
+        },
+      )}`,
+    );
+
     const response = await fetch(`${API_ROUTE_URL}/optimal-purchase`, {
       method: 'POST',
       headers: {
