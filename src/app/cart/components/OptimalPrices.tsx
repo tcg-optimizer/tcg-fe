@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { OptimalPurchaseResponse } from '@/lib/api';
+import { OptimalPurchaseResponse } from '@/lib/api/optimal-purchase';
 import useOptimalStore, { TExcludedCard } from '@/store/optimalStore';
 import Image from 'next/image';
 

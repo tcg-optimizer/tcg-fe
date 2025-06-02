@@ -9,7 +9,7 @@ import {
   CardPurchaseRequest,
   OptimalPurchaseResponse,
   calculateOptimalPurchase,
-} from '@/lib/api';
+} from '@/lib/api/optimal-purchase';
 import { useCartStore, CartItem } from '@/store/cartStore';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';

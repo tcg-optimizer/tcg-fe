@@ -1,12 +1,22 @@
 import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
+import { fetchCardPricesServer } from './api/rarity-prices';
 import {
-  fetchCardPricesServer,
   calculateOptimalPurchase,
   CardPurchaseRequest,
-} from './api';
+} from './api/optimal-purchase';
 
 // fetch 모킹
 global.fetch = vi.fn();
+
+// Next.js headers 함수 모킹
+vi.mock('next/headers', () => ({
+  headers: vi.fn(() => ({
+    get: vi.fn((key: string) => {
+      if (key === 'x-forwarded-for') return '127.0.0.1';
+      return null;
+    }),
+  })),
+}));
 
 describe('API 함수 테스트', () => {
   beforeEach(() => {
