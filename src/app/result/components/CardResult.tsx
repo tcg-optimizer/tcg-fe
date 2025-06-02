@@ -1,5 +1,5 @@
 import { Separator } from '@/components/ui/separator';
-import { fetchCardPricesServer } from '@/lib/api';
+import { fetchCardPricesServer } from '@/lib/api/rarity-prices';
 import CardFace from './CardFace';
 import CardInfo from './CardInfo';
 import { TCardResultResponse } from '@/types/api/result';

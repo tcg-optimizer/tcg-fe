@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 const API_BASE_URL =
@@ -7,6 +8,14 @@ const API_BASE_URL =
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
+
+    const headersList = await headers();
+    const clientIP = headersList.get('x-forwarded-for');
+    console.log(
+      `[API] /optimal-purchase | [Client IP]: ${clientIP} | [Data]: ${JSON.stringify(
+        body,
+      )}`,
+    );
 
     // 필수 파라미터 검증
     if (!body.cards || !Array.isArray(body.cards) || body.cards.length === 0) {
