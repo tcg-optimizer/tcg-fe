@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useCartStore, CartItem } from './cartStore';
+import { vi } from 'vitest';
 
 // 테스트용 카트 아이템 생성 헬퍼
 const createMockCartItem = (overrides: Partial<CartItem> = {}): CartItem => ({
@@ -35,7 +36,10 @@ describe('CartStore 테스트', () => {
 
       const { items } = useCartStore.getState();
       expect(items).toHaveLength(1);
-      expect(items[0]).toEqual(mockItem);
+
+      const { lastModified, ...rest } = items[0];
+      expect(rest).toEqual(mockItem);
+      expect(lastModified).toBeDefined();
     });
 
     it('동일한 아이템을 추가하면 수량이 증가해야 하며, 최대 3개까지만 증가해야 함', () => {
@@ -146,6 +150,145 @@ describe('CartStore 테스트', () => {
 
       const foundItem = findItem(mockItem);
       expect(foundItem).toBeUndefined();
+    });
+  });
+
+  describe('아이템 만료시간 기능', () => {
+    beforeEach(() => {
+      // 시간 관련 테스트를 위해 Date.now를 모킹할 수 있도록 준비
+      vi.restoreAllMocks();
+    });
+
+    it('새로 추가된 아이템에 lastModified가 설정되어야 함', () => {
+      const mockItem = createMockCartItem();
+      const { addItem } = useCartStore.getState();
+      const beforeTime = Date.now();
+
+      addItem(mockItem);
+
+      const { items } = useCartStore.getState();
+      const addedItem = items[0];
+
+      expect(addedItem.lastModified).toBeDefined();
+      expect(addedItem.lastModified).toBeGreaterThanOrEqual(beforeTime);
+    });
+
+    it('아이템 수량 업데이트 시 lastModified가 갱신되어야 함', () => {
+      const mockItem = createMockCartItem();
+      const { addItem, updateQuantity } = useCartStore.getState();
+
+      addItem(mockItem);
+      const originalLastModified =
+        useCartStore.getState().items[0].lastModified;
+
+      // 약간의 시간 지연
+      vi.useFakeTimers();
+      vi.advanceTimersByTime(1000);
+
+      updateQuantity(mockItem.id, 2);
+
+      const { items } = useCartStore.getState();
+      const updatedItem = items[0];
+
+      expect(updatedItem.lastModified).toBeGreaterThan(originalLastModified!);
+      vi.useRealTimers();
+    });
+
+    it('아이템 언어 업데이트 시 lastModified가 갱신되어야 함', () => {
+      const mockItem = createMockCartItem();
+      const { addItem, updateLanguage } = useCartStore.getState();
+
+      addItem(mockItem);
+      const originalLastModified =
+        useCartStore.getState().items[0].lastModified;
+
+      // 약간의 시간 지연
+      vi.useFakeTimers();
+      vi.advanceTimersByTime(1000);
+
+      updateLanguage(mockItem.id, '일본판');
+
+      const { items } = useCartStore.getState();
+      const updatedItem = items[0];
+
+      expect(updatedItem.lastModified).toBeGreaterThan(originalLastModified!);
+      vi.useRealTimers();
+    });
+
+    it('아이템 레어도 업데이트 시 lastModified가 갱신되어야 함', () => {
+      const mockItem = createMockCartItem();
+      const { addItem, updateRarity } = useCartStore.getState();
+
+      addItem(mockItem);
+      const originalLastModified =
+        useCartStore.getState().items[0].lastModified;
+
+      // 약간의 시간 지연
+      vi.useFakeTimers();
+      vi.advanceTimersByTime(1000);
+
+      updateRarity(mockItem.id, '노멀');
+
+      const { items } = useCartStore.getState();
+      const updatedItem = items[0];
+
+      expect(updatedItem.lastModified).toBeGreaterThan(originalLastModified!);
+      vi.useRealTimers();
+    });
+
+    it('만료된 아이템은 findItem에서 찾을 수 없어야 함', () => {
+      const mockItem = createMockCartItem();
+      const { findItem } = useCartStore.getState();
+
+      // 과거 시간으로 설정된 아이템을 직접 추가
+      const expiredTime = Date.now() - 1000 * 60 * 60 * 13; // 13시간 전 (만료시간 12시간 초과)
+      const expiredItem = { ...mockItem, lastModified: expiredTime };
+
+      // store의 items에 직접 설정 (테스트 목적)
+      useCartStore.setState({ items: [expiredItem] });
+
+      // 만료된 아이템은 findItem으로 찾을 수 없어야 함
+      const foundItem = findItem(mockItem);
+      expect(foundItem).toBeUndefined();
+    });
+
+    it('동일한 아이템을 다시 추가할 때 lastModified가 갱신되어야 함', () => {
+      const mockItem = createMockCartItem({ quantity: 1 });
+      const { addItem } = useCartStore.getState();
+
+      // 첫 번째 추가
+      addItem(mockItem);
+      const firstAddTime = useCartStore.getState().items[0].lastModified;
+
+      // 시간 지연 후 동일한 아이템 다시 추가
+      vi.useFakeTimers();
+      vi.advanceTimersByTime(2000);
+
+      addItem(mockItem);
+
+      const { items } = useCartStore.getState();
+      expect(items).toHaveLength(1); // 새 아이템이 추가되지 않고 기존 아이템 수량만 증가
+      expect(items[0].quantity).toBe(2);
+      expect(items[0].lastModified).toBeGreaterThan(firstAddTime!);
+
+      vi.useRealTimers();
+    });
+
+    it('만료시간(12시간) 이전의 아이템은 유효해야 함', () => {
+      const mockItem = createMockCartItem();
+      const { findItem } = useCartStore.getState();
+
+      // 11시간 전 시간으로 설정된 아이템 (만료시간 내)
+      const validTime = Date.now() - 1000 * 60 * 60 * 11; // 11시간 전
+      const validItem = { ...mockItem, lastModified: validTime };
+
+      // store의 items에 직접 설정
+      useCartStore.setState({ items: [validItem] });
+
+      // 유효한 아이템은 findItem으로 찾을 수 있어야 함
+      const foundItem = findItem(mockItem);
+      expect(foundItem).toBeDefined();
+      expect(foundItem?.id).toBe(mockItem.id);
     });
   });
 });
