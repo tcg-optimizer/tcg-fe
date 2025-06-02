@@ -155,6 +155,9 @@ export default function FinalCart() {
     <div>
       <div>
         <h1 className="text-xl sm:text-2xl font-bold">장바구니</h1>
+        <p className="text-gray-500 text-sm mt-2">
+          수정한지 12시간이 넘은 상품은 자동 삭제됩니다.
+        </p>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col gap-4 mt-4 sm:mt-8 bg-gray-50 p-4 rounded-md">
             <div className="flex justify-between mb-4">
