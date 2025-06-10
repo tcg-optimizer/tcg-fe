@@ -45,6 +45,19 @@ const finalCartOptions = {
         '네이버 현대카드 적립금(7%)을 고려해서 최저가 조합 계산을 합니다.',
     },
   ],
+  takeout: [
+    { id: 'cardKingdom', label: '카드킹덤', price: 100 },
+    { id: 'cardNang', label: '카드냥', price: 100 },
+    { id: 'cardSquare', label: '카드스퀘어', price: 100 },
+    { id: 'minCityCardMarket', label: '민씨지샵', price: 0 },
+    { id: 'jejuDiMarket', label: '전주 디마켓', price: 100 },
+    { id: 'maeulCardMarket', label: '마천루 카드장터', price: 100 },
+    { id: 'areaZeroStore', label: '에리어제로 스토어', price: 100 },
+    { id: 'blackStone', label: '흑석 블랙스톤', price: 100 },
+    { id: 'dualWinner', label: '듀얼위너', price: 100 },
+    { id: 'tcgKingdom', label: 'TCG킹덤', price: 10 },
+    { id: 'tcgPlayer', label: '티씨지 플레이어', price: 0 },
+  ],
 } as const;
 
 export { finalCartOptions };
