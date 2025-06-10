@@ -16,13 +16,14 @@ import { useState, useRef, useEffect } from 'react';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
 import { ChevronsUpDown, Trash2, X } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
-import { finalCartOptions } from '../data/finalCartOptions';
+import { finalCartOptions, TDiscount } from '../data/finalCartOptions';
+import { TTakeout } from '../data/finalCartOptions';
 import OptimalPrices from './OptimalPrices';
 import TooltipWithInfoIcon from '@/components/TooltipWithInfoIcon';
 import useOptimalStore from '@/store/optimalStore';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import MobileCheckbox from '@/components/MobileCheckbox';
-import { cn } from '@/lib/utils';
+import { cn, objectKeys } from '@/lib/utils';
 
 export default function FinalCart() {
   // Zustand 스토어에서 장바구니 상태 가져오기
@@ -51,27 +52,8 @@ export default function FinalCart() {
 
   type DiscountForm = {
     shippingRegion: 'default' | 'jeju' | 'island';
-    discounts: {
-      tcgshopPoints: boolean;
-      carddcPoints: boolean;
-      naverBasicPoints: boolean;
-      naverBankbookPoints: boolean;
-      naverMembershipPoints: boolean;
-      naverHyundaiCardPoints: boolean;
-    };
-    takeout: {
-      cardKingdom: boolean;
-      cardNang: boolean;
-      cardSquare: boolean;
-      minCityCardMarket: boolean;
-      jejuDiMarket: boolean;
-      maeulCardMarket: boolean;
-      areaZeroStore: boolean;
-      blackStone: boolean;
-      dualWinner: boolean;
-      tcgKingdom: boolean;
-      tcgPlayer: boolean;
-    };
+    discounts: Record<TDiscount, boolean>;
+    takeout: Record<TTakeout, boolean>;
   };
 
   const { control, handleSubmit } = useForm<DiscountForm>({
@@ -131,10 +113,15 @@ export default function FinalCart() {
           cacheId: item.cacheId,
         })) as CardPurchaseRequest[];
 
+      const takeoutMarkets = objectKeys(data.takeout).filter(
+        (key) => data.takeout[key],
+      );
+
       const result = await calculateOptimalPurchase(
         selectedCards,
         data.shippingRegion,
         data.discounts,
+        takeoutMarkets,
         excludedCards.map((c) => c.id) ?? [],
         excludedStore ?? [],
       );

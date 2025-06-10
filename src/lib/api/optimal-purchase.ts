@@ -1,6 +1,7 @@
 import { TCardShopInfo } from '@/types/card';
 import { API_ROUTE_URL } from '../api';
 import { TPointOption } from '@/types/cart';
+import { TDiscount, TTakeout } from '@/app/cart/data/finalCartOptions';
 
 /**
  * 최적 구매 조합 계산 API
@@ -8,14 +9,7 @@ import { TPointOption } from '@/types/cart';
 export async function calculateOptimalPurchase(
   cards: CardPurchaseRequest[],
   shippingRegion: 'default' | 'jeju' | 'island' = 'default',
-  discounts: {
-    tcgshopPoints: boolean;
-    carddcPoints: boolean;
-    naverBasicPoints: boolean;
-    naverBankbookPoints: boolean;
-    naverMembershipPoints: boolean;
-    naverHyundaiCardPoints: boolean;
-  } = {
+  discounts: Record<TDiscount, boolean> = {
     tcgshopPoints: false,
     carddcPoints: false,
     naverBasicPoints: false,
@@ -23,6 +17,7 @@ export async function calculateOptimalPurchase(
     naverMembershipPoints: false,
     naverHyundaiCardPoints: false,
   },
+  takeout: TTakeout[],
   excludedProductIds: string[] = [],
   excludedStores: string[] = [],
 ) {
@@ -36,6 +31,7 @@ export async function calculateOptimalPurchase(
         cards,
         shippingRegion,
         ...discounts,
+        takeout,
         excludedProductIds,
         excludedStores,
       }),
