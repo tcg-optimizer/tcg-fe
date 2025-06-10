@@ -273,14 +273,14 @@ export default function FinalCart() {
 
                 {/* 방문 수령 체크박스 */}
                 <div className="w-full">
-                  <p className="text-gray-700 font-bold mb-4 flex items-center gap-2">
+                  <p
+                    className="text-gray-700 font-bold mb-4 flex items-center gap-2 cursor-pointer"
+                    onClick={() => {
+                      setTakeoutOpen((prev) => !prev);
+                    }}
+                  >
                     방문 수령 선택
-                    <ChevronsUpDown
-                      className="w-4 h-4 cursor-pointer"
-                      onClick={() => {
-                        setTakeoutOpen((prev) => !prev);
-                      }}
-                    />
+                    <ChevronsUpDown className="w-4 h-4" />
                   </p>
                   <div
                     className={cn(
