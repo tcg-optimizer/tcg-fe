@@ -14,14 +14,16 @@ import { useCartStore, CartItem } from '@/store/cartStore';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
-import { Trash2, X } from 'lucide-react';
+import { ChevronsUpDown, Trash2, X } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
-import { finalCartOptions } from '../data/finalCartOptions';
+import { finalCartOptions, TDiscount } from '../data/finalCartOptions';
+import { TTakeout } from '../data/finalCartOptions';
 import OptimalPrices from './OptimalPrices';
 import TooltipWithInfoIcon from '@/components/TooltipWithInfoIcon';
 import useOptimalStore from '@/store/optimalStore';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import MobileCheckbox from '@/components/MobileCheckbox';
+import { cn, objectKeys } from '@/lib/utils';
 
 export default function FinalCart() {
   // Zustand 스토어에서 장바구니 상태 가져오기
@@ -38,6 +40,7 @@ export default function FinalCart() {
 
   const resultRef = useRef<HTMLDivElement>(null);
   const calcButtonRef = useRef<HTMLButtonElement>(null);
+  const [takeoutOpen, setTakeoutOpen] = useState(false);
 
   useEffect(() => {
     if (optimalPurchaseResult && resultRef.current) {
@@ -49,14 +52,8 @@ export default function FinalCart() {
 
   type DiscountForm = {
     shippingRegion: 'default' | 'jeju' | 'island';
-    discounts: {
-      tcgshopPoints: boolean;
-      carddcPoints: boolean;
-      naverBasicPoints: boolean;
-      naverBankbookPoints: boolean;
-      naverMembershipPoints: boolean;
-      naverHyundaiCardPoints: boolean;
-    };
+    discounts: Record<TDiscount, boolean>;
+    takeout: Record<TTakeout, boolean>;
   };
 
   const { control, handleSubmit } = useForm<DiscountForm>({
@@ -116,10 +113,15 @@ export default function FinalCart() {
           cacheId: item.cacheId,
         })) as CardPurchaseRequest[];
 
+      const takeoutMarkets = objectKeys(data.takeout).filter(
+        (key) => data.takeout[key],
+      );
+
       const result = await calculateOptimalPurchase(
         selectedCards,
         data.shippingRegion,
         data.discounts,
+        takeoutMarkets,
         excludedCards.map((c) => c.id) ?? [],
         excludedStore ?? [],
       );
@@ -200,9 +202,7 @@ export default function FinalCart() {
               <div className="flex flex-1 flex-col justify-end gap-8 items-center mt-8">
                 {/* 할인 옵션 체크박스 */}
                 <div className="w-full">
-                  <Label className="text-gray-700 font-bold mb-4">
-                    적립 옵션
-                  </Label>
+                  <p className="text-gray-700 font-bold mb-4">적립 옵션</p>
                   <div className="lg:flex gap-8 grid md:grid-cols-3 grid-cols-2">
                     {finalCartOptions.discounts.map((discount) => (
                       <Controller
@@ -236,7 +236,7 @@ export default function FinalCart() {
 
                 {/* 지역 체크박스 */}
                 <div className="w-full">
-                  <Label className="text-gray-700 font-bold mb-4">지역</Label>
+                  <p className="text-gray-700 font-bold mb-4">지역</p>
                   <div className="flex gap-8">
                     {finalCartOptions.shippingRegion.map((region) => (
                       <Controller
@@ -270,6 +270,50 @@ export default function FinalCart() {
                     ))}
                   </div>
                 </div>
+
+                {/* 방문 수령 체크박스 */}
+                <div className="w-full">
+                  <p className="text-gray-700 font-bold mb-4 flex items-center gap-2">
+                    방문 수령 선택
+                    <ChevronsUpDown
+                      className="w-4 h-4 cursor-pointer"
+                      onClick={() => {
+                        setTakeoutOpen((prev) => !prev);
+                      }}
+                    />
+                  </p>
+                  <div
+                    className={cn(
+                      ' grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4',
+                      takeoutOpen ? 'grid' : 'hidden',
+                    )}
+                  >
+                    {finalCartOptions.takeout.map((takeout) => (
+                      <Controller
+                        key={takeout.id}
+                        name={`takeout.${takeout.id}`}
+                        control={control}
+                        render={({ field }) => (
+                          <div className="flex items-center gap-2">
+                            <Checkbox
+                              id={takeout.id}
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                            <Label
+                              htmlFor={takeout.id}
+                              className="text-gray-500 "
+                            >
+                              <p className="break-keep break-words">
+                                {takeout.label} ({takeout.price}원)
+                              </p>
+                            </Label>
+                          </div>
+                        )}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -279,6 +323,7 @@ export default function FinalCart() {
               <TabsList className="w-full mx-auto mb-2">
                 <TabsTrigger value="discount">할인 옵션</TabsTrigger>
                 <TabsTrigger value="region">배송 지역</TabsTrigger>
+                <TabsTrigger value="takeout">방문 수령</TabsTrigger>
               </TabsList>
               <TabsContent value="discount">
                 <div className="flex flex-col gap-2">
@@ -324,6 +369,27 @@ export default function FinalCart() {
                           }
                         >
                           {region.label}
+                        </MobileCheckbox>
+                      )}
+                    />
+                  ))}
+                </div>
+              </TabsContent>
+              <TabsContent value="takeout">
+                <div className="flex flex-col gap-2">
+                  {finalCartOptions.takeout.map((takeout) => (
+                    <Controller
+                      key={takeout.id}
+                      name={`takeout.${takeout.id}`}
+                      control={control}
+                      render={({ field }) => (
+                        <MobileCheckbox
+                          key={takeout.id}
+                          id={takeout.id}
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        >
+                          {takeout.label} ({takeout.price}원)
                         </MobileCheckbox>
                       )}
                     />
