@@ -14,7 +14,7 @@ import { useCartStore, CartItem } from '@/store/cartStore';
 import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
-import { Trash2, X } from 'lucide-react';
+import { ChevronsUpDown, Trash2, X } from 'lucide-react';
 import { useForm, Controller } from 'react-hook-form';
 import { finalCartOptions } from '../data/finalCartOptions';
 import OptimalPrices from './OptimalPrices';
@@ -22,6 +22,7 @@ import TooltipWithInfoIcon from '@/components/TooltipWithInfoIcon';
 import useOptimalStore from '@/store/optimalStore';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import MobileCheckbox from '@/components/MobileCheckbox';
+import { cn } from '@/lib/utils';
 
 export default function FinalCart() {
   // Zustand 스토어에서 장바구니 상태 가져오기
@@ -38,6 +39,7 @@ export default function FinalCart() {
 
   const resultRef = useRef<HTMLDivElement>(null);
   const calcButtonRef = useRef<HTMLButtonElement>(null);
+  const [takeoutOpen, setTakeoutOpen] = useState(false);
 
   useEffect(() => {
     if (optimalPurchaseResult && resultRef.current) {
@@ -213,9 +215,7 @@ export default function FinalCart() {
               <div className="flex flex-1 flex-col justify-end gap-8 items-center mt-8">
                 {/* 할인 옵션 체크박스 */}
                 <div className="w-full">
-                  <Label className="text-gray-700 font-bold mb-4">
-                    적립 옵션
-                  </Label>
+                  <p className="text-gray-700 font-bold mb-4">적립 옵션</p>
                   <div className="lg:flex gap-8 grid md:grid-cols-3 grid-cols-2">
                     {finalCartOptions.discounts.map((discount) => (
                       <Controller
@@ -249,7 +249,7 @@ export default function FinalCart() {
 
                 {/* 지역 체크박스 */}
                 <div className="w-full">
-                  <Label className="text-gray-700 font-bold mb-4">지역</Label>
+                  <p className="text-gray-700 font-bold mb-4">지역</p>
                   <div className="flex gap-8">
                     {finalCartOptions.shippingRegion.map((region) => (
                       <Controller
@@ -284,11 +284,23 @@ export default function FinalCart() {
                   </div>
                 </div>
 
+                {/* 방문 수령 체크박스 */}
                 <div className="w-full">
-                  <Label className="text-gray-700 font-bold mb-4">
+                  <p className="text-gray-700 font-bold mb-4 flex items-center gap-2">
                     방문 수령 선택
-                  </Label>
-                  <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
+                    <ChevronsUpDown
+                      className="w-4 h-4 cursor-pointer"
+                      onClick={() => {
+                        setTakeoutOpen((prev) => !prev);
+                      }}
+                    />
+                  </p>
+                  <div
+                    className={cn(
+                      ' grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4',
+                      takeoutOpen ? 'grid' : 'hidden',
+                    )}
+                  >
                     {finalCartOptions.takeout.map((takeout) => (
                       <Controller
                         key={takeout.id}
