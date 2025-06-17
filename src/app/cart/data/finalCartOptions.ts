@@ -57,6 +57,7 @@ const finalCartOptions = {
     { id: 'dualWinner', label: '대화 듀얼위너', price: 100 },
     { id: 'tcgKingdom', label: '울산 TCG킹덤', price: 10 },
     { id: 'tcgPlayer', label: '광주 티씨지 플레이어', price: 0 },
+    { id: 'tcgCardFreedom', label: '청주 TCG 카드프리덤', price: 0 },
   ],
 } as const;
 
