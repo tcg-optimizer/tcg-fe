@@ -24,6 +24,7 @@ import useOptimalStore from '@/store/optimalStore';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import MobileCheckbox from '@/components/MobileCheckbox';
 import { cn, objectKeys } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 export default function FinalCart() {
   // Zustand 스토어에서 장바구니 상태 가져오기
@@ -111,6 +112,7 @@ export default function FinalCart() {
           language: item.language,
           quantity: item.quantity,
           cacheId: item.cacheId,
+          illustType: item.illustType,
         })) as CardPurchaseRequest[];
 
       const takeoutMarkets = objectKeys(data.takeout).filter(
@@ -510,8 +512,11 @@ function CartItemComponent({
             height={100}
           />
         </div>
-        <div className="flex justify-between items-start">
+        <div className="flex justify-between items-start gap-2 flex-col">
           <p className="text-base sm:text-lg font-bold">{item.name}</p>
+          {item.illustType !== 'default' && (
+            <Badge className="">{'다른 일러스트'}</Badge>
+          )}
         </div>
         <div className="w-full mt-auto sm:col-start-2 col-start-1 col-span-2">
           <CardOptionSelector

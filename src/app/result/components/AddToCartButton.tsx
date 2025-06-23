@@ -6,6 +6,7 @@ import {
   TCardRarityLabel,
   TCardLanguageLabel,
   TSelectedCardShopInfo,
+  TIllustType,
 } from '@/types/card';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -19,6 +20,7 @@ interface AddToCartButtonProps {
   availableLanguages: TCardLanguageLabel[];
   availableRarities: { [key in TCardLanguageLabel]: TCardRarityLabel[] };
   cardCacheId: string;
+  illustType: TIllustType;
 }
 
 export default function AddToCartButton({
@@ -30,6 +32,7 @@ export default function AddToCartButton({
   availableLanguages,
   availableRarities,
   cardCacheId,
+  illustType,
 }: AddToCartButtonProps) {
   const addItem = useCartStore((state) => state.addItem);
   const findItem = useCartStore((state) => state.findItem);
@@ -48,7 +51,8 @@ export default function AddToCartButton({
       availableLanguages: availableLanguages,
       availableRarities: availableRarities,
       condition: selectedCardShopsInfo.prices[0]?.condition || '신품',
-    };
+      illustType: illustType,
+    } as const;
 
     const existingItem = findItem(card);
     if (existingItem && existingItem.quantity + quantity > 3) {

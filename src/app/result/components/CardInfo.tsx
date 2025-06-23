@@ -207,6 +207,7 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
             availableLanguages={availableLanguages}
             availableRarities={availableRarities}
             cardCacheId={cardCacheId}
+            illustType={illustType}
           />
         </div>
       </div>

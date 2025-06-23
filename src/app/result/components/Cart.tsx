@@ -48,7 +48,7 @@ interface CardComponentProps {
 }
 
 const CardComponent = ({ cardInfo }: CardComponentProps) => {
-  const { name, rarity, language, quantity, image } = cardInfo;
+  const { name, rarity, language, quantity, image, illustType } = cardInfo;
 
   return (
     <div className="flex flex-col gap-2 group relative">
@@ -66,6 +66,9 @@ const CardComponent = ({ cardInfo }: CardComponentProps) => {
           <p className="text-md font-bold grow">
             {name} <span className="text-gray-500 text-sm">x {quantity}장</span>
           </p>
+          {illustType !== 'default' && (
+            <Badge className="mt-2">{'다른 일러스트'}</Badge>
+          )}
           <Badge variant="outline" className="mt-2">
             {rarity}
           </Badge>
