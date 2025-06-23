@@ -112,8 +112,8 @@ export default function FinalCart() {
           language: item.language,
           quantity: item.quantity,
           cacheId: item.cacheId,
-          illustType: item.illustType,
-        })) as CardPurchaseRequest[];
+          illustrationType: item.illustType,
+        })) satisfies CardPurchaseRequest[];
 
       const takeoutMarkets = objectKeys(data.takeout).filter(
         (key) => data.takeout[key],

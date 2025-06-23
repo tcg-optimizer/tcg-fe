@@ -1,4 +1,4 @@
-import { TCardShopInfo } from '@/types/card';
+import { TCardShopInfo, TIllustType } from '@/types/card';
 import { API_ROUTE_URL } from '../api';
 import { TPointOption } from '@/types/cart';
 import { TDiscount, TTakeout } from '@/app/cart/data/finalCartOptions';
@@ -57,6 +57,7 @@ interface CardPurchaseRequest {
   language: string;
   quantity: number;
   cacheId: string;
+  illustrationType: TIllustType;
 }
 
 interface OptimalPurchaseResponse {
