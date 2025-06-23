@@ -40,6 +40,8 @@ type TCardRarityPrices = {
   };
 };
 
+type TIllustType = 'default' | 'another';
+
 export type {
   TCardRarityValue,
   TCardRarityLabel,
@@ -50,4 +52,5 @@ export type {
   TCardRarityPrices,
   TSelectedCardShopInfo,
   TCardCondition,
+  TIllustType,
 };
