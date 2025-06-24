@@ -67,7 +67,7 @@ const CardComponent = ({ cardInfo }: CardComponentProps) => {
             {name} <span className="text-gray-500 text-sm">x {quantity}장</span>
           </p>
           {illustType !== 'default' && (
-            <Badge className="mt-2">{'다른 일러스트'}</Badge>
+            <Badge className="mt-2">{'어나더 일러스트'}</Badge>
           )}
           <Badge variant="outline" className="mt-2">
             {rarity}

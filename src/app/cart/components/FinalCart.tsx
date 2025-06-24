@@ -515,7 +515,7 @@ function CartItemComponent({
         <div className="flex justify-between items-start gap-2 flex-col">
           <p className="text-base sm:text-lg font-bold">{item.name}</p>
           {item.illustType !== 'default' && (
-            <Badge className="">{'다른 일러스트'}</Badge>
+            <Badge className="">{'어나더 일러스트'}</Badge>
           )}
         </div>
         <div className="w-full mt-auto sm:col-start-2 col-start-1 col-span-2">

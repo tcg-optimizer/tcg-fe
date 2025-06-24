@@ -171,7 +171,7 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
               onClick={changeAnotherIllust}
             >
               {illustType === 'default'
-                ? '다른 일러스트 보기'
+                ? '어나더 일러스트 보기'
                 : '기본 일러스트 보기'}
             </Button>
           </div>
