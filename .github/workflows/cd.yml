@@ -57,6 +57,5 @@ jobs:
             yarn
 
             # 버전 설정 및 재시작
-            NEXT_PUBLIC_FRONT_VERSION=$(git rev-parse --short HEAD) \
-            NEXT_PUBLIC_BACK_VERSION=$(git -C ../be rev-parse --short HEAD) \
-            pm2 restart yarn --update-env -- start
+            cd ~
+            pm2 restart ecosystem.config.js --update-env
