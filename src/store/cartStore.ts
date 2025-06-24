@@ -1,6 +1,10 @@
 import { create } from 'zustand';
 import { persist, PersistStorage, StorageValue } from 'zustand/middleware';
-import { TCardRarityLabel, TCardLanguageLabel } from '@/types/card';
+import {
+  TCardRarityLabel,
+  TCardLanguageLabel,
+  TIllustType,
+} from '@/types/card';
 
 export interface CartItem {
   id: string;
@@ -11,6 +15,7 @@ export interface CartItem {
   language: TCardLanguageLabel;
   quantity: number;
   cacheId: string;
+  illustType: TIllustType;
   availableLanguages: TCardLanguageLabel[];
   availableRarities: {
     [key in TCardLanguageLabel]: TCardRarityLabel[];
@@ -102,7 +107,8 @@ export const useCartStore = create<CartState>()(
             (item) =>
               item.name === newItem.name &&
               item.rarity === newItem.rarity &&
-              item.language === newItem.language,
+              item.language === newItem.language &&
+              item.illustType === newItem.illustType,
           );
           const now = Date.now();
 
@@ -139,7 +145,8 @@ export const useCartStore = create<CartState>()(
           (i) =>
             i.name === item.name &&
             i.rarity === item.rarity &&
-            i.language === item.language,
+            i.language === item.language &&
+            i.illustType === item.illustType,
         );
       },
 

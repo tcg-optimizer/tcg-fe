@@ -10,22 +10,31 @@ import AddToCartButton from './AddToCartButton';
 import { useSearchHistoryStore } from '@/store/searchHistoryStore';
 import { TCardResultResponse } from '@/types/api/result';
 import { sortCardLanguages, sortCardRarities } from '@/lib/utils/card';
+import { Button } from '@/components/ui/button';
+import { TIllustType } from '@/types/card';
 interface CardInfoProps {
   cardData: TCardResultResponse;
   defaultCardName: string;
 }
 
 export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
-  const { data, rarityPrices: cardRarityPrices, cacheId } = cardData;
+  const { data, rarityPrices, cacheId } = cardData;
   const cardName = data.cardName || defaultCardName;
   const cardImage = data.image;
   const cardCacheId = cacheId;
   const totalProducts = data.totalProducts;
+  const hasAnotherIllust = !!rarityPrices.another;
 
   const [selectedLanguage, setSelectedLanguage] =
     useState<TCardLanguageLabel>('한글판');
   const [selectedRarity, setSelectedRarity] =
     useState<TCardRarityLabel>('노멀');
+
+  const [illustType, setIllustType] = useState<TIllustType>('default');
+  const selectedCardRarityPrices = useMemo(
+    () => rarityPrices[illustType],
+    [rarityPrices, illustType],
+  );
 
   const {
     quantity,
@@ -36,8 +45,8 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
   const { addToHistory } = useSearchHistoryStore();
 
   const availableLanguages = useMemo(
-    () => sortCardLanguages(objectKeys(cardRarityPrices)),
-    [cardRarityPrices],
+    () => sortCardLanguages(objectKeys(selectedCardRarityPrices)),
+    [selectedCardRarityPrices],
   );
   const availableRarities = useMemo(
     () =>
@@ -45,11 +54,11 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
         availableLanguages.map((language) => {
           return [
             language,
-            sortCardRarities(objectKeys(cardRarityPrices[language])),
+            sortCardRarities(objectKeys(selectedCardRarityPrices[language])),
           ];
         }),
       ),
-    [availableLanguages, cardRarityPrices],
+    [availableLanguages, selectedCardRarityPrices],
   );
 
   const selectedCardPrices = useMemo(() => {
@@ -86,6 +95,10 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
     [setQuantity],
   );
 
+  const changeAnotherIllust = useCallback(() => {
+    setIllustType(illustType === 'default' ? 'another' : 'default');
+  }, [illustType, setIllustType]);
+
   // **************** Effects ****************
 
   useEffect(() => {
@@ -109,32 +122,33 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
       query: cardName,
       cardName,
       cardImage,
-      cardContitions: cardRarityPrices[language][rarity].prices[0].condition,
+      cardContitions:
+        selectedCardRarityPrices[language][rarity].prices[0].condition,
     };
     addToHistory(historyInfo);
   }, [
     cardName,
     cardImage,
-    cardRarityPrices,
+    selectedCardRarityPrices,
     addToHistory,
     availableLanguages,
     availableRarities,
   ]);
 
   useEffect(() => {
-    if (!cardRarityPrices) return;
+    if (!selectedCardRarityPrices) return;
     if (!selectedLanguage || !selectedRarity) return;
     if (
-      !cardRarityPrices[selectedLanguage] ||
-      !cardRarityPrices[selectedLanguage][selectedRarity]
+      !selectedCardRarityPrices[selectedLanguage] ||
+      !selectedCardRarityPrices[selectedLanguage][selectedRarity]
     )
       return;
 
     setSelectedCardShopsInfo(
-      cardRarityPrices[selectedLanguage][selectedRarity],
+      selectedCardRarityPrices[selectedLanguage][selectedRarity],
     );
   }, [
-    cardRarityPrices,
+    selectedCardRarityPrices,
     selectedLanguage,
     selectedRarity,
     setSelectedCardShopsInfo,
@@ -142,11 +156,26 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
 
   return (
     <div className="w-full h-full p-4 flex flex-col bg-gray-50 rounded-lg">
-      <div className="grow">
-        <h1 className="text-2xl lg:text-3xl font-bold">{cardName}</h1>
-        <p className="text-gray-500 mt-4 text-sm lg:text-base">
-          총 {totalProducts || 0}건을 찾았습니다.
-        </p>
+      <div className="grow flex">
+        <div className="grow">
+          <h1 className="text-2xl lg:text-3xl font-bold">{cardName}</h1>
+          <p className="text-gray-500 mt-4 text-sm lg:text-base">
+            총 {totalProducts || 0}건을 찾았습니다.
+          </p>
+        </div>
+        {hasAnotherIllust && (
+          <div>
+            <Button
+              variant="outline"
+              className="w-full text-xs lg:text-sm h-7 px-2 gap-1 lg:h-9 lg:px-3 lg:gap-1.5"
+              onClick={changeAnotherIllust}
+            >
+              {illustType === 'default'
+                ? '어나더 일러스트 보기'
+                : '기본 일러스트 보기'}
+            </Button>
+          </div>
+        )}
       </div>
 
       <Separator className="my-4" />
@@ -178,6 +207,7 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
             availableLanguages={availableLanguages}
             availableRarities={availableRarities}
             cardCacheId={cardCacheId}
+            illustType={illustType}
           />
         </div>
       </div>

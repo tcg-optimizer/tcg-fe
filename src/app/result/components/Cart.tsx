@@ -14,6 +14,7 @@ import { CartItem, useCartStore } from '@/store/cartStore';
 import { Fragment } from 'react';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
+import IllustTypeBadge from '@/components/IllustTypeBadge';
 
 export default function Cart() {
   const { items } = useCartStore();
@@ -48,7 +49,7 @@ interface CardComponentProps {
 }
 
 const CardComponent = ({ cardInfo }: CardComponentProps) => {
-  const { name, rarity, language, quantity, image } = cardInfo;
+  const { name, rarity, language, quantity, image, illustType } = cardInfo;
 
   return (
     <div className="flex flex-col gap-2 group relative">
@@ -66,6 +67,7 @@ const CardComponent = ({ cardInfo }: CardComponentProps) => {
           <p className="text-md font-bold grow">
             {name} <span className="text-gray-500 text-sm">x {quantity}장</span>
           </p>
+          <IllustTypeBadge illustType={illustType} className="mt-2" />
           <Badge variant="outline" className="mt-2">
             {rarity}
           </Badge>

@@ -2,6 +2,7 @@
 
 import DeletableBadgeButton from '@/components/DeletableBadgeButton';
 import FormattedShopName from '@/components/FormattedShopName';
+import IllustTypeBadge from '@/components/IllustTypeBadge';
 import TooltipWithInfoIcon from '@/components/TooltipWithInfoIcon';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -192,10 +193,11 @@ const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
       {stores.cards.map((card) => {
         const cardId = card.product.id;
         const isExcluded = excludedCards.some((c) => c.id === cardId);
+        const illustType = card.product.illustration;
 
         return (
           <div
-            key={card.cardName}
+            key={card.cardName + card.product.id}
             className="bg-white border border-gray-200 p-4 rounded-md grid grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr_auto] sm:grid-rows-[auto_1fr] gap-4 mt-4 cursor-pointer"
             onClick={() => {
               window.open(card.product.url, '_blank');
@@ -212,8 +214,9 @@ const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
               {card.cardName}
             </h3>
             <div className="flex flex-col gap-2 col-start-2 row-start-2 sm:col-span-1 col-span-full">
-              <Badge>{card.product.language}</Badge>
-              <Badge>{card.product.rarity}</Badge>
+              <IllustTypeBadge illustType={illustType} />
+              <Badge variant="outline">{card.product.language}</Badge>
+              <Badge variant="outline">{card.product.rarity}</Badge>
             </div>
 
             {/* 제외 체크박스 */}

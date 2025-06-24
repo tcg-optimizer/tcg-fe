@@ -18,6 +18,7 @@ type TCardShopInfo = {
   cardCode: string;
   available: boolean;
   lastUpdated: string;
+  illustration: TIllustType;
 };
 
 type TCardInfo = {
@@ -40,6 +41,8 @@ type TCardRarityPrices = {
   };
 };
 
+type TIllustType = 'default' | 'another';
+
 export type {
   TCardRarityValue,
   TCardRarityLabel,
@@ -50,4 +53,5 @@ export type {
   TCardRarityPrices,
   TSelectedCardShopInfo,
   TCardCondition,
+  TIllustType,
 };

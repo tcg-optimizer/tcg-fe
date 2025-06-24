@@ -1,24 +1,17 @@
 import { create } from 'zustand';
-import {
-  TCardLanguageLabel,
-  TCardRarityLabel,
-  TCardRarityPrices,
-} from '@/types/card';
+import { TSelectedCardShopInfo } from '@/types/card';
 
 type ResultStore = {
   quantity: number;
   setQuantity: (quantity: number) => void;
 
-  selectedCardShopsInfo: TCardRarityPrices[TCardLanguageLabel][TCardRarityLabel];
-  setSelectedCardShopsInfo: (
-    shopsInfo: TCardRarityPrices[TCardLanguageLabel][TCardRarityLabel],
-  ) => void;
+  selectedCardShopsInfo: TSelectedCardShopInfo;
+  setSelectedCardShopsInfo: (shopsInfo: TSelectedCardShopInfo) => void;
 };
 
 const initialState = {
   quantity: 1,
-  selectedCardShopsInfo:
-    {} as TCardRarityPrices[TCardLanguageLabel][TCardRarityLabel],
+  selectedCardShopsInfo: {} as TSelectedCardShopInfo,
 } as ResultStore;
 
 export const useResultStore = create<ResultStore>((set) => ({

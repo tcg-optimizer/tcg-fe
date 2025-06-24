@@ -1,4 +1,4 @@
-import { TCardRarityPrices } from '../card';
+import { TCardRarityPrices, TIllustType } from '../card';
 
 type TCardResultResponse = {
   success: boolean;
@@ -9,7 +9,9 @@ type TCardResultResponse = {
     image: string;
     totalProducts: number;
   };
-  rarityPrices: TCardRarityPrices;
+  rarityPrices: {
+    [key in TIllustType]: TCardRarityPrices;
+  };
   cacheId: string;
   cacheExpiredAt: string;
 };
