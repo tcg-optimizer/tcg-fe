@@ -195,7 +195,7 @@ const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
 
         return (
           <div
-            key={card.cardName}
+            key={card.cardName + card.product.id}
             className="bg-white border border-gray-200 p-4 rounded-md grid grid-cols-[auto_1fr_auto] grid-rows-[auto_1fr_auto] sm:grid-rows-[auto_1fr] gap-4 mt-4 cursor-pointer"
             onClick={() => {
               window.open(card.product.url, '_blank');
