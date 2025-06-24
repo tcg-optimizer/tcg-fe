@@ -2,6 +2,7 @@
 
 import DeletableBadgeButton from '@/components/DeletableBadgeButton';
 import FormattedShopName from '@/components/FormattedShopName';
+import IllustTypeBadge from '@/components/IllustTypeBadge';
 import TooltipWithInfoIcon from '@/components/TooltipWithInfoIcon';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -192,6 +193,7 @@ const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
       {stores.cards.map((card) => {
         const cardId = card.product.id;
         const isExcluded = excludedCards.some((c) => c.id === cardId);
+        const illustType = card.product.illustration;
 
         return (
           <div
@@ -212,7 +214,7 @@ const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
               {card.cardName}
             </h3>
             <div className="flex flex-col gap-2 col-start-2 row-start-2 sm:col-span-1 col-span-full">
-              <Badge>{card.product.illustration}</Badge>
+              <IllustTypeBadge illustType={illustType} />
               <Badge variant="outline">{card.product.language}</Badge>
               <Badge variant="outline">{card.product.rarity}</Badge>
             </div>

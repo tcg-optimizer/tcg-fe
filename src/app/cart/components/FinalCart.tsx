@@ -24,7 +24,7 @@ import useOptimalStore from '@/store/optimalStore';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import MobileCheckbox from '@/components/MobileCheckbox';
 import { cn, objectKeys } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
+import IllustTypeBadge from '@/components/IllustTypeBadge';
 
 export default function FinalCart() {
   // Zustand 스토어에서 장바구니 상태 가져오기
@@ -514,9 +514,7 @@ function CartItemComponent({
         </div>
         <div className="flex justify-between items-start gap-2 flex-col">
           <p className="text-base sm:text-lg font-bold">{item.name}</p>
-          {item.illustType !== 'default' && (
-            <Badge className="">{'어나더 일러스트'}</Badge>
-          )}
+          <IllustTypeBadge illustType={item.illustType} />
         </div>
         <div className="w-full mt-auto sm:col-start-2 col-start-1 col-span-2">
           <CardOptionSelector

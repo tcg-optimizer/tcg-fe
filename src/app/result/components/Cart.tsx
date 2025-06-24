@@ -14,6 +14,7 @@ import { CartItem, useCartStore } from '@/store/cartStore';
 import { Fragment } from 'react';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
+import IllustTypeBadge from '@/components/IllustTypeBadge';
 
 export default function Cart() {
   const { items } = useCartStore();
@@ -66,9 +67,7 @@ const CardComponent = ({ cardInfo }: CardComponentProps) => {
           <p className="text-md font-bold grow">
             {name} <span className="text-gray-500 text-sm">x {quantity}장</span>
           </p>
-          {illustType !== 'default' && (
-            <Badge className="mt-2">{'어나더 일러스트'}</Badge>
-          )}
+          <IllustTypeBadge illustType={illustType} className="mt-2" />
           <Badge variant="outline" className="mt-2">
             {rarity}
           </Badge>
