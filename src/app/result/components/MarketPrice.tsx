@@ -42,6 +42,7 @@ export default function MarketPrice() {
                 cardCode: price.cardCode,
                 available: price.available,
                 lastUpdated: price.lastUpdated,
+                illustration: price.illustration,
               }}
             />
           ))}

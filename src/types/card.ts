@@ -18,6 +18,7 @@ type TCardShopInfo = {
   cardCode: string;
   available: boolean;
   lastUpdated: string;
+  illustration: TIllustType;
 };
 
 type TCardInfo = {

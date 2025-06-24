@@ -212,6 +212,7 @@ const OptimalPriceStore = ({ site, stores }: OptimalPriceStoreProps) => {
               {card.cardName}
             </h3>
             <div className="flex flex-col gap-2 col-start-2 row-start-2 sm:col-span-1 col-span-full">
+              <Badge>{card.product.illustration}</Badge>
               <Badge variant="outline">{card.product.language}</Badge>
               <Badge variant="outline">{card.product.rarity}</Badge>
             </div>
