@@ -1,8 +1,8 @@
 import { API_ROUTE_URL } from '../api';
 
 const apiEndpoints = {
-  rarityPrices: (source: string, cardName: string) => ({
-    url: `${API_ROUTE_URL}/${source}-rarity-prices?cardName=${cardName}`,
+  rarityPrices: (gameType: string, cardName: string) => ({
+    url: `${API_ROUTE_URL}/${gameType}-rarity-prices?cardName=${cardName}`,
     method: 'GET',
   }),
   optimalPurchase: () => ({

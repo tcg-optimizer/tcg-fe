@@ -5,16 +5,16 @@ import {
   SelectContent,
   SelectItem,
 } from '@/components/ui/select';
-import { TCardSource } from '@/types/card';
+import { TGameType } from '@/types/card';
 
-const gameTypes: { value: TCardSource; label: string }[] = [
+const gameTypes: { value: TGameType; label: string }[] = [
   { value: 'yugioh', label: '유희왕' },
   { value: 'vanguard', label: '뱅가드' },
 ];
 
 interface GameTypeSelectorProps {
-  gameType: TCardSource;
-  onGameTypeChange: (value: TCardSource) => void;
+  gameType: TGameType;
+  onGameTypeChange: (value: TGameType) => void;
 }
 
 const GameTypeSelector = ({

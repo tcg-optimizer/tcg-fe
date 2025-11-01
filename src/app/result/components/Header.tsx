@@ -7,24 +7,22 @@ import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
 import Logo from '@/components/Logo';
 import { debounce } from 'lodash';
-import { TCardSource } from '@/types/card';
+import { TGameType } from '@/types/card';
 
 export default function Header() {
   const router = useRouter();
 
   const { items: cartItems } = useCartStore();
 
-  const debouncedSearch = debounce((term: string, gameType: TCardSource) => {
+  const debouncedSearch = debounce((term: string, gameType: TGameType) => {
     if (term.trim()) {
       router.push(
-        `/result?cardName=${encodeURIComponent(
-          term,
-        )}&used=false&source=${gameType}`,
+        `/result?cardName=${encodeURIComponent(term)}&gameType=${gameType}`,
       );
     }
   }, 300);
 
-  const handleSearch = (searchTerm: string, gameType: TCardSource) => {
+  const handleSearch = (searchTerm: string, gameType: TGameType) => {
     debouncedSearch(searchTerm, gameType);
   };
 

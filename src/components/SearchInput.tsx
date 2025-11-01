@@ -4,12 +4,12 @@ import { Input } from './ui/input';
 import { cn } from '@/lib/utils';
 import GameTypeSelector from '@/app/search/components/GameTypeSelector';
 import { useState } from 'react';
-import { TCardSource } from '@/types/card';
+import { TGameType } from '@/types/card';
 
 interface SearchInputProps {
   keyword?: string;
   className?: string;
-  onSubmit: (searchTerm: string, gameType: TCardSource) => void;
+  onSubmit: (searchTerm: string, gameType: TGameType) => void;
 }
 
 export default function SearchInput({
@@ -18,7 +18,7 @@ export default function SearchInput({
   onSubmit,
 }: SearchInputProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [gameType, setGameType] = useState<TCardSource>('yugioh');
+  const [gameType, setGameType] = useState<TGameType>('yugioh');
   const placeholder = keyword || '검색어를 입력해주세요.';
 
   const handleSubmit = () => {

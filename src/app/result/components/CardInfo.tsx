@@ -11,13 +11,18 @@ import { useSearchHistoryStore } from '@/store/searchHistoryStore';
 import { TCardResultResponse } from '@/types/api/result';
 import { sortCardLanguages, sortCardRarities } from '@/lib/utils/card';
 import { Button } from '@/components/ui/button';
-import { TIllustType } from '@/types/card';
+import { TGameType, TIllustType } from '@/types/card';
 interface CardInfoProps {
   cardData: TCardResultResponse;
   defaultCardName: string;
+  gameType: TGameType;
 }
 
-export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
+export default function CardInfo({
+  cardData,
+  defaultCardName,
+  gameType,
+}: CardInfoProps) {
   const { data, rarityPrices, cacheId } = cardData;
   const cardName = data.cardName || defaultCardName;
   const cardImage = data.image;
@@ -54,11 +59,14 @@ export default function CardInfo({ cardData, defaultCardName }: CardInfoProps) {
         availableLanguages.map((language) => {
           return [
             language,
-            sortCardRarities(objectKeys(selectedCardRarityPrices[language])),
+            sortCardRarities(
+              objectKeys(selectedCardRarityPrices[language]),
+              gameType,
+            ),
           ];
         }),
       ),
-    [availableLanguages, selectedCardRarityPrices],
+    [availableLanguages, selectedCardRarityPrices, gameType],
   );
 
   const selectedCardPrices = useMemo(() => {

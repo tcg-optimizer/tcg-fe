@@ -1,16 +1,16 @@
 import { TCardResultResponse } from '@/types/api/result';
 import { headers } from 'next/headers';
 import { apiEndpoints } from './endpoints';
-import { TCardSource } from '@/types/card';
+import { TGameType } from '@/types/card';
 
 /**
  * 레어도별 가격 정보 조회 API (서버 사이드)
  */
 export async function fetchCardPricesServer(
   cardName: string,
-  source: TCardSource = 'yugioh',
+  gameType: TGameType = 'yugioh',
 ) {
-  const rarityPricesEndpoint = apiEndpoints.rarityPrices(source, cardName);
+  const rarityPricesEndpoint = apiEndpoints.rarityPrices(gameType, cardName);
 
   try {
     const headersList = await headers();
@@ -68,7 +68,7 @@ interface CardRarityPriceInfo {
 
 interface CardPriceResponse {
   success: boolean;
-  source: string;
+  gameType: string;
   data: {
     cardId: number;
     cardName: string;

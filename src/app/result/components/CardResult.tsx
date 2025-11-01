@@ -3,20 +3,20 @@ import { fetchCardPricesServer } from '@/lib/api/rarity-prices';
 import CardFace from './CardFace';
 import CardInfo from './CardInfo';
 import MarketPrice from './MarketPrice';
-import { TCardSource } from '@/types/card';
+import { TGameType } from '@/types/card';
 
 interface CardResultProps {
   cardName: string;
-  source: TCardSource;
+  gameType: TGameType;
 }
 
 export default async function CardResult({
   cardName,
-  source,
+  gameType,
 }: CardResultProps) {
   // 서버 사이드에서 API 호출 - 데이터가 로드될 때까지 이 컴포넌트 렌더링 지연
   try {
-    const cardData = await fetchCardPricesServer(cardName, source);
+    const cardData = await fetchCardPricesServer(cardName, gameType);
     const { data } = cardData;
 
     return (
@@ -24,7 +24,11 @@ export default async function CardResult({
         <div className="w-full flex flex-col sm:flex-row sm:h-[300px] lg:h-[400px] gap-4">
           <CardFace src={data.image} alt={data.cardName} />
           <div className="flex-1">
-            <CardInfo cardData={cardData} defaultCardName={cardName} />
+            <CardInfo
+              cardData={cardData}
+              defaultCardName={cardName}
+              gameType={gameType}
+            />
           </div>
         </div>
 

@@ -1,12 +1,12 @@
 import { cardRarities, cardLanguages } from '@/data/card';
 
-type TCardRarityValue = (typeof cardRarities)[number]['value'];
-type TCardRarityLabel = (typeof cardRarities)[number]['label'];
+type TCardRarityValue = (typeof cardRarities)[TGameType][number]['value'];
+type TCardRarityLabel = (typeof cardRarities)[TGameType][number]['label'];
 type TCardLanguageValue = (typeof cardLanguages)[number]['value'];
 type TCardLanguageLabel = (typeof cardLanguages)[number]['label'];
 
 type TCardCondition = '신품' | '중고';
-type TCardSource = 'yugioh' | 'vanguard';
+type TGameType = 'yugioh' | 'vanguard';
 
 type TCardShopInfo = {
   id: string;
@@ -55,5 +55,5 @@ export type {
   TSelectedCardShopInfo,
   TCardCondition,
   TIllustType,
-  TCardSource,
+  TGameType,
 };

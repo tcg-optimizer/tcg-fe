@@ -12,14 +12,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { TCardSource } from '@/types/card';
+import { TGameType } from '@/types/card';
 import SearchGuide from './SearchGuide';
 
 export default function SearchClientForm() {
   const router = useRouter();
   const { addToHistory } = useSearchHistoryStore();
 
-  const debouncedSearch = debounce((term: string, source: TCardSource) => {
+  const debouncedSearch = debounce((term: string, gameType: TGameType) => {
     if (term.trim()) {
       addToHistory({
         query: term,
@@ -28,14 +28,12 @@ export default function SearchClientForm() {
         cardContitions: '신품',
       });
       router.push(
-        `/result?cardName=${encodeURIComponent(
-          term,
-        )}&used=false&source=${source}`,
+        `/result?cardName=${encodeURIComponent(term)}&gameType=${gameType}`,
       );
     }
   }, 300);
 
-  const handleSearch = (searchTerm: string, gameType: TCardSource) => {
+  const handleSearch = (searchTerm: string, gameType: TGameType) => {
     debouncedSearch(searchTerm, gameType);
   };
 
