@@ -2,7 +2,6 @@ import { Separator } from '@/components/ui/separator';
 import { fetchCardPricesServer } from '@/lib/api/rarity-prices';
 import CardFace from './CardFace';
 import CardInfo from './CardInfo';
-import { TCardResultResponse } from '@/types/api/result';
 import MarketPrice from './MarketPrice';
 
 interface CardResultProps {
@@ -20,7 +19,7 @@ export default async function CardResult({ cardName }: CardResultProps) {
         <div className="w-full flex flex-col sm:flex-row sm:h-[300px] lg:h-[400px] gap-4">
           <CardFace src={data.image} alt={data.cardName} />
           <div className="flex-1">
-            <CardInfoWrapper cardData={cardData} defaultCardName={cardName} />
+            <CardInfo cardData={cardData} defaultCardName={cardName} />
           </div>
         </div>
 
@@ -43,15 +42,4 @@ export default async function CardResult({ cardName }: CardResultProps) {
       </div>
     );
   }
-}
-
-// 클라이언트 컴포넌트에 Props를 전달하기 위한 서버 컴포넌트 래퍼
-function CardInfoWrapper({
-  cardData,
-  defaultCardName,
-}: {
-  cardData: TCardResultResponse;
-  defaultCardName: string;
-}) {
-  return <CardInfo cardData={cardData} defaultCardName={defaultCardName} />;
 }

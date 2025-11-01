@@ -1,17 +1,9 @@
 import { API_ROUTE_URL } from '../api';
 
 const apiEndpoints = {
-  rarityPrices: () => ({
-    yugioh: () => ({
-      url: (cardName: string) =>
-        `${API_ROUTE_URL}/yugioh-rarity-prices?cardName=${cardName}`,
-      method: 'GET',
-    }),
-    vanguard: () => ({
-      url: (cardName: string) =>
-        `${API_ROUTE_URL}/vanguard-rarity-prices?cardName=${cardName}`,
-      method: 'GET',
-    }),
+  rarityPrices: (source: string, cardName: string) => ({
+    url: `${API_ROUTE_URL}/${source}-rarity-prices?cardName=${cardName}`,
+    method: 'GET',
   }),
   optimalPurchase: () => ({
     url: `${API_ROUTE_URL}/optimal-purchase`,

@@ -1,28 +1,29 @@
 import { TCardResultResponse } from '@/types/api/result';
 import { headers } from 'next/headers';
 import { apiEndpoints } from './endpoints';
+import { TCardSource } from '@/types/card';
 
 /**
  * 레어도별 가격 정보 조회 API (서버 사이드)
  */
 export async function fetchCardPricesServer(
   cardName: string,
-  source: 'yugioh' | 'vanguard' = 'yugioh',
+  source: TCardSource = 'yugioh',
 ) {
-  const rarityPricesEndpoint = apiEndpoints.rarityPrices()[source]();
+  const rarityPricesEndpoint = apiEndpoints.rarityPrices(source, cardName);
 
   try {
     const headersList = await headers();
     const clientIP = headersList.get('x-forwarded-for');
     console.log(
-      `[API] ${rarityPricesEndpoint.url(
-        cardName,
-      )} | [Client IP]: ${clientIP} | [Data]: ${JSON.stringify({
+      `[API] ${
+        rarityPricesEndpoint.url
+      } | [Client IP]: ${clientIP} | [Data]: ${JSON.stringify({
         cardName,
       })}`,
     );
 
-    const response = await fetch(rarityPricesEndpoint.url(cardName), {
+    const response = await fetch(rarityPricesEndpoint.url, {
       method: rarityPricesEndpoint.method,
       headers: {
         'Content-Type': 'application/json',

@@ -6,6 +6,7 @@ type TCardLanguageValue = (typeof cardLanguages)[number]['value'];
 type TCardLanguageLabel = (typeof cardLanguages)[number]['label'];
 
 type TCardCondition = '신품' | '중고';
+type TCardSource = 'yugioh' | 'vanguard';
 
 type TCardShopInfo = {
   id: string;
@@ -54,4 +55,5 @@ export type {
   TSelectedCardShopInfo,
   TCardCondition,
   TIllustType,
+  TCardSource,
 };
