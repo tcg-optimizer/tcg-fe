@@ -5,7 +5,7 @@ export function getBaseUrl() {
     // 환경 변수에서 URL 가져오기, 없으면 기본값 사용
     return process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3000';
+      : process.env.NEXT_PUBLIC_API_URL;
   }
   // 클라이언트 사이드인 경우 상대 경로 사용
   return '';

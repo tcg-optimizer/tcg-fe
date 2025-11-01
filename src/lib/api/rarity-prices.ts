@@ -1,54 +1,35 @@
 import { TCardResultResponse } from '@/types/api/result';
 import { headers } from 'next/headers';
-
-// 내부 API 라우트 URL 생성 함수
-function getBaseUrl() {
-  // 서버 사이드인 경우
-  if (typeof window === 'undefined') {
-    // 환경 변수에서 URL 가져오기, 없으면 기본값 사용
-    return process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3000';
-  }
-  // 클라이언트 사이드인 경우 상대 경로 사용
-  return '';
-}
-
-// 내부 API 라우트 URL
-const API_ROUTE_URL = `${getBaseUrl()}/api/cards`;
+import { apiEndpoints } from './endpoints';
 
 /**
  * 레어도별 가격 정보 조회 API (서버 사이드)
  */
 export async function fetchCardPricesServer(
   cardName: string,
-  includeUsed: boolean = true,
+  source: 'yugioh' | 'vanguard' = 'yugioh',
 ) {
+  const rarityPricesEndpoint = apiEndpoints.rarityPrices()[source]();
+
   try {
     const headersList = await headers();
     const clientIP = headersList.get('x-forwarded-for');
     console.log(
-      `[API] /rarity-prices | [Client IP]: ${clientIP} | [Data]: ${JSON.stringify(
-        {
-          cardName,
-          includeUsed,
-        },
-      )}`,
+      `[API] ${rarityPricesEndpoint.url(
+        cardName,
+      )} | [Client IP]: ${clientIP} | [Data]: ${JSON.stringify({
+        cardName,
+      })}`,
     );
 
-    const response = await fetch(
-      `${API_ROUTE_URL}/rarity-prices?cardName=${encodeURIComponent(
-        cardName,
-      )}&includeUsed=${includeUsed}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // 서버 컴포넌트에서는 캐시를 비활성화하여 항상 최신 데이터를 가져옵니다
-        cache: 'no-store',
+    const response = await fetch(rarityPricesEndpoint.url(cardName), {
+      method: rarityPricesEndpoint.method,
+      headers: {
+        'Content-Type': 'application/json',
       },
-    );
+      // 서버 컴포넌트에서는 캐시를 비활성화하여 항상 최신 데이터를 가져옵니다
+      cache: 'no-store',
+    });
 
     if (!response.ok) {
       const errorData = await response.json();

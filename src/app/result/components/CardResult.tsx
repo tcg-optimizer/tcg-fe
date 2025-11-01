@@ -7,16 +7,12 @@ import MarketPrice from './MarketPrice';
 
 interface CardResultProps {
   cardName: string;
-  includeUsed: boolean;
 }
 
-export default async function CardResult({
-  cardName,
-  includeUsed,
-}: CardResultProps) {
+export default async function CardResult({ cardName }: CardResultProps) {
   // 서버 사이드에서 API 호출 - 데이터가 로드될 때까지 이 컴포넌트 렌더링 지연
   try {
-    const cardData = await fetchCardPricesServer(cardName, includeUsed);
+    const cardData = await fetchCardPricesServer(cardName, 'yugioh');
     const { data } = cardData;
 
     return (

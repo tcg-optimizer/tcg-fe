@@ -9,7 +9,6 @@ export default async function ResultPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const cardName = (await searchParams).cardName as string;
-  const includeUsed = (await searchParams).used === 'true';
 
   if (!cardName) {
     return (
@@ -21,11 +20,7 @@ export default async function ResultPage({
 
   return (
     <Suspense key={cardName} fallback={<CardSkeleton />}>
-      <CardResult
-        key={cardName}
-        cardName={cardName}
-        includeUsed={includeUsed}
-      />
+      <CardResult key={cardName} cardName={cardName} />
     </Suspense>
   );
 }
