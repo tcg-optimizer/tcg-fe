@@ -4,26 +4,28 @@ import SearchInput from '@/components/SearchInput';
 import Link from 'next/link';
 import { ShoppingCartIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
 import { useCartStore } from '@/store/cartStore';
 import Logo from '@/components/Logo';
 import { debounce } from 'lodash';
+import { TCardSource } from '@/types/card';
 
 export default function Header() {
-  const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
 
   const { items: cartItems } = useCartStore();
 
-  const debouncedSearch = debounce((term: string) => {
+  const debouncedSearch = debounce((term: string, gameType: TCardSource) => {
     if (term.trim()) {
-      router.push(`/result?cardName=${encodeURIComponent(term)}&used=false`);
+      router.push(
+        `/result?cardName=${encodeURIComponent(
+          term,
+        )}&used=false&source=${gameType}`,
+      );
     }
   }, 300);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    debouncedSearch(searchTerm);
+  const handleSearch = (searchTerm: string, gameType: TCardSource) => {
+    debouncedSearch(searchTerm, gameType);
   };
 
   return (
@@ -33,13 +35,9 @@ export default function Header() {
           <Logo className="h-12 shrink-0" />
         </Link>
 
-        <form onSubmit={handleSearch} className="w-full flex flex-col gap-4">
-          <SearchInput
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-[400px]"
-          />
-        </form>
+        <div className="w-full flex flex-col gap-4">
+          <SearchInput onSubmit={handleSearch} className="max-w-[400px]" />
+        </div>
 
         <Link href="/cart" className="ml-auto relative">
           <ShoppingCartIcon className="w-5 h-5" />

@@ -3,15 +3,20 @@ import { fetchCardPricesServer } from '@/lib/api/rarity-prices';
 import CardFace from './CardFace';
 import CardInfo from './CardInfo';
 import MarketPrice from './MarketPrice';
+import { TCardSource } from '@/types/card';
 
 interface CardResultProps {
   cardName: string;
+  source: TCardSource;
 }
 
-export default async function CardResult({ cardName }: CardResultProps) {
+export default async function CardResult({
+  cardName,
+  source,
+}: CardResultProps) {
   // 서버 사이드에서 API 호출 - 데이터가 로드될 때까지 이 컴포넌트 렌더링 지연
   try {
-    const cardData = await fetchCardPricesServer(cardName, 'yugioh');
+    const cardData = await fetchCardPricesServer(cardName, source);
     const { data } = cardData;
 
     return (
