@@ -26,6 +26,7 @@ export default function SearchClientForm() {
         cardName: term,
         cardImage: null,
         cardContitions: '신품',
+        gameType,
       });
       router.push(
         `/result?cardName=${encodeURIComponent(term)}&gameType=${gameType}`,

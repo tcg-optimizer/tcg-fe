@@ -132,6 +132,7 @@ export default function CardInfo({
       cardImage,
       cardContitions:
         selectedCardRarityPrices[language][rarity].prices[0].condition,
+      gameType,
     };
     addToHistory(historyInfo);
   }, [
@@ -141,6 +142,7 @@ export default function CardInfo({
     addToHistory,
     availableLanguages,
     availableRarities,
+    gameType,
   ]);
 
   useEffect(() => {

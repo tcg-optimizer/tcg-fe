@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import DeletableBadgeButton from '@/components/DeletableBadgeButton';
 import { debounce } from 'lodash';
+import { TGameType } from '@/types/card';
 
 export default function SearchHistory() {
   const { history, removeFromHistory, clearHistory } = useSearchHistoryStore();
@@ -22,9 +23,14 @@ export default function SearchHistory() {
     clearHistory();
   }, 300);
 
-  const debouncedSearchClick = debounce((query: string) => {
-    router.push(`/result?cardName=${encodeURIComponent(query)}&used=false`);
-  }, 300);
+  const debouncedSearchClick = debounce(
+    (query: string, gameType: TGameType) => {
+      router.push(
+        `/result?cardName=${encodeURIComponent(query)}&gameType=${gameType}`,
+      );
+    },
+    300,
+  );
 
   const debouncedRemoveFromHistory = debounce((query: string) => {
     removeFromHistory(query);
@@ -36,8 +42,8 @@ export default function SearchHistory() {
   // 검색 기록이 없으면 표시하지 않음
   if (history.length === 0) return null;
 
-  const handleSearchClick = (query: string) => {
-    debouncedSearchClick(query);
+  const handleSearchClick = (query: string, gameType: TGameType) => {
+    debouncedSearchClick(query, gameType);
   };
 
   return (
@@ -59,7 +65,7 @@ export default function SearchHistory() {
           <DeletableBadgeButton
             key={item.query}
             content={item.query}
-            onClick={() => handleSearchClick(item.query)}
+            onClick={() => handleSearchClick(item.query, item.gameType)}
             onDelete={() => debouncedRemoveFromHistory(item.query)}
           />
         ))}
