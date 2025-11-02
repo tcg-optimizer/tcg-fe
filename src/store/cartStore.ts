@@ -4,7 +4,9 @@ import {
   TCardRarityLabel,
   TCardLanguageLabel,
   TIllustType,
+  TGameType,
 } from '@/types/card';
+import { maxCardItemQuantity } from '@/data/card';
 
 export interface CartItem {
   id: string;
@@ -13,6 +15,7 @@ export interface CartItem {
   condition: string;
   rarity: TCardRarityLabel;
   language: TCardLanguageLabel;
+  gameType: TGameType;
   quantity: number;
   cacheId: string;
   illustType: TIllustType;
@@ -108,9 +111,11 @@ export const useCartStore = create<CartState>()(
               item.name === newItem.name &&
               item.rarity === newItem.rarity &&
               item.language === newItem.language &&
+              item.gameType === newItem.gameType &&
               item.illustType === newItem.illustType,
           );
           const now = Date.now();
+          const maxItemQuantity = maxCardItemQuantity[newItem.gameType];
 
           if (existingItemIndex >= 0) {
             // 이미 있으면 수량만 증가
@@ -118,11 +123,11 @@ export const useCartStore = create<CartState>()(
 
             if (
               updatedItems[existingItemIndex].quantity + newItem.quantity <=
-              3
+              maxItemQuantity
             ) {
               updatedItems[existingItemIndex].quantity += newItem.quantity;
             } else {
-              updatedItems[existingItemIndex].quantity = 3;
+              updatedItems[existingItemIndex].quantity = maxItemQuantity;
             }
 
             updatedItems[existingItemIndex].lastModified = now;
@@ -146,6 +151,7 @@ export const useCartStore = create<CartState>()(
             i.name === item.name &&
             i.rarity === item.rarity &&
             i.language === item.language &&
+            i.gameType === item.gameType &&
             i.illustType === item.illustType,
         );
       },

@@ -199,6 +199,7 @@ export default function CardInfo({
           onLanguageChange={handleLanguageChange}
           onRarityChange={handleRarityChange}
           onQuantityChange={handleQuantityChange}
+          gameType={gameType}
           vertical
         />
         <div className="flex justify-between lg:items-center mt-4 flex-col lg:flex-row gap-4">
@@ -218,6 +219,7 @@ export default function CardInfo({
             availableRarities={availableRarities}
             cardCacheId={cardCacheId}
             illustType={illustType}
+            gameType={gameType}
           />
         </div>
       </div>

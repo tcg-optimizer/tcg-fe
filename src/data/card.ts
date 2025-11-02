@@ -268,4 +268,9 @@ const cardRarities = {
   vanguard: cardRaritiesVanguard,
 };
 
-export { cardLanguages, cardRarities };
+const maxCardItemQuantity = {
+  yugioh: 3,
+  vanguard: 4,
+} as const;
+
+export { cardLanguages, cardRarities, maxCardItemQuantity };
