@@ -9,7 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from './ui/select';
-import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
+import { TCardLanguageLabel, TCardRarityLabel, TGameType } from '@/types/card';
+import { maxCardItemQuantity } from '@/data/card';
 interface CardOptionSelectorProps {
   availableLanguages: TCardLanguageLabel[];
   availableRarities: {
@@ -22,6 +23,7 @@ interface CardOptionSelectorProps {
   onRarityChange: (rarity: TCardRarityLabel) => void;
   onQuantityChange: (quantity: string) => void;
   vertical?: boolean;
+  gameType: TGameType;
 }
 
 export default function CardOptionSelector({
@@ -34,7 +36,14 @@ export default function CardOptionSelector({
   onRarityChange,
   onQuantityChange,
   vertical = false,
+  gameType,
 }: CardOptionSelectorProps) {
+  const maxItemQuantity = maxCardItemQuantity[gameType];
+
+  const quantityOptions = Array.from(
+    { length: maxItemQuantity },
+    (_, index) => index + 1,
+  );
   return (
     <div className={cn('flex gap-2', vertical && 'flex-col sm:flex-row')}>
       <div className="flex flex-col gap-2 w-full">
@@ -77,7 +86,7 @@ export default function CardOptionSelector({
             <SelectValue placeholder="수량 선택" />
           </SelectTrigger>
           <SelectContent>
-            {[1, 2, 3].map((value) => (
+            {quantityOptions.map((value) => (
               <SelectItem key={value} value={value.toString()}>
                 {value}
               </SelectItem>

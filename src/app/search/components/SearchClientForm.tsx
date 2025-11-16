@@ -1,7 +1,6 @@
 'use client';
 
 import SearchInput from '@/components/SearchInput';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowUpRight, Info } from 'lucide-react';
 import { useSearchHistoryStore } from '@/store/searchHistoryStore';
@@ -13,41 +12,38 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
+import { TGameType } from '@/types/card';
 import SearchGuide from './SearchGuide';
 
 export default function SearchClientForm() {
-  const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter();
   const { addToHistory } = useSearchHistoryStore();
 
-  const debouncedSearch = debounce((term: string) => {
+  const debouncedSearch = debounce((term: string, gameType: TGameType) => {
     if (term.trim()) {
       addToHistory({
         query: term,
         cardName: term,
         cardImage: null,
         cardContitions: '신품',
+        gameType,
       });
-      router.push(`/result?cardName=${encodeURIComponent(term)}&used=false`);
+      router.push(
+        `/result?cardName=${encodeURIComponent(term)}&gameType=${gameType}`,
+      );
     }
   }, 300);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    debouncedSearch(searchTerm);
+  const handleSearch = (searchTerm: string, gameType: TGameType) => {
+    debouncedSearch(searchTerm, gameType);
   };
 
   return (
     <div className="w-full flex flex-col gap-4 my-auto">
-      <form onSubmit={handleSearch} className="w-full flex flex-col gap-4">
-        <SearchInput
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-        <button type="submit" className="hidden">
-          검색
-        </button>
-      </form>
+      <SearchInput
+        onSubmit={handleSearch}
+        className="w-full flex items-end gap-2"
+      />
 
       <div className="w-full mb-4 flex justify-between">
         <Sheet>

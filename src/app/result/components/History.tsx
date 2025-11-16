@@ -36,14 +36,14 @@ interface HistoryComponentProps {
 }
 
 const HistoryComponent = ({ historyInfo }: HistoryComponentProps) => {
-  const { cardName, cardImage } = historyInfo;
+  const { cardName, cardImage, gameType } = historyInfo;
   const router = useRouter();
 
   return (
     <div
       className="flex flex-col gap-2 group relative cursor-pointer"
       onClick={() => {
-        router.push(`/result?cardName=${cardName}`);
+        router.push(`/result?cardName=${cardName}&gameType=${gameType}`);
       }}
     >
       <div className="flex gap-2">

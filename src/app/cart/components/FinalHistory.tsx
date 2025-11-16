@@ -15,7 +15,7 @@ export default function FinalHistory() {
         {history.map((historyInfo) => (
           <Link
             key={historyInfo.query}
-            href={`/result?cardName=${historyInfo.cardName}&used=${historyInfo.cardContitions}`}
+            href={`/result?cardName=${historyInfo.cardName}&gameType=${historyInfo.gameType}`}
             className={`flex flex-col gap-2 rounded-md p-4 bg-gray-100 max-w-24 sm:max-w-32 cursor-pointer`}
           >
             <div className="w-16 sm:w-24 aspect-[2/3] rounded-md overflow-hidden">

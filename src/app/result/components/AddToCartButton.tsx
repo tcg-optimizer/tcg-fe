@@ -7,9 +7,11 @@ import {
   TCardLanguageLabel,
   TSelectedCardShopInfo,
   TIllustType,
+  TGameType,
 } from '@/types/card';
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { maxCardItemQuantity } from '@/data/card';
 
 interface AddToCartButtonProps {
   cardName: string;
@@ -21,6 +23,7 @@ interface AddToCartButtonProps {
   availableRarities: { [key in TCardLanguageLabel]: TCardRarityLabel[] };
   cardCacheId: string;
   illustType: TIllustType;
+  gameType: TGameType;
 }
 
 export default function AddToCartButton({
@@ -33,6 +36,7 @@ export default function AddToCartButton({
   availableRarities,
   cardCacheId,
   illustType,
+  gameType,
 }: AddToCartButtonProps) {
   const addItem = useCartStore((state) => state.addItem);
   const findItem = useCartStore((state) => state.findItem);
@@ -52,11 +56,14 @@ export default function AddToCartButton({
       availableRarities: availableRarities,
       condition: selectedCardShopsInfo.prices[0]?.condition || '신품',
       illustType: illustType,
+      gameType: gameType,
     } as const;
 
+    const maxItemQuantity = maxCardItemQuantity[gameType];
+
     const existingItem = findItem(card);
-    if (existingItem && existingItem.quantity + quantity > 3) {
-      alert('동일한 언어/레어도를 가지는 상품당 최대 3개까지만 추가됩니다.');
+    if (existingItem && existingItem.quantity + quantity > maxItemQuantity) {
+      alert(`해당 상품은 최대 ${maxItemQuantity}개까지만 추가할 수 있습니다.`);
     }
 
     addItem(card);
