@@ -2,21 +2,21 @@ import { Separator } from '@/components/ui/separator';
 import { fetchCardPricesServer } from '@/lib/api/rarity-prices';
 import CardFace from './CardFace';
 import CardInfo from './CardInfo';
-import { TCardResultResponse } from '@/types/api/result';
 import MarketPrice from './MarketPrice';
+import { TGameType } from '@/types/card';
 
 interface CardResultProps {
   cardName: string;
-  includeUsed: boolean;
+  gameType: TGameType;
 }
 
 export default async function CardResult({
   cardName,
-  includeUsed,
+  gameType,
 }: CardResultProps) {
   // 서버 사이드에서 API 호출 - 데이터가 로드될 때까지 이 컴포넌트 렌더링 지연
   try {
-    const cardData = await fetchCardPricesServer(cardName, includeUsed);
+    const cardData = await fetchCardPricesServer(cardName, gameType);
     const { data } = cardData;
 
     return (
@@ -24,7 +24,11 @@ export default async function CardResult({
         <div className="w-full flex flex-col sm:flex-row sm:h-[300px] lg:h-[400px] gap-4">
           <CardFace src={data.image} alt={data.cardName} />
           <div className="flex-1">
-            <CardInfoWrapper cardData={cardData} defaultCardName={cardName} />
+            <CardInfo
+              cardData={cardData}
+              defaultCardName={cardName}
+              gameType={gameType}
+            />
           </div>
         </div>
 
@@ -47,15 +51,4 @@ export default async function CardResult({
       </div>
     );
   }
-}
-
-// 클라이언트 컴포넌트에 Props를 전달하기 위한 서버 컴포넌트 래퍼
-function CardInfoWrapper({
-  cardData,
-  defaultCardName,
-}: {
-  cardData: TCardResultResponse;
-  defaultCardName: string;
-}) {
-  return <CardInfo cardData={cardData} defaultCardName={defaultCardName} />;
 }

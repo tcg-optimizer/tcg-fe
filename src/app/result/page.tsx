@@ -1,15 +1,15 @@
 import { Suspense } from 'react';
 import CardSkeleton from './components/CardSkeleton';
 import CardResult from './components/CardResult';
+import { TGameType } from '@/types/card';
 
 // 서버 컴포넌트에서는 searchParams를 props로 받습니다
 export default async function ResultPage({
   searchParams,
 }: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<{ cardName: string; gameType: TGameType }>;
 }) {
-  const cardName = (await searchParams).cardName as string;
-  const includeUsed = (await searchParams).used === 'true';
+  const { cardName, gameType } = await searchParams;
 
   if (!cardName) {
     return (
@@ -21,11 +21,7 @@ export default async function ResultPage({
 
   return (
     <Suspense key={cardName} fallback={<CardSkeleton />}>
-      <CardResult
-        key={cardName}
-        cardName={cardName}
-        includeUsed={includeUsed}
-      />
+      <CardResult key={cardName} cardName={cardName} gameType={gameType} />
     </Suspense>
   );
 }

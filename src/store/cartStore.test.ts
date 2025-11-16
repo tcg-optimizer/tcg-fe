@@ -18,6 +18,7 @@ const createMockCartItem = (overrides: Partial<CartItem> = {}): CartItem => ({
     일본판: ['노멀', '레어'],
     영문판: ['노멀', '레어'],
   },
+  illustType: 'default',
   ...overrides,
 });
 

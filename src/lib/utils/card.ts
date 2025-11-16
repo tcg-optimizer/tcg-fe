@@ -1,5 +1,5 @@
 import { cardLanguages, cardRarities } from '@/data/card';
-import { TCardLanguageLabel, TCardRarityLabel } from '@/types/card';
+import { TCardLanguageLabel, TCardRarityLabel, TGameType } from '@/types/card';
 
 const sortCardLanguages = (languages: TCardLanguageLabel[]) => {
   const availableLanguages = new Set(languages);
@@ -8,9 +8,12 @@ const sortCardLanguages = (languages: TCardLanguageLabel[]) => {
     .filter((label) => availableLanguages.has(label));
 };
 
-const sortCardRarities = (rarities: TCardRarityLabel[]) => {
+const sortCardRarities = (
+  rarities: TCardRarityLabel[],
+  gameType: TGameType,
+) => {
   const availableRarities = new Set(rarities);
-  return cardRarities
+  return cardRarities[gameType]
     .map(({ label }) => label)
     .filter((label) => availableRarities.has(label));
 };

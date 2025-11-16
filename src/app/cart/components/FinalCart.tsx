@@ -526,6 +526,7 @@ function CartItemComponent({
             onLanguageChange={handleLanguageChange}
             onRarityChange={handleRarityChange}
             onQuantityChange={handleQuantityChange}
+            gameType={item.gameType}
             vertical
           />
         </div>

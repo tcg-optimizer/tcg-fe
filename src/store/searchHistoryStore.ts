@@ -1,4 +1,4 @@
-import { TCardCondition } from '@/types/card';
+import { TCardCondition, TGameType } from '@/types/card';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -8,6 +8,7 @@ export interface SearchHistoryItem {
   cardName: string;
   cardImage: string | null;
   cardContitions: TCardCondition;
+  gameType: TGameType;
 }
 
 interface SearchHistoryState {
