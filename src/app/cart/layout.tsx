@@ -1,6 +1,6 @@
 import Header from '../result/components/Header';
 
-export default function CartLayout({
+export default async function CartLayout({
   children,
 }: {
   children: React.ReactNode;
