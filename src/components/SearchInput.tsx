@@ -20,7 +20,7 @@ export default function SearchInput({
   onSubmit,
 }: SearchInputProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [gameType, setGameType] = useState<TGameType>(initialGameType);
+  const [gameType, setGameType] = useState<TGameType>(initialGameType || 'yugioh');
   const placeholder = keyword || '검색어를 입력해주세요.';
 
   const handleSubmit = () => {
