@@ -3,14 +3,18 @@
 import SearchInput from '@/components/SearchInput';
 import Link from 'next/link';
 import { ShoppingCartIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
 import Logo from '@/components/Logo';
 import { debounce } from 'lodash';
 import { TGameType } from '@/types/card';
 
+
 export default function Header() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const initialGameType = searchParams.get('gameType') as TGameType;
 
   const { items: cartItems } = useCartStore();
 
@@ -34,7 +38,7 @@ export default function Header() {
         </Link>
 
         <div className="w-full flex flex-col gap-4">
-          <SearchInput onSubmit={handleSearch} className="max-w-[400px]" />
+          <SearchInput initialGameType={initialGameType} onSubmit={handleSearch} className="max-w-[400px]" />
         </div>
 
         <Link href="/cart" className="ml-auto relative">
