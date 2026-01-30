@@ -2,11 +2,11 @@ import Header from './components/Header';
 import History from './components/History';
 import Cart from './components/Cart';
 
-export default function ResultLayout({
-  children,
-}: {
+type Props = {
   children: React.ReactNode;
-}) {
+}
+
+export default async function ResultLayout({ children }: Props) {
   return (
     <main className="w-full min-h-screen">
       <Header />

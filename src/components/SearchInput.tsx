@@ -7,18 +7,20 @@ import { useState } from 'react';
 import { TGameType } from '@/types/card';
 
 interface SearchInputProps {
-  keyword?: string;
+  initialGameType?: TGameType;
+  keyword?: string; 
   className?: string;
   onSubmit: (searchTerm: string, gameType: TGameType) => void;
 }
 
 export default function SearchInput({
+  initialGameType = 'yugioh',
   keyword = '검색어를 입력해주세요.',
   className,
   onSubmit,
 }: SearchInputProps) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [gameType, setGameType] = useState<TGameType>('yugioh');
+  const [gameType, setGameType] = useState<TGameType>(initialGameType);
   const placeholder = keyword || '검색어를 입력해주세요.';
 
   const handleSubmit = () => {
